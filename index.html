@@ -1,0 +1,3105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Khám phá Toán học cùng Endy | Math Discovery with Endy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #0EA5E9;
+      --primary-dark: #0284C7;
+      --secondary: #F59E0B;
+      --secondary-dark: #D97706;
+      --accent-orange: #F97316;
+      --accent-orange-dark: #C2410C;
+      --correct: #22C55E;
+      --correct-dark: #15803D;
+      --incorrect: #EF4444;
+      --incorrect-dark: #B91C1C;
+      --purple: #8B5CF6;
+      --purple-dark: #6D28D9;
+      --bg-gradient: linear-gradient(135deg, #E0F2FE 0%, #F0F9FF 45%, #FEF9C3 100%);
+      --surface: #FFFFFF;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 28px;
+      --font-display: 'Baloo 2', cursive, sans-serif;
+      --font-body: 'Nunito', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    body.is-parent-mode {
+      display: block !important;
+      overflow-y: auto !important;
+      height: auto !important;
+      padding: 20px 0 !important;
+    }
+
+    .hidden { display: none !important; }
+
+    /* =========================================
+       APP SHELL & HEADER
+       ========================================= */
+    .app-container {
+      width: 96%;
+      max-width: 1060px;
+      height: 96vh;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 50px rgba(14, 165, 233, 0.18), 0 8px 0 #BAE6FD;
+      border: 4px solid #38BDF8;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    body.is-parent-mode .app-container {
+      width: 94% !important;
+      max-width: 1040px !important;
+      height: auto !important;
+      min-height: 96vh;
+      margin: 0 auto !important;
+      border: none !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      display: block !important;
+      background: transparent !important;
+    }
+    body.is-parent-mode .header { display: none !important; }
+
+    .header {
+      background: linear-gradient(120deg, #0284C7 0%, #0EA5E9 55%, #38BDF8 100%);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: white;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .brand-left { display: flex; align-items: center; gap: 12px; }
+
+    .header-mascot-wrap {
+      width: 48px; height: 48px;
+      background: #FEF08A;
+      border-radius: 16px;
+      border: 3px solid white;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .header-mascot-wrap:hover { transform: scale(1.08) rotate(-4deg); }
+
+    .brand-text h1 {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 800;
+      line-height: 1.15;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.18);
+    }
+
+    .brand-sub-row { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+
+    .header-badge-student {
+      background: rgba(255,255,255,0.22);
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+    .lang-pill {
+      display: inline-flex;
+      background: rgba(15, 23, 42, 0.22);
+      padding: 3px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .lang-pill button {
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.85);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 4px 11px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lang-pill button.active {
+      background: #FFFFFF;
+      color: #0284C7 !important;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .icon-btn-pill {
+      background: rgba(255,255,255,0.2);
+      border: 2px solid rgba(255,255,255,0.35);
+      color: white;
+      border-radius: 14px;
+      padding: 6px 10px;
+      font-size: 1.05rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+    .icon-btn-pill:hover { background: rgba(255,255,255,0.35); transform: translateY(-2px); }
+
+    .score-pill-header {
+      background: #FEF08A;
+      color: #92400E;
+      border: 2px solid #F59E0B;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.95rem;
+      box-shadow: 0 3px 0 #D97706;
+    }
+
+    .student-only { display: none; }
+
+    /* =========================================
+       3D PLAYFUL BUTTONS
+       ========================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 22px;
+      font-size: 1.08rem;
+      font-family: var(--font-display);
+      font-weight: 800;
+      border: none;
+      border-radius: 18px;
+      cursor: pointer;
+      color: white;
+      background: var(--primary);
+      box-shadow: 0 5px 0 var(--primary-dark);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.15s;
+      margin: 4px;
+      text-decoration: none;
+    }
+    .btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+    .btn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,0.2); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .btn-start { background: var(--correct); box-shadow: 0 5px 0 var(--correct-dark); }
+    .btn-guide { background: var(--secondary); color: #451A03; box-shadow: 0 5px 0 var(--secondary-dark); }
+    .btn-purple { background: var(--purple); box-shadow: 0 5px 0 var(--purple-dark); }
+    .btn-orange { background: var(--accent-orange); box-shadow: 0 5px 0 var(--accent-orange-dark); }
+    .btn-soft {
+      background: #F1F5F9;
+      color: #334155;
+      box-shadow: 0 4px 0 #CBD5E1;
+      border: 2px solid #E2E8F0;
+    }
+
+    /* =========================================
+       INTRO SCREEN
+       ========================================= */
+    #intro-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0284C7 0%, #38BDF8 45%, #FEF08A 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9990;
+      padding: 16px;
+    }
+
+    .intro-card {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      padding: 30px 34px;
+      border-radius: 34px;
+      text-align: center;
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.2), 0 8px 0 #BAE6FD;
+      border: 5px solid #FFFFFF;
+      animation: zoomIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .intro-lang-top { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+    .intro-lang-top .lang-pill { background: #E2E8F0; border-color: #CBD5E1; }
+    .intro-lang-top .lang-pill button { color: #475569; }
+    .intro-lang-top .lang-pill button.active { background: #0284C7; color: white !important; }
+
+    .intro-mascot-stage {
+      width: 126px; height: 126px;
+      margin: 0 auto 14px;
+      background: linear-gradient(135deg, #FEF08A, #FDBA74);
+      border-radius: 36px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 10px 0 #EA580C, 0 16px 30px rgba(234, 88, 12, 0.25);
+      animation: floatSlow 3s ease-in-out infinite;
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+
+    .intro-card h1 {
+      font-family: var(--font-display);
+      font-size: 2.05rem;
+      font-weight: 800;
+      color: #0369A1;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .intro-card .intro-tagline { font-size: 1rem; color: var(--text-muted); font-weight: 700; margin-bottom: 20px; }
+    .intro-btn-group { display: flex; flex-direction: column; gap: 11px; }
+    .intro-btn-big { width: 100%; padding: 14px 20px; font-size: 1.2rem; border-radius: 22px; }
+
+    /* =========================================
+       SCREENS COMMON & LOGIN
+       ========================================= */
+    .screen {
+      padding: 20px 26px;
+      overflow-y: auto;
+      flex-grow: 1;
+      width: 100%;
+      scroll-behavior: smooth;
+    }
+    .screen::-webkit-scrollbar { width: 8px; }
+    .screen::-webkit-scrollbar-thumb { background: #38BDF8; border-radius: 4px; }
+
+    .screen-hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 2px dashed #E2E8F0;
+    }
+    .screen-title {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #0369A1;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .login-box {
+      max-width: 520px;
+      margin: 10px auto;
+      background: #F8FAFC;
+      border: 3px solid #E2E8F0;
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      text-align: center;
+    }
+    .form-group { margin-bottom: 16px; text-align: left; }
+    .form-group label {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #0F172A;
+      margin-bottom: 6px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 13px 16px;
+      font-size: 1.08rem;
+      font-family: var(--font-body);
+      font-weight: 700;
+      border: 3px solid #CBD5E1;
+      border-radius: 16px;
+      outline: none;
+    }
+    .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(14,165,233,0.15); }
+
+    /* =========================================
+       TOPICS & LESSONS
+       ========================================= */
+    .lab-banner {
+      background: linear-gradient(120deg, #6D28D9 0%, #8B5CF6 60%, #A78BFA 100%);
+      color: white;
+      border-radius: var(--radius-md);
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 0 #5B21B6;
+    }
+    .lab-banner h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; }
+    .lab-banner p { font-size: 0.94rem; opacity: 0.92; font-weight: 600; }
+
+    .topic-grid, .lesson-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      padding-bottom: 24px;
+    }
+
+    .topic-card {
+      background: #FFFFFF;
+      border: 3px solid #BAE6FD;
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 5px 0 #BAE6FD;
+      display: flex; flex-direction: column; gap: 8px;
+      text-align: left;
+    }
+    .topic-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 9px 0 #7DD3FC; }
+    .topic-card.is-test { border-color: #FCA5A5; background: #FEF2F2; box-shadow: 0 5px 0 #FCA5A5; }
+    .topic-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-display); font-size: 0.84rem; font-weight: 800;
+      color: #0284C7; background: #E0F2FE; padding: 3px 10px; border-radius: 20px; width: fit-content;
+    }
+    .topic-card.is-test .topic-badge { background: #FEE2E2; color: #DC2626; }
+    .topic-title-text { font-family: var(--font-display); font-size: 1.12rem; font-weight: 800; color: #0F172A; line-height: 1.3; }
+    .topic-meta { font-size: 0.85rem; color: var(--text-muted); font-weight: 700; display: flex; justify-content: space-between; margin-top: auto; padding-top: 6px; }
+
+    .lesson-card {
+      background: #FFFFFF;
+      border: 3px solid #BBF7D0;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 5px 0 #86EFAC;
+      text-align: left;
+      display: flex; flex-direction: column; justify-content: space-between; gap: 10px;
+    }
+    .lesson-card:hover { transform: translateY(-3px); border-color: var(--correct); box-shadow: 0 8px 0 #4ADE80; }
+    .lesson-card.test { border-color: #FCA5A5; background: #FFF5F5; box-shadow: 0 5px 0 #FCA5A5; }
+    .lesson-name { font-family: var(--font-display); font-size: 1.06rem; font-weight: 800; color: #1E293B; line-height: 1.3; }
+    .lesson-score-pill {
+      display: inline-flex; align-items: center; justify-content: space-between;
+      font-size: 0.88rem; font-weight: 800; color: #15803D; background: #F0FDF4; padding: 5px 12px; border-radius: 12px;
+    }
+    .lesson-card.test .lesson-score-pill { background: #FEE2E2; color: #B91C1C; }
+
+    /* =========================================
+       QUIZ SCREEN + PROGRESSIVE HINT BOX
+       ========================================= */
+    .quiz-top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+    .quiz-title-text { font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; color: #0369A1; }
+    .quiz-stats-right { display: flex; align-items: center; gap: 10px; }
+    .quiz-counter-pill { background: #F1F5F9; padding: 5px 14px; border-radius: 20px; font-family: var(--font-display); font-weight: 800; color: #334155; }
+    .quiz-coin-pill {
+      background: #FEF9C3; border: 2px solid #FACC15; padding: 4px 14px; border-radius: 20px;
+      display: flex; align-items: center; gap: 6px; font-family: var(--font-display); font-size: 1.2rem; font-weight: 800; color: #B45309;
+    }
+
+    #progress-container { width: 100%; height: 14px; background: #E2E8F0; border-radius: 20px; margin-bottom: 16px; overflow: hidden; }
+    #progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #22C55E, #4ADE80); border-radius: 20px; transition: width 0.45s cubic-bezier(0.34,1.56,0.64,1); }
+
+    .question-card {
+      background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+      border: 3px solid #7DD3FC;
+      border-radius: var(--radius-md);
+      padding: 20px 22px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .question-tools { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; flex-wrap: wrap; }
+    .btn-mini-tool {
+      background: #FFFFFF; border: 2px solid #BAE6FD; color: #0284C7;
+      padding: 6px 13px; border-radius: 20px; font-family: var(--font-display); font-weight: 700; font-size: 0.9rem;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: all 0.2s;
+    }
+    .btn-mini-tool:hover { background: #0284C7; color: white; border-color: #0284C7; }
+    .btn-mini-tool.hint-trigger { background: #FFFBEB; border-color: #FCD34D; color: #B45309; }
+    .btn-mini-tool.hint-trigger:hover { background: #F59E0B; color: white; border-color: #D97706; }
+    .btn-mini-tool.lab-trigger { background: #F5F3FF; border-color: #C4B5FD; color: #6D28D9; }
+    .btn-mini-tool.lab-trigger:hover { background: #7C3AED; color: white; }
+
+    #question-area { font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: #0F172A; line-height: 1.38; }
+    #question-area.long-text { font-size: 1.36rem; }
+    #bilingual-hint-line { margin-top: 6px; font-size: 0.95rem; color: #0369A1; font-weight: 700; font-style: italic; }
+
+    #step-hint-box {
+      margin-top: 12px;
+      background: #FFFBEB;
+      border: 2px dashed #F59E0B;
+      border-radius: 14px;
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 0.98rem;
+      color: #78350F;
+      font-weight: 700;
+      line-height: 1.45;
+      animation: fadeIn 0.25s ease;
+    }
+
+    #question-img { max-width: 100%; max-height: 220px; border-radius: 14px; border: 3px solid white; display: none; margin: 10px auto 0; }
+
+    #answer-area { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 14px; }
+    @media (max-width: 600px) { #answer-area { grid-template-columns: 1fr; } }
+
+    .answer-btn {
+      background: #FFFFFF; color: #1E293B; border: 3px solid #CBD5E1; box-shadow: 0 5px 0 #CBD5E1;
+      padding: 15px 18px; font-size: 1.32rem; border-radius: 20px; margin: 0; width: 100%;
+    }
+    .answer-btn:hover:not(:disabled) { border-color: var(--primary); background: #F0F9FF; box-shadow: 0 5px 0 #38BDF8; }
+    .answer-btn.correct { background: var(--correct) !important; color: white !important; border-color: var(--correct-dark) !important; box-shadow: 0 5px 0 var(--correct-dark) !important; }
+    .answer-btn.incorrect { background: var(--incorrect) !important; color: white !important; border-color: var(--incorrect-dark) !important; box-shadow: 0 5px 0 var(--incorrect-dark) !important; }
+
+    #fill-in-container { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .fill-in-blank-input {
+      font-size: 1.45rem; width: 110px; padding: 4px 10px; text-align: center;
+      border: 3px solid var(--secondary); border-radius: 12px; font-family: var(--font-display); font-weight: 800; background: white; margin: 0 6px;
+    }
+    #fill-in-feedback { color: var(--incorrect); font-weight: 800; min-height: 1.3rem; }
+    #feedback-area {
+      margin-top: 10px; padding: 15px 18px; background: #FFFBEB; border: 3px solid #FDE047;
+      border-radius: 18px; font-size: 1.08rem; color: #78350F; font-weight: 700; line-height: 1.5;
+    }
+
+    /* =========================================
+       TRUE 3D INTERACTIVE MATH LAB (6 SIMULATIONS)
+       ========================================= */
+    .lab-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 14px; }
+    .lab-tab-btn {
+      background: #F1F5F9; border: 2px solid #CBD5E1; border-radius: 16px; padding: 9px 14px;
+      font-family: var(--font-display); font-size: 0.96rem; font-weight: 800; color: #475569; cursor: pointer; white-space: nowrap; transition: all 0.2s;
+    }
+    .lab-tab-btn.active { background: var(--purple); color: white; border-color: var(--purple-dark); box-shadow: 0 4px 0 var(--purple-dark); }
+
+    .sim-box { display: none; background: #F8FAFC; border: 3px solid #E2E8F0; border-radius: var(--radius-md); padding: 18px; }
+    .sim-box.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .sim-endy-note {
+      margin-top: 14px; background: #EFF6FF; border-left: 5px solid #0284C7;
+      border-radius: 0 16px 16px 0; padding: 12px 16px; font-size: 0.98rem; color: #1E3A8A; font-weight: 700; line-height: 1.45;
+    }
+
+    .nl-controls { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+    .nl-input { width: 68px; padding: 6px; text-align: center; font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; border: 3px solid #38BDF8; border-radius: 12px; background: white; }
+
+    /* TRUE 3D ISOMETRIC CUBES & TEN-RODS (CSS 3D EXTRUSION) */
+    .b10-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 14px 0; }
+    @media (max-width: 640px) { .b10-columns { grid-template-columns: 1fr; } }
+    .b10-col {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%);
+      border: 2px solid #CBD5E1; border-radius: 18px; padding: 14px; min-height: 185px;
+      perspective: 600px;
+    }
+    .b10-col-title { font-family: var(--font-display); font-weight: 800; text-align: center; margin-bottom: 12px; font-size: 1.08rem; }
+    .b10-items { display: flex; flex-wrap: wrap; gap: 14px 12px; justify-content: center; align-items: flex-end; padding: 8px 4px; }
+
+    .rod-3d {
+      position: relative;
+      width: 24px; height: 112px;
+      background: linear-gradient(180deg, #38BDF8 0%, #0284C7 100%);
+      border: 1.5px solid #0369A1;
+      border-radius: 3px;
+      box-shadow: 6px -6px 0 #7DD3FC, 8px 8px 14px rgba(2, 132, 199, 0.28);
+      transform: skewY(-6deg);
+      display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;
+      animation: pop3D 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .rod-3d::before {
+      content: '';
+      position: absolute; top: -7px; left: 3px; width: 22px; height: 7px;
+      background: #BAE6FD; transform: skewX(-42deg); border: 1px solid #0284C7;
+    }
+    .rod-3d::after {
+      content: '10';
+      position: absolute; bottom: 3px; font-size: 10px; font-weight: 900; color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
+    .rod-3d span { width: 100%; height: 1px; background: rgba(255,255,255,0.35); }
+
+    .cube-3d {
+      position: relative;
+      width: 26px; height: 26px;
+      background: linear-gradient(135deg, #FB923C 0%, #EA580C 100%);
+      border: 1.5px solid #9A3412;
+      border-radius: 3px;
+      color: white; font-size: 12px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 5px -5px 0 #FDBA74, 6px 6px 10px rgba(234, 88, 12, 0.28);
+      transform: skewY(-6deg);
+      animation: pop3D 0.3s ease;
+    }
+    .cube-3d::before {
+      content: '';
+      position: absolute; top: -6px; left: 3px; width: 24px; height: 6px;
+      background: #FED7AA; transform: skewX(-42deg); border: 1px solid #EA580C;
+    }
+    .cube-3d.highlight-bundle {
+      background: linear-gradient(135deg, #FACC15 0%, #EAB308 100%);
+      box-shadow: 5px -5px 0 #FEF08A, 0 0 14px #FACC15;
+      transform: skewY(-6deg) scale(1.12);
+    }
+    @keyframes pop3D {
+      from { opacity: 0; transform: skewY(-6deg) scale(0.4) translateY(-16px); }
+      to { opacity: 1; transform: skewY(-6deg) scale(1) translateY(0); }
+    }
+
+    /* 3D INTERACTIVE SOLID SHAPES CANVAS */
+    .canvas-3d-wrap {
+      background: radial-gradient(circle at 35% 30%, #FFFFFF 0%, #E0F2FE 65%, #BAE6FD 100%);
+      border: 3px solid #7DD3FC;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px;
+      position: relative;
+    }
+    #solid-3d-canvas {
+      cursor: grab;
+      touch-action: none;
+      max-width: 100%;
+    }
+    #solid-3d-canvas:active { cursor: grabbing; }
+    .shape-stats-bar {
+      display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 8px;
+    }
+    .shape-stat-chip {
+      background: white; border: 2px solid #BAE6FD; padding: 5px 12px; border-radius: 14px;
+      font-family: var(--font-display); font-weight: 800; color: #0369A1; font-size: 0.95rem;
+    }
+
+    /* 3D BALANCE SCALE */
+    .scale-stage { display: flex; flex-direction: column; align-items: center; padding: 24px 0 38px; }
+    .scale-beam {
+      width: 310px; max-width: 92%; height: 14px;
+      background: linear-gradient(180deg, #94A3B8, #475569);
+      border-radius: 8px; position: relative;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .scale-pivot {
+      width: 0; height: 0;
+      border-left: 22px solid transparent; border-right: 22px solid transparent; border-bottom: 40px solid #0284C7;
+      margin-top: -6px; filter: drop-shadow(0 6px 6px rgba(0,0,0,0.18));
+    }
+    .scale-pan { position: absolute; top: 14px; display: flex; flex-direction: column; align-items: center; }
+    .pan-left { left: 8px; }
+    .pan-right { right: 8px; }
+    .pan-cord { width: 2px; height: 50px; background: #64748B; }
+    .pan-tray {
+      min-width: 108px; height: 18px;
+      background: linear-gradient(180deg, #E2E8F0, #94A3B8);
+      border-radius: 0 0 26px 26px; border-top: 3px solid #64748B;
+      display: flex; justify-content: center; align-items: flex-end; gap: 4px; padding: 0 6px 5px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .w-chip { background: linear-gradient(135deg, #8B5CF6, #6D28D9); color: white; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 6px; box-shadow: 0 3px 0 #4C1D95; }
+
+    /* 3D INTERACTIVE CLOCK */
+    .clock-stage { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .analog-clock {
+      width: 214px; height: 214px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #FFFFFF, #F1F5F9);
+      border: 11px solid #0284C7;
+      box-shadow: 0 10px 0 #0369A1, 0 16px 25px rgba(2,132,199,0.28), inset 0 6px 12px rgba(0,0,0,0.12);
+      position: relative;
+    }
+    .clock-dot { width: 15px; height: 15px; background: #EA580C; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 10; border: 2px solid white; }
+    .clock-num { position: absolute; width: 26px; height: 26px; text-align: center; line-height: 26px; font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; color: #1E293B; }
+    .clock-hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom center; border-radius: 8px; transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    .hand-hr { width: 7px; height: 52px; background: #0F172A; margin-left: -3.5px; z-index: 5; }
+    .hand-min { width: 4px; height: 74px; background: #EA580C; margin-left: -2px; z-index: 6; }
+    .digital-readout { background: #0F172A; color: #38BDF8; font-family: monospace; font-size: 1.8rem; font-weight: 900; padding: 6px 22px; border-radius: 14px; letter-spacing: 2px; box-shadow: 0 5px 0 #020617; }
+
+    /* 3D ARRAY */
+    .array-grid-stage { background: white; border: 2px solid #CBD5E1; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 12px 0; }
+    .array-row { display: flex; gap: 10px; align-items: center; }
+    .array-cell-3d {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, #FEF08A, #F59E0B);
+      border: 2px solid #B45309; border-radius: 8px;
+      box-shadow: 4px -4px 0 #FDE68A, 3px 4px 8px rgba(180,83,9,0.2);
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+      animation: pop3D 0.25s ease;
+    }
+
+    /* =========================================
+       MODALS, IDLE POPUP, CHATBOT ENDY, PARENT
+       ========================================= */
+    .modal {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px);
+      display: none; justify-content: center; align-items: center; z-index: 1000; padding: 14px;
+    }
+    .modal:not(.hidden) { display: flex; }
+
+    .modal-content {
+      background: white; padding: 24px 30px; border-radius: 26px; text-align: center;
+      max-width: 95%; width: 580px; max-height: 92vh; overflow-y: auto; position: relative;
+      border: 4px solid #38BDF8; box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      animation: zoomIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes zoomIn { from { transform: scale(0.75); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .close-modal-x { position: absolute; top: 12px; right: 16px; font-size: 2rem; color: #EF4444; cursor: pointer; font-weight: 800; line-height: 1; }
+
+    .time-option-btn {
+      padding: 14px 18px; font-family: var(--font-display); font-size: 1.15rem; font-weight: 800;
+      background: #F8FAFC; border: 3px solid #CBD5E1; border-radius: 16px; cursor: pointer; flex: 1 0 42%; transition: all 0.2s;
+    }
+    .time-option-btn.active { background: var(--primary); color: white; border-color: var(--primary-dark); transform: scale(1.03); }
+
+    /* Thinking-too-long / Idle Reminder Popup (Restored from Original) */
+    #thinking-overlay {
+      position: fixed; inset: 0; background: rgba(15,23,42,0.55); z-index: 9998;
+      display: flex; justify-content: center; align-items: center; padding: 16px;
+    }
+    #thinking-too-long-alert {
+      background: white; border: 4px solid #F59E0B; border-radius: 28px;
+      padding: 28px; max-width: 440px; width: 100%; text-align: center;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.28); position: relative;
+      animation: zoomIn 0.35s ease;
+    }
+
+    /* Chatbot Endy */
+    #chatbot-wrapper {
+      position: fixed; bottom: 18px; right: 18px; display: flex; align-items: center; gap: 8px; z-index: 998; cursor: pointer;
+    }
+    .chat-bubble-float {
+      background: white; color: #0284C7; border: 3px solid #38BDF8; padding: 8px 14px; border-radius: 20px;
+      font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+    }
+    .chatbot-fab {
+      width: 68px; height: 68px; border-radius: 24px;
+      background: linear-gradient(135deg, #FEF08A, #F97316);
+      border: 4px solid white; box-shadow: 0 8px 20px rgba(249, 115, 22, 0.35);
+      display: flex; align-items: center; justify-content: center; transition: transform 0.2s;
+    }
+    #chatbot-wrapper:hover .chatbot-fab { transform: scale(1.1); }
+
+    #chatbot-container {
+      position: fixed; bottom: 98px; right: 18px; width: 375px; max-width: calc(100vw - 32px);
+      background: white; border-radius: 24px; border: 4px solid #38BDF8; box-shadow: 0 14px 36px rgba(0,0,0,0.22);
+      display: flex; flex-direction: column; z-index: 999; overflow: hidden;
+    }
+    #chatbot-header {
+      background: linear-gradient(120deg, #0284C7, #0EA5E9); color: white; padding: 13px 16px;
+      font-family: var(--font-display); font-weight: 800; font-size: 1.08rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    #chatbot-messages { height: 300px; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; background: #F8FAFC; }
+    .chat-message { max-width: 86%; padding: 10px 14px; border-radius: 18px; font-size: 0.95rem; font-weight: 600; line-height: 1.48; word-wrap: break-word; }
+    .user-message { background: #E2E8F0; color: #0F172A; align-self: flex-end; border-bottom-right-radius: 4px; }
+    .bot-message { background: #0284C7; color: white; align-self: flex-start; border-bottom-left-radius: 4px; }
+    .chat-quick-chips { display: flex; gap: 6px; padding: 6px 10px; overflow-x: auto; background: #F1F5F9; border-top: 1px solid #E2E8F0; }
+    .quick-chip {
+      background: white; border: 1.5px solid #BAE6FD; color: #0369A1; font-size: 0.8rem; font-weight: 800;
+      padding: 4px 10px; border-radius: 14px; cursor: pointer; white-space: nowrap;
+    }
+    .quick-chip:hover { background: #0284C7; color: white; }
+    #chatbot-input-area { display: flex; padding: 10px; gap: 6px; border-top: 2px solid #E2E8F0; background: white; }
+    #chatbot-mic-btn { width: 40px; height: 40px; border-radius: 50%; border: none; background: #F1F5F9; font-size: 1.2rem; cursor: pointer; }
+    #chatbot-mic-btn.is-recording { background: var(--incorrect); color: white; animation: pulseRed 1.2s infinite; }
+    @keyframes pulseRed { 0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.6); } 70% { box-shadow: 0 0 0 12px rgba(239,68,68,0); } 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); } }
+    #chatbot-input { flex: 1; border: 2px solid #CBD5E1; border-radius: 20px; padding: 8px 14px; font-family: var(--font-body); font-weight: 700; outline: none; }
+    #chatbot-send-btn { border: none; background: var(--primary); color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; }
+
+    /* Parent Dashboard */
+    .dashboard-card { background: white; border: 3px solid #38BDF8; border-radius: 24px; padding: 22px; margin-bottom: 20px; box-shadow: 0 6px 0 #BAE6FD; }
+    .dashboard-card h3 { font-family: var(--font-display); color: #0369A1; font-size: 1.45rem; border-bottom: 2px dashed #E2E8F0; padding-bottom: 10px; margin-bottom: 14px; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+    .stat-box { background: #F0F9FF; border: 2px solid #BAE6FD; border-radius: 18px; padding: 16px; text-align: center; }
+    .stat-number { font-family: var(--font-display); font-size: 2.3rem; font-weight: 800; color: #EA580C; }
+    .stat-text { font-weight: 800; color: #0369A1; }
+    .analysis-list { list-style: none; }
+    .analysis-item { padding: 12px 16px; border-radius: 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-weight: 700; cursor: pointer; border: 2px solid #E2E8F0; }
+    .item-strength { background: #F0FDF4; border-color: #86EFAC; color: #166534; }
+    .item-weakness { background: #FEF2F2; border-color: #FCA5A5; color: #991B1B; }
+    .stylish-select { width: 100%; padding: 13px 16px; font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; border: 3px solid #0284C7; border-radius: 16px; margin-bottom: 12px; }
+
+    #leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+    #leaderboard-table th, #leaderboard-table td { padding: 10px; border-bottom: 2px solid #E2E8F0; text-align: center; font-weight: 700; }
+    #leaderboard-table th { background: #0284C7; color: white; font-family: var(--font-display); }
+    .current-user-row { background: #FEF9C3 !important; color: #B45309; }
+
+    #toast-notification {
+      visibility: hidden; opacity: 0; position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+      background: #0F172A; color: white; padding: 12px 24px; border-radius: 30px; font-family: var(--font-display); font-weight: 700; z-index: 10050; transition: all 0.3s;
+    }
+    #toast-notification.show { visibility: visible; opacity: 1; top: 38px; }
+    #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 2000; }
+    #lock-screen, #timeout-modal {
+      position: fixed; inset: 0; background: rgba(15,23,42,0.94); z-index: 10005;
+      display: none; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 24px;
+    }
+    #lock-screen:not(.hidden), #timeout-modal:not(.hidden) { display: flex; }
+
+    .floating-score { position: fixed; font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; pointer-events: none; animation: floatUp 0.9s ease-out forwards; z-index: 2500; text-shadow: 0 3px 6px rgba(0,0,0,0.25); }
+    @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-70px) scale(1.35); } }
+    #streak-notification { position: fixed; top: 48%; left: 50%; transform: translate(-50%,-50%); background: #FEF08A; border: 4px solid #F59E0B; padding: 14px 28px; border-radius: 30px; font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; z-index: 2400; box-shadow: 0 12px 30px rgba(0,0,0,0.2); }
+
+    .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 14px; overflow: hidden; background: #000; }
+    .video-wrapper iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .final-score { font-family: var(--font-display); font-size: 3.4rem; font-weight: 800; color: var(--primary-dark); margin: 6px 0; }
+    .rating { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; margin-bottom: 14px; }
+    .rating.excellent, .rating.good, .rating.pass { color: var(--correct-dark); }
+    .rating.fail { color: var(--incorrect); }
+
+    @media (max-width: 640px) {
+      .app-container { width: 100%; height: 100vh; border-radius: 0; border: none; }
+      .brand-text h1 { font-size: 1.15rem; }
+      .screen { padding: 14px; }
+      #question-area { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- INTRO SCREEN -->
+  <div id="intro-screen">
+    <div class="intro-card">
+      <div class="intro-lang-top">
+        <div class="lang-pill">
+          <button class="lang-vi-btn active" onclick="setLanguage('vi')">🇻🇳 Tiếng Việt</button>
+          <button class="lang-en-btn" onclick="setLanguage('en')">🇬🇧 English</button>
+        </div>
+      </div>
+      <div class="intro-mascot-stage" id="intro-mascot-svg"></div>
+      <h1 data-i18n="appTitle">Khám phá Toán học cùng Endy</h1>
+      <p class="intro-tagline" data-i18n="introTagline">Toán lớp 2 Chuẩn GDPT 2018 • Song ngữ • Mô phỏng 3D CPA & Gia sư Endy</p>
+      <div class="intro-btn-group">
+        <button class="btn btn-start intro-btn-big" onclick="goToStudentMode()">
+          <span>🎓</span> <span data-i18n="btnStudentMode">Vào lớp học của Endy (Học sinh)</span>
+        </button>
+        <button class="btn btn-purple intro-btn-big" onclick="openStandaloneLab()">
+          <span>🧊</span> <span data-i18n="btnDirectLab">Phòng thí nghiệm Mô phỏng 3D</span>
+        </button>
+        <button class="btn btn-guide intro-btn-big" onclick="goToParentMode()">
+          <span>👨‍👩‍👧‍👦</span> <span data-i18n="btnParentMode">Góc Phụ huynh & Báo cáo Tiến bộ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOCK & TIMEOUT OVERLAYS -->
+  <div id="lock-screen" class="hidden">
+    <h1 style="font-family:var(--font-display);font-size:2.5rem;color:#F87171;" data-i18n="lockTitle">TÀI KHOẢN TẠM KHÓA</h1>
+    <p id="lock-msg" style="font-size:1.25rem;margin-top:10px;" data-i18n="lockMsg">Vui lòng nghỉ ngơi hoặc liên hệ Giáo viên chủ nhiệm.</p>
+  </div>
+
+  <div id="timeout-modal" class="hidden">
+    <h1 style="font-family:var(--font-display);font-size:2.4rem;color:#FACC15;" data-i18n="timeoutTitle">⏰ ĐÃ ĐẾN GIỜ GIẢI LAO!</h1>
+    <p id="timeout-message" style="font-size:1.25rem;margin:16px 0 24px;max-width:520px;"></p>
+    <button class="btn btn-start" onclick="closeTimeout()" data-i18n="timeoutBtn">Em đã nghỉ xong, học tiếp thôi!</button>
+  </div>
+
+  <!-- PARENT LOGIN MODAL -->
+  <div id="parent-login-modal" class="modal hidden">
+    <div class="modal-content" style="width:460px;">
+      <span class="close-modal-x" onclick="backToIntro()">&times;</span>
+      <h2 style="font-family:var(--font-display);color:#0369A1;" data-i18n="parentLoginTitle">👨‍👩‍👧‍👦 Đăng nhập Phụ huynh</h2>
+      <p style="color:var(--text-muted);margin:6px 0 18px;font-weight:600;" data-i18n="parentLoginSub">Nhập thông tin của con để xem biểu đồ và tư vấn từ Endy</p>
+      <div class="form-group">
+        <label data-i18n="labelChildName">Họ và tên con:</label>
+        <input type="text" id="parent-student-name" placeholder="Ví dụ: Nguyễn Minh An">
+      </div>
+      <div class="form-group">
+        <label data-i18n="labelClass">Lớp:</label>
+        <input type="text" id="parent-student-class" placeholder="Ví dụ: 2A">
+      </div>
+      <button class="btn btn-start" style="width:100%;" onclick="submitParentLogin()" data-i18n="btnLookup">🔍 Tra cứu Kết quả</button>
+    </div>
+  </div>
+
+  <!-- PARENT DASHBOARD -->
+  <div id="parent-dashboard" class="screen hidden">
+    <div style="text-align:center;margin-bottom:20px;">
+      <h2 style="font-family:var(--font-display);font-size:2.1rem;color:#0369A1;" data-i18n="parentDashTitle">📊 BÁO CÁO HỌC TẬP CỦA CON</h2>
+      <h3 id="parent-student-title" style="font-family:var(--font-display);color:#EA580C;font-size:1.45rem;"></h3>
+    </div>
+    <div class="dashboard-card">
+      <h3 data-i18n="dashOverview">📌 Tổng quan năng lực</h3>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="stat-number" id="dash-total-lessons">0</div><div class="stat-text" data-i18n="dashTotalLessons">Bài đã hoàn thành</div></div>
+        <div class="stat-box"><div class="stat-number" id="dash-avg-score">0</div><div class="stat-text" data-i18n="dashAvgScore">Điểm trung bình</div></div>
+      </div>
+    </div>
+    <div class="dashboard-card">
+      <h3 data-i18n="dashChartTitle">📈 Biểu đồ Tiến bộ gần đây</h3>
+      <div style="height:280px;"><canvas id="progressChart"></canvas></div>
+    </div>
+    <div class="dashboard-card">
+      <h3 data-i18n="dashEndyAdvice">🤖 Endy Phân tích & Tư vấn Sư phạm</h3>
+      <p style="color:var(--text-muted);font-weight:700;margin-bottom:10px;" data-i18n="dashClickHint">(Chạm vào từng bài để nhận lời khuyên chuyên sâu từ Endy)</p>
+      <p style="font-weight:800;color:#15803D;margin-bottom:6px;" data-i18n="dashStrengths">🏆 Điểm mạnh nổi bật (≥ 80đ):</p>
+      <ul id="strength-list" class="analysis-list"></ul>
+      <p style="font-weight:800;color:#B91C1C;margin:14px 0 6px;" data-i18n="dashWeaknesses">🔧 Kỹ năng cần củng cố (< 60đ):</p>
+      <ul id="weakness-list" class="analysis-list"></ul>
+    </div>
+    <div class="dashboard-card" style="border-color:#F59E0B;box-shadow:0 6px 0 #FDE047;">
+      <h3 style="color:#B45309;" data-i18n="dashLeaderboard">🏆 Bảng Xếp Hạng theo Chủ đề</h3>
+      <select id="leaderboard-topic-select" class="stylish-select"></select>
+      <button class="btn btn-guide" style="width:100%;" onclick="viewSelectedLeaderboard()" data-i18n="btnViewLeaderboard">🔍 Xem Bảng Xếp Hạng</button>
+    </div>
+    <div style="text-align:center;margin:20px 0 40px;">
+      <button class="btn btn-soft" onclick="backToIntro()" data-i18n="btnBackIntro">⬅ Quay lại màn hình chào</button>
+    </div>
+  </div>
+
+  <!-- PARENT ADVICE MODAL -->
+  <div id="parent-advice-modal" class="modal hidden">
+    <div class="modal-content" style="width:720px;text-align:left;">
+      <span class="close-modal-x" onclick="document.getElementById('parent-advice-modal').classList.add('hidden')">&times;</span>
+      <h2 style="font-family:var(--font-display);color:#0284C7;text-align:center;" data-i18n="modalAdviceTitle">🤖 Endy Tư Vấn Phụ Huynh</h2>
+      <p id="advice-lesson-name" style="text-align:center;font-weight:800;color:#475569;margin-bottom:12px;"></p>
+      <div id="parent-advice-content" style="background:#F0FDF4;border:2px dashed #4ADE80;padding:18px;border-radius:16px;line-height:1.6;font-weight:600;max-height:55vh;overflow-y:auto;"></div>
+      <div style="text-align:center;margin-top:16px;">
+        <button class="btn btn-start" onclick="document.getElementById('parent-advice-modal').classList.add('hidden')" data-i18n="btnThanksEndy">Cảm ơn Endy!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS MODAL (STUDY TIMER) -->
+  <div id="settings-modal" class="modal hidden">
+    <div class="modal-content" style="width:480px;">
+      <h2 style="font-family:var(--font-display);color:#0284C7;" data-i18n="settingsTitle">⏱️ Thời gian học bảo vệ mắt</h2>
+      <p style="color:var(--text-muted);font-weight:700;margin:8px 0 18px;" data-i18n="settingsDesc">Con muốn học bao lâu thì Endy nhắc nghỉ giải lao?</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+        <button class="time-option-btn" onclick="selectTime(15, this)">15 <span data-i18n="unitMin">Phút</span></button>
+        <button class="time-option-btn" onclick="selectTime(30, this)">30 <span data-i18n="unitMin">Phút</span></button>
+        <button class="time-option-btn" onclick="selectTime(45, this)">45 <span data-i18n="unitMin">Phút</span></button>
+        <button class="time-option-btn" onclick="selectTime(60, this)">60 <span data-i18n="unitMin">Phút</span></button>
+      </div>
+      <button id="btn-continue-settings" class="btn btn-start hidden" style="margin-top:20px;width:80%;" onclick="confirmSettings()" data-i18n="btnContinue">Tiếp tục ▶</button>
+    </div>
+  </div>
+
+  <!-- REVIEW MODAL (3 WRONG IN A ROW - RESTORED FROM ORIGINAL) -->
+  <div id="review-modal" class="modal hidden">
+    <div class="modal-content" style="width:680px;text-align:left;">
+      <h2 style="font-family:var(--font-display);color:var(--incorrect);text-align:center;" data-i18n="reviewTitle">🛑 Dừng lại một chút cùng Endy!</h2>
+      <p style="text-align:center;font-weight:700;margin:8px 0 14px;" data-i18n="reviewSub">Con vừa làm sai 3 câu liên tiếp rồi. Endy sẽ hướng dẫn lại cách giải từng bước để con làm lại thật chắc nhé!</p>
+      <div id="review-content" style="background:#FFFBEB;border:2px dashed #F59E0B;border-radius:16px;padding:16px;line-height:1.6;max-height:50vh;overflow-y:auto;font-weight:600;"></div>
+      <div style="text-align:center;margin-top:16px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-purple" onclick="document.getElementById('review-modal').classList.add('hidden'); openContextualLab();" data-i18n="btnOpenLabHint">🧊 Xem mô phỏng 3D</button>
+        <button class="btn btn-start" onclick="retryWrongQuestions()" data-i18n="btnRetryWrong">Đã hiểu, làm lại 3 câu vừa rồi!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REMEDIAL MODAL -->
+  <div id="remedial-modal" class="modal hidden">
+    <div class="modal-content" style="width:680px;text-align:left;">
+      <span class="close-modal-x" onclick="document.getElementById('remedial-modal').classList.add('hidden')">&times;</span>
+      <h2 style="font-family:var(--font-display);color:#0284C7;text-align:center;" data-i18n="remedialTitle">📚 Phiếu Ôn Tập Kiến Thức</h2>
+      <div id="remedial-content" style="background:#F0F9FF;border:2px dashed #38BDF8;border-radius:16px;padding:16px;line-height:1.6;max-height:55vh;overflow-y:auto;font-weight:600;margin-top:12px;"></div>
+      <div style="text-align:center;margin-top:16px;">
+        <button class="btn btn-start" onclick="document.getElementById('remedial-modal').classList.add('hidden')" data-i18n="btnGotIt">Đã hiểu, làm bài thôi!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REWARD MODAL -->
+  <div id="reward-modal" class="modal hidden">
+    <div class="modal-content" style="border-color:#F59E0B;">
+      <span class="close-modal-x" onclick="document.getElementById('reward-modal').classList.add('hidden')">&times;</span>
+      <h2 style="font-family:var(--font-display);color:#D97706;" data-i18n="rewardTitle">🎁 Thẻ Bài Vinh Danh Của Con!</h2>
+      <p id="reward-loading" style="margin:16px 0;font-weight:700;" data-i18n="rewardLoading">Đang thiết kế thẻ bài vinh danh...</p>
+      <img id="reward-image-preview" class="hidden" style="max-width:100%;border-radius:16px;margin:14px 0;box-shadow:0 6px 20px rgba(0,0,0,0.15);" alt="Reward Card">
+      <div>
+        <a id="download-reward-link" class="btn btn-orange hidden" download="Endy-Math-Award.png" data-i18n="btnDownloadCard">⬇️ Tải thẻ bài về máy</a>
+        <button class="btn btn-soft" onclick="document.getElementById('reward-modal').classList.add('hidden')" data-i18n="btnClose">Đóng</button>
+      </div>
+    </div>
+  </div>
+  <canvas id="reward-canvas" style="display:none;"></canvas>
+
+  <!-- ENDY 3D MATH LAB MODAL (6 INTERACTIVE 3D SIMULATIONS) -->
+  <div id="math-lab-modal" class="modal hidden">
+    <div class="modal-content" style="width:900px;text-align:left;">
+      <span class="close-modal-x" onclick="closeMathLab()">&times;</span>
+      <h2 style="font-family:var(--font-display);color:#6D28D9;margin-bottom:4px;" data-i18n="labTitle">🧊 Phòng Thí Nghiệm 3D Của Endy (Mô hình CPA)</h2>
+      <p style="color:var(--text-muted);font-weight:700;margin-bottom:14px;font-size:0.95rem;" data-i18n="labSubtitle">Xoay khối 3D, kéo thả và quan sát trực quan để hiểu sâu bản chất Toán học!</p>
+
+      <div class="lab-tabs">
+        <button class="lab-tab-btn active" data-sim="sim-b10" onclick="selectLabTab('sim-b10', this)" data-i18n="tabB10">🧱 Khối 3D Có nhớ</button>
+        <button class="lab-tab-btn" data-sim="sim-3d" onclick="selectLabTab('sim-3d', this)" data-i18n="tab3D">🧊 Hình khối 3D (Xoay)</button>
+        <button class="lab-tab-btn" data-sim="sim-nl" onclick="selectLabTab('sim-nl', this)" data-i18n="tabNL">📏 Tia số (Qua 10)</button>
+        <button class="lab-tab-btn" data-sim="sim-scale" onclick="selectLabTab('sim-scale', this)" data-i18n="tabScale">⚖️ Cân đĩa 3D (kg)</button>
+        <button class="lab-tab-btn" data-sim="sim-clock" onclick="selectLabTab('sim-clock', this)" data-i18n="tabClock">⏰ Đồng hồ 3D</button>
+        <button class="lab-tab-btn" data-sim="sim-array" onclick="selectLabTab('sim-array', this)" data-i18n="tabArray">✖️ Mảng 3D Phép nhân</button>
+      </div>
+
+      <!-- SIM 1: 3D BASE-10 BLOCKS -->
+      <div class="sim-box active" id="sim-b10">
+        <div class="nl-controls">
+          <input type="number" id="b10-a" class="nl-input" value="28" min="11" max="89">
+          <select id="b10-op" class="nl-input" style="width:74px;"><option value="+">+</option><option value="-">−</option></select>
+          <input type="number" id="b10-b" class="nl-input" value="15" min="2" max="59">
+          <button class="btn btn-soft" onclick="initBase10Sim()" data-i18n="btnSetProblem">🔄 Đặt bài toán</button>
+          <button class="btn btn-guide" onclick="highlightBase10Step()" data-i18n="btnStep1">💡 Bước 1: Đánh dấu 10 khối</button>
+          <button class="btn btn-start" onclick="triggerBase10Regroup()" data-i18n="btnRegroup">✨ Bước 2: Gom / Tách 1 chục 3D</button>
+        </div>
+        <div class="b10-columns">
+          <div class="b10-col">
+            <div class="b10-col-title" style="color:#0284C7;"><span data-i18n="colTens">HÀNG CHỤC (Thanh 3D = 10)</span>: <span id="b10-tens-val">0</span></div>
+            <div class="b10-items" id="b10-tens-box"></div>
+          </div>
+          <div class="b10-col">
+            <div class="b10-col-title" style="color:#EA580C;"><span data-i18n="colOnes">HÀNG ĐƠN VỊ (Khối 3D = 1)</span>: <span id="b10-ones-val">0</span></div>
+            <div class="b10-items" id="b10-ones-box"></div>
+          </div>
+        </div>
+        <div class="sim-endy-note" id="b10-explanation"></div>
+      </div>
+
+      <!-- SIM 2: INTERACTIVE 3D SOLID SHAPES (DRAG TO ROTATE 360°) -->
+      <div class="sim-box" id="sim-3d">
+        <div class="nl-controls">
+          <button class="btn btn-soft" onclick="setSolidShape('cube')" data-i18n="shapeCube">🎲 Khối lập phương</button>
+          <button class="btn btn-soft" onclick="setSolidShape('cuboid')" data-i18n="shapeCuboid">📦 Khối hộp chữ nhật</button>
+          <button class="btn btn-soft" onclick="setSolidShape('cylinder')" data-i18n="shapeCylinder">🥫 Khối trụ</button>
+          <button class="btn btn-soft" onclick="setSolidShape('sphere')" data-i18n="shapeSphere">⚽ Khối cầu</button>
+        </div>
+        <div class="canvas-3d-wrap">
+          <canvas id="solid-3d-canvas" width="460" height="250"></canvas>
+          <div style="font-size:0.86rem;color:#0369A1;font-weight:800;" data-i18n="drag3DHint">👆 Kéo chuột hoặc ngón tay trên hình để xoay 360°!</div>
+          <div class="shape-stats-bar" id="shape-stats-bar"></div>
+        </div>
+        <div class="sim-endy-note" id="solid-3d-explanation"></div>
+      </div>
+
+      <!-- SIM 3: NUMBER LINE (MAKE-10 JUMP) -->
+      <div class="sim-box" id="sim-nl">
+        <div class="nl-controls">
+          <input type="number" id="nl-a" class="nl-input" value="8" min="5" max="9">
+          <span style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;">+</span>
+          <input type="number" id="nl-b" class="nl-input" value="5" min="2" max="9">
+          <button class="btn btn-start" onclick="renderNumberLine()" data-i18n="btnSimulate">✨ Mô phỏng tách số qua 10</button>
+        </div>
+        <div style="background:white;border-radius:16px;border:2px solid #CBD5E1;padding:12px;overflow-x:auto;">
+          <svg id="nl-svg" viewBox="0 0 740 165" width="100%" height="165"></svg>
+        </div>
+        <div class="sim-endy-note" id="nl-explanation"></div>
+      </div>
+
+      <!-- SIM 4: 3D BALANCE SCALE -->
+      <div class="sim-box" id="sim-scale">
+        <div class="nl-controls">
+          <button class="btn btn-soft" onclick="setScaleTarget('🍉', 3)">🍉 3 kg</button>
+          <button class="btn btn-soft" onclick="setScaleTarget('🎃', 5)">🎃 5 kg</button>
+          <button class="btn btn-soft" onclick="setScaleTarget('🍍', 2)">🍍 2 kg</button>
+          <button class="btn btn-start" onclick="addScaleRight(1)">+ 1 kg</button>
+          <button class="btn btn-purple" onclick="addScaleRight(2)">+ 2 kg</button>
+          <button class="btn btn-orange" onclick="resetScaleSim()">🔄</button>
+        </div>
+        <div class="scale-stage">
+          <div class="scale-beam" id="lab-scale-beam">
+            <div class="scale-pan pan-left"><div class="pan-cord"></div><div class="pan-tray" id="lab-left-tray"></div></div>
+            <div class="scale-pan pan-right"><div class="pan-cord"></div><div class="pan-tray" id="lab-right-tray"></div></div>
+          </div>
+          <div class="scale-pivot"></div>
+        </div>
+        <div class="sim-endy-note" id="scale-explanation"></div>
+      </div>
+
+      <!-- SIM 5: 3D SMART CLOCK -->
+      <div class="sim-box" id="sim-clock">
+        <div class="clock-stage">
+          <div class="analog-clock" id="lab-analog-clock">
+            <div class="clock-dot"></div>
+            <div class="clock-hand hand-hr" id="lab-hr-hand"></div>
+            <div class="clock-hand hand-min" id="lab-min-hand"></div>
+          </div>
+          <div class="digital-readout" id="lab-digital-clock">08 : 30</div>
+          <div class="nl-controls">
+            <button class="btn btn-soft" onclick="stepClock(60)">+1 <span data-i18n="unitHour">giờ</span></button>
+            <button class="btn btn-soft" onclick="stepClock(30)">+30 <span data-i18n="unitMinShort">phút</span></button>
+            <button class="btn btn-soft" onclick="stepClock(15)">+15 <span data-i18n="unitMinShort">phút</span></button>
+            <button class="btn btn-soft" onclick="setLabClock(7,0)">🌅 7:00</button>
+            <button class="btn btn-soft" onclick="setLabClock(14,30)">☀️ 14:30</button>
+            <button class="btn btn-soft" onclick="setLabClock(20,15)">🌙 20:15</button>
+          </div>
+        </div>
+        <div class="sim-endy-note" id="clock-explanation"></div>
+      </div>
+
+      <!-- SIM 6: 3D MULTIPLICATION ARRAY -->
+      <div class="sim-box" id="sim-array">
+        <div class="nl-controls">
+          <label style="font-weight:800;" data-i18n="labelRows">Số hàng:</label>
+          <input type="number" id="arr-rows" class="nl-input" value="2" min="1" max="5" onchange="renderArraySim()">
+          <span style="font-family:var(--font-display);font-size:1.5rem;font-weight:800;">×</span>
+          <label style="font-weight:800;" data-i18n="labelCols">Mỗi hàng:</label>
+          <input type="number" id="arr-cols" class="nl-input" value="5" min="1" max="10" onchange="renderArraySim()">
+          <button class="btn btn-purple" onclick="swapArraySim()" data-i18n="btnSwapArray">🔀 Đổi chỗ (Giao hoán)</button>
+        </div>
+        <div class="array-grid-stage" id="arr-grid-stage"></div>
+        <div class="sim-endy-note" id="arr-explanation"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP CONTAINER -->
+  <div class="app-container" id="app-container">
+    <div class="header">
+      <div class="brand-left">
+        <div class="header-mascot-wrap" id="header-mascot-svg" onclick="goHomeOrIntro()" title="Endy"></div>
+        <div class="brand-text">
+          <h1 data-i18n="appTitle">Khám phá Toán học cùng Endy</h1>
+          <div class="brand-sub-row">
+            <span id="student-info-display" class="header-badge-student hidden"></span>
+            <span id="mode-indicator-badge" class="header-badge-student" style="background:rgba(254,240,138,0.28);"></span>
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="lang-pill">
+          <button class="lang-vi-btn active" onclick="setLanguage('vi')">🇻🇳 VI</button>
+          <button class="lang-en-btn" onclick="setLanguage('en')">🇬🇧 EN</button>
+        </div>
+        <button class="icon-btn-pill student-only" id="home-btn" title="Trang chủ">🏠</button>
+        <button class="icon-btn-pill student-only" onclick="openMathLab('sim-b10')" title="Mô phỏng 3D">🧊</button>
+        <button class="icon-btn-pill student-only" id="header-trophy-btn" title="Bảng xếp hạng">🏆</button>
+        <button class="icon-btn-pill student-only" id="header-video-btn" title="Video hướng dẫn">🎬</button>
+        <button class="icon-btn-pill student-only" id="header-music-btn" title="Âm thanh">🔊</button>
+        <div id="total-score-display" class="score-pill-header student-only">⭐ 0</div>
+      </div>
+    </div>
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="screen">
+      <div class="login-box">
+        <div style="width:86px;height:86px;margin:0 auto 10px;" id="login-mascot-svg"></div>
+        <h2 style="font-family:var(--font-display);font-size:1.75rem;color:#0369A1;" data-i18n="loginHeading">Chào mừng bé đến lớp học của Endy!</h2>
+        <p style="color:var(--text-muted);font-weight:700;margin:6px 0 20px;" data-i18n="loginSub">Điền tên và lớp để Endy lưu điểm thưởng và thẻ bài vinh danh cho bé nhé.</p>
+        <div class="form-group">
+          <label for="student-name" data-i18n="labelStudentName">Họ và tên của con:</label>
+          <input type="text" id="student-name" placeholder="Ví dụ: Nguyễn Minh An">
+        </div>
+        <div class="form-group">
+          <label for="student-class" data-i18n="labelClass">Lớp:</label>
+          <input type="text" id="student-class" placeholder="Ví dụ: 2A">
+        </div>
+        <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:16px;">
+          <button id="guide-btn" class="btn btn-guide" data-i18n="btnGuide">📖 Hướng dẫn</button>
+          <button id="login-video-btn" class="btn btn-soft" data-i18n="btnVideo">🎬 Video</button>
+          <button id="start-btn" class="btn btn-start" onclick="batDauNhac()" data-i18n="btnStartNow">🚀 Bắt đầu khám phá</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPIC SELECTION SCREEN -->
+    <div id="topic-selection-screen" class="screen hidden">
+      <div class="lab-banner">
+        <div>
+          <h3 data-i18n="labBannerTitle">🧊 Phòng Thí Nghiệm 3D Của Endy</h3>
+          <p data-i18n="labBannerDesc">Khối 3D cộng trừ có nhớ • Xoay hình khối 360° • Tia số qua 10 • Cân đĩa 3D • Đồng hồ • Mảng nhân</p>
+        </div>
+        <button class="btn btn-guide" onclick="openMathLab('sim-b10')" data-i18n="btnOpenLab">Mở mô phỏng 3D ✨</button>
+      </div>
+      <div class="screen-hero">
+        <div class="screen-title">🗺️ <span data-i18n="selectTopicTitle">Hành trình 15 Chủ đề Toán 2</span></div>
+      </div>
+      <div id="topic-grid" class="topic-grid"></div>
+    </div>
+
+    <!-- LESSON SELECTION SCREEN -->
+    <div id="main-menu-screen" class="screen hidden">
+      <div class="screen-hero">
+        <div class="screen-title" id="lesson-menu-title"></div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <div class="lang-pill" style="background:#E2E8F0;border-color:#CBD5E1;" title="Số câu ngẫu nhiên">
+            <button class="qcount-btn active" onclick="setQuestionCount(10, this)" style="color:#334155;">10</button>
+            <button class="qcount-btn" onclick="setQuestionCount(15, this)" style="color:#334155;">15</button>
+            <button class="qcount-btn" onclick="setQuestionCount(20, this)" style="color:#334155;">20</button>
+          </div>
+          <button id="btn-back-to-topics" class="btn btn-soft" data-i18n="btnBackTopics">⬅ Chọn chủ đề khác</button>
+        </div>
+      </div>
+      <div id="lesson-grid" class="lesson-grid"></div>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div id="quiz-screen" class="screen hidden">
+      <div class="quiz-top-bar">
+        <div class="quiz-title-text" id="quiz-title"></div>
+        <div class="quiz-stats-right">
+          <div id="quiz-progress" class="quiz-counter-pill">1/10</div>
+          <div class="quiz-coin-pill">🌟 <span id="quiz-score">0</span></div>
+        </div>
+      </div>
+      <div id="progress-container"><div id="progress-bar"></div></div>
+
+      <div class="question-card">
+        <div class="question-tools">
+          <button class="btn-mini-tool" onclick="speakCurrentQuestion()">🔊 <span data-i18n="btnReadAloud">Nghe đọc đề</span></button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn-mini-tool hint-trigger" onclick="showProgressiveHint()">💡 <span data-i18n="btnHintStep">Gợi ý từng bước</span></button>
+            <button class="btn-mini-tool lab-trigger" onclick="openContextualLab()">🧊 <span data-i18n="btnContextLab">Mô phỏng 3D</span></button>
+          </div>
+        </div>
+        <div id="question-area">...</div>
+        <div id="bilingual-hint-line" class="hidden"></div>
+        <div id="step-hint-box" class="hidden"></div>
+        <img id="question-img" src="" alt="Illustration">
+      </div>
+
+      <div id="answer-area"></div>
+      <div id="feedback-area" class="hidden"></div>
+
+      <div style="margin-top:16px;display:flex;justify-content:space-between;align-items:center;">
+        <button id="btn-back-to-menu" class="btn btn-soft" data-i18n="btnBackLessons">⬅ Danh sách bài</button>
+      </div>
+    </div>
+
+    <!-- RESULT MODAL -->
+    <div id="result-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2 id="result-title" style="font-family:var(--font-display);color:#0284C7;font-size:2rem;"></h2>
+        <p id="result-message" style="font-weight:700;color:#475569;margin-top:6px;"></p>
+        <p style="margin-top:10px;font-weight:700;" data-i18n="resultScoreLabel">Điểm số của con:</p>
+        <div id="final-score" class="final-score">0</div>
+        <div id="rating" class="rating"></div>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
+          <button id="btn-reward" class="btn btn-purple hidden" onclick="generateRewardCard()" data-i18n="btnGetReward">🎁 Nhận Thẻ Bài Vinh Danh</button>
+          <button id="btn-remedial" class="btn btn-guide hidden" data-i18n="btnRemedial">📚 Ôn tập kiến thức</button>
+          <button id="leaderboard-btn" class="btn btn-orange" data-i18n="btnViewRank">🏆 Bảng xếp hạng</button>
+          <button id="back-to-menu-btn-result" class="btn btn-start" data-i18n="btnNextLesson">Làm bài khác ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GUIDE MODAL -->
+    <div id="guide-modal" class="modal hidden">
+      <div class="modal-content" style="text-align:left;">
+        <h2 style="font-family:var(--font-display);color:#0284C7;text-align:center;" data-i18n="guideTitle">📖 Hướng dẫn học cùng Endy</h2>
+        <ul id="guide-list" style="padding:14px 20px;line-height:1.7;font-weight:600;"></ul>
+        <div style="text-align:center;"><button id="close-guide-btn" class="btn btn-start" data-i18n="btnUnderstood">Đã hiểu!</button></div>
+      </div>
+    </div>
+
+    <!-- LEADERBOARD MODAL -->
+    <div id="leaderboard-modal" class="modal hidden">
+      <div class="modal-content">
+        <span id="close-leaderboard-x" class="close-modal-x">&times;</span>
+        <h2 id="leaderboard-title" style="font-family:var(--font-display);color:#0284C7;">🏆 Bảng xếp hạng</h2>
+        <div style="overflow-x:auto;">
+          <table id="leaderboard-table">
+            <thead>
+              <tr><th data-i18n="thRank">Hạng</th><th data-i18n="thName">Họ và Tên</th><th data-i18n="thClass">Lớp</th><th data-i18n="thScore">Tổng điểm</th></tr>
+            </thead>
+            <tbody id="leaderboard-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO MODAL -->
+    <div id="video-modal" class="modal hidden">
+      <div class="modal-content" style="width:760px;">
+        <span id="close-video-x" class="close-modal-x">&times;</span>
+        <h2 style="font-family:var(--font-display);color:#0284C7;margin-bottom:14px;" data-i18n="videoTitle">🎬 Video Hướng Dẫn</h2>
+        <div class="video-wrapper">
+          <iframe id="instruction-video" src="https://www.youtube.com/embed/OYslq4-aQCg" title="Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHATBOT ENDY (SMART SOCRATIC MATH TUTOR) -->
+  <div id="chatbot-wrapper" class="hidden">
+    <div class="chat-bubble-float" data-i18n="askEndyBubble">Hỏi Endy cách giải! ✨</div>
+    <div class="chatbot-fab" id="chatbot-fab-svg"></div>
+  </div>
+
+  <div id="chatbot-container" class="hidden">
+    <div id="chatbot-header">
+      <span data-i18n="chatbotHeader">🤖 Gia sư Endy (Hướng dẫn giải Toán 2)</span>
+      <span style="cursor:pointer;font-size:1.3rem;" onclick="document.getElementById('chatbot-container').classList.add('hidden')">✖</span>
+    </div>
+    <div id="chatbot-messages"></div>
+    <div class="chat-quick-chips">
+      <button class="quick-chip" onclick="quickAskEndy('current')" data-i18n="chipHintCurrent">💡 Gợi ý bài đang làm</button>
+      <button class="quick-chip" onclick="quickAskEndy('carry')" data-i18n="chipCarry">🧱 Cách cộng có nhớ</button>
+      <button class="quick-chip" onclick="quickAskEndy('clock')" data-i18n="chipClock">⏰ Cách xem giờ 24h</button>
+      <button class="quick-chip" onclick="quickAskEndy('mul')" data-i18n="chipMul">✖️ Mẹo bảng nhân 2, 5</button>
+    </div>
+    <div id="chatbot-input-area">
+      <button id="chatbot-mic-btn" title="Voice">🎙️</button>
+      <input type="text" id="chatbot-input" placeholder="Nhập phép tính hoặc hỏi Endy...">
+      <button id="chatbot-send-btn">➤</button>
+    </div>
+  </div>
+
+  <div id="streak-notification" class="hidden"></div>
+  <div id="toast-notification"></div>
+
+  <!-- ORIGINAL AUDIO ASSETS -->
+  <audio id="background-music" src="https://github.com/huytuanvp/Toan2-vuihocmoingay-nhac/raw/refs/heads/main/nhac%20nen%2050s.mp3" loop></audio>
+  <audio id="correct-sound" src="https://github.com/huytuanvp/Toan2-vuihocmoingay-nhac/raw/refs/heads/main/dung%20ting.wav" preload="auto"></audio>
+  <audio id="incorrect-sound" src="https://github.com/huytuanvp/Toan2-vuihocmoingay-nhac/raw/refs/heads/main/sai%2046.wav" preload="auto"></audio>
+  <audio id="result-sound" src="https://github.com/huytuanvp/Toan2-vuihocmoingay-nhac/raw/refs/heads/main/xu%C3%A2t%20hi%E1%BB%87n%20%C4%91i%E1%BB%83m%20th%C6%B0%E1%BB%9Fng%20_sao.wav" preload="auto"></audio>
+  <audio id="fail-sound" src="https://github.com/huytuanvp/Toan2-vuihocmoingay-nhac/raw/refs/heads/main/%E1%BB%93%20no.mp3" preload="auto"></audio>
+  <audio id="violation-sound" src="https://github.com/huytuanvp/Toan2-vuihocmoingay-nhac/raw/refs/heads/main/tho%20ngoc%20nhac%20nho%20nghiem%20tuc.wav" preload="auto"></audio>
+  <audio id="locked-sound" src="https://github.com/huytuanvp/Toan2-vuihocmoingay-nhac/raw/refs/heads/main/thong%20bao%20het%20gio%20hoc.MP3.wav" preload="auto"></audio>
+  <audio id="timeout-sound" src="https://github.com/huytuanvp/Toan2-vuihocmoingay-nhac/raw/refs/heads/main/am%20thanh%20giai%20lao.mp3" preload="auto"></audio>
+  <audio id="advice-sound" src="https://github.com/huytuanvp/Toan2-vuihocmoingay-nhac/raw/refs/heads/main/tho%20ngoc%20dang%20ptich%20bai%20lam%20cua%20be%20phu%20huynh%20cho%20xiu%20nhe.wav" preload="auto"></audio>
+
+  <script>
+    /* =====================================================================
+       1. ENDY VECTOR MASCOT SVG
+       ===================================================================== */
+    function getEndySVG(size = 80) {
+      return `
+        <svg width="${size}" height="${size}" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="60" y1="10" x2="60" y2="24" stroke="#EA580C" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="60" cy="10" r="7" fill="#FACC15" stroke="#EA580C" stroke-width="3"/>
+          <rect x="20" y="24" width="80" height="72" rx="26" fill="#0EA5E9" stroke="#0369A1" stroke-width="5"/>
+          <rect x="30" y="36" width="60" height="38" rx="14" fill="#0F172A"/>
+          <circle cx="46" cy="54" r="7" fill="#38BDF8"/>
+          <circle cx="48" cy="52" r="2.5" fill="#FFFFFF"/>
+          <circle cx="74" cy="54" r="7" fill="#38BDF8"/>
+          <circle cx="76" cy="52" r="2.5" fill="#FFFFFF"/>
+          <path d="M51 64 Q60 71 69 64" stroke="#4ADE80" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <circle cx="34" cy="83" r="5" fill="#FB923C"/>
+          <circle cx="86" cy="83" r="5" fill="#FB923C"/>
+          <rect x="46" y="80" width="28" height="7" rx="3.5" fill="#FEF08A"/>
+          <rect x="10" y="48" width="10" height="24" rx="5" fill="#F59E0B" stroke="#B45309" stroke-width="3"/>
+          <rect x="100" y="48" width="10" height="24" rx="5" fill="#F59E0B" stroke="#B45309" stroke-width="3"/>
+        </svg>`;
+    }
+
+    /* =====================================================================
+       2. BILINGUAL I18N (VI / EN)
+       ===================================================================== */
+    let currentLang = localStorage.getItem('endy_math_lang') || 'vi';
+    const I18N = {
+      vi: {
+        appTitle: "Khám phá Toán học cùng Endy",
+        introTagline: "Toán lớp 2 Chuẩn GDPT 2018 • Song ngữ • Mô phỏng 3D CPA & Gia sư Endy",
+        btnStudentMode: "Vào lớp học của Endy (Học sinh)",
+        btnDirectLab: "Phòng thí nghiệm Mô phỏng 3D",
+        btnParentMode: "Góc Phụ huynh & Báo cáo Tiến bộ",
+        lockTitle: "TÀI KHOẢN TẠM KHÓA",
+        lockMsg: "Vui lòng nghỉ ngơi hoặc liên hệ Giáo viên chủ nhiệm.",
+        timeoutTitle: "⏰ ĐÃ ĐẾN GIỜ GIẢI LAO!",
+        timeoutBtn: "Em đã nghỉ xong, học tiếp thôi!",
+        parentLoginTitle: "👨‍👩‍👧‍👦 Đăng nhập Phụ huynh",
+        parentLoginSub: "Nhập thông tin của con để xem biểu đồ và tư vấn từ Endy",
+        labelChildName: "Họ và tên con:",
+        labelStudentName: "Họ và tên của con:",
+        labelClass: "Lớp:",
+        btnLookup: "🔍 Tra cứu Kết quả",
+        parentDashTitle: "📊 BÁO CÁO HỌC TẬP CỦA CON",
+        dashOverview: "📌 Tổng quan năng lực",
+        dashTotalLessons: "Bài đã hoàn thành",
+        dashAvgScore: "Điểm trung bình",
+        dashChartTitle: "📈 Biểu đồ Tiến bộ gần đây",
+        dashEndyAdvice: "🤖 Endy Phân tích & Tư vấn Sư phạm",
+        dashClickHint: "(Chạm vào từng bài để nhận lời khuyên chuyên sâu từ Endy)",
+        dashStrengths: "🏆 Điểm mạnh nổi bật (≥ 80đ):",
+        dashWeaknesses: "🔧 Kỹ năng cần củng cố (< 60đ):",
+        dashLeaderboard: "🏆 Bảng Xếp Hạng theo Chủ đề",
+        btnViewLeaderboard: "🔍 Xem Bảng Xếp Hạng",
+        btnBackIntro: "⬅ Quay lại màn hình chào",
+        modalAdviceTitle: "🤖 Endy Tư Vấn Phụ Huynh",
+        btnThanksEndy: "Cảm ơn Endy!",
+        settingsTitle: "⏱️ Thời gian học bảo vệ mắt",
+        settingsDesc: "Con muốn học bao lâu thì Endy nhắc nghỉ giải lao?",
+        unitMin: "Phút", unitMinShort: "phút", unitHour: "giờ",
+        btnContinue: "Tiếp tục ▶",
+        reviewTitle: "🛑 Dừng lại một chút cùng Endy!",
+        reviewSub: "Con vừa làm sai 3 câu liên tiếp rồi. Endy sẽ hướng dẫn lại cách giải từng bước để con làm lại thật chắc nhé!",
+        btnOpenLabHint: "🧊 Xem mô phỏng 3D",
+        btnRetryWrong: "Đã hiểu, làm lại 3 câu vừa rồi!",
+        remedialTitle: "📚 Phiếu Ôn Tập Kiến Thức",
+        btnGotIt: "Đã hiểu, làm bài thôi!",
+        rewardTitle: "🎁 Thẻ Bài Vinh Danh Của Con!",
+        rewardLoading: "Đang thiết kế thẻ bài vinh danh...",
+        btnDownloadCard: "⬇️ Tải thẻ bài về máy",
+        btnClose: "Đóng",
+        labTitle: "🧊 Phòng Thí Nghiệm 3D Của Endy (Mô hình CPA)",
+        labSubtitle: "Xoay khối 3D, kéo thả và quan sát trực quan để hiểu sâu bản chất Toán học!",
+        tabB10: "🧱 Khối 3D Có nhớ", tab3D: "🧊 Hình khối 3D (Xoay)", tabNL: "📏 Tia số (Qua 10)",
+        tabScale: "⚖️ Cân đĩa 3D (kg)", tabClock: "⏰ Đồng hồ 3D", tabArray: "✖️ Mảng 3D Phép nhân",
+        btnSetProblem: "🔄 Đặt bài toán", btnStep1: "💡 Bước 1: Đánh dấu 10 khối", btnRegroup: "✨ Bước 2: Gom / Tách 1 chục 3D",
+        colTens: "HÀNG CHỤC (Thanh 3D = 10)", colOnes: "HÀNG ĐƠN VỊ (Khối 3D = 1)",
+        shapeCube: "🎲 Khối lập phương", shapeCuboid: "📦 Khối hộp chữ nhật", shapeCylinder: "🥫 Khối trụ", shapeSphere: "⚽ Khối cầu",
+        drag3DHint: "👆 Kéo chuột hoặc ngón tay trên hình để xoay 360°!",
+        btnSimulate: "✨ Mô phỏng tách số qua 10",
+        labelRows: "Số hàng:", labelCols: "Mỗi hàng:", btnSwapArray: "🔀 Đổi chỗ (Giao hoán)",
+        loginHeading: "Chào mừng bé đến lớp học của Endy!",
+        loginSub: "Điền tên và lớp để Endy lưu điểm thưởng và thẻ bài vinh danh cho bé nhé.",
+        btnGuide: "📖 Hướng dẫn", btnVideo: "🎬 Video", btnStartNow: "🚀 Bắt đầu khám phá",
+        labBannerTitle: "🧊 Phòng Thí Nghiệm 3D Của Endy",
+        labBannerDesc: "Khối 3D cộng trừ có nhớ • Xoay hình khối 360° • Tia số qua 10 • Cân đĩa 3D • Đồng hồ • Mảng nhân",
+        btnOpenLab: "Mở mô phỏng 3D ✨",
+        selectTopicTitle: "Hành trình 15 Chủ đề Toán 2",
+        btnBackTopics: "⬅ Chọn chủ đề khác",
+        btnReadAloud: "Nghe đọc đề", btnHintStep: "Gợi ý từng bước", btnContextLab: "Mô phỏng 3D",
+        btnBackLessons: "⬅ Danh sách bài",
+        resultScoreLabel: "Điểm số của con:",
+        btnGetReward: "🎁 Nhận Thẻ Bài Vinh Danh", btnRemedial: "📚 Ôn tập kiến thức",
+        btnViewRank: "🏆 Bảng xếp hạng", btnNextLesson: "Làm bài khác ▶",
+        guideTitle: "📖 Hướng dẫn học cùng Endy", btnUnderstood: "Đã hiểu!",
+        thRank: "Hạng", thName: "Họ và Tên", thClass: "Lớp", thScore: "Tổng điểm",
+        videoTitle: "🎬 Video Hướng Dẫn",
+        askEndyBubble: "Hỏi Endy cách giải! ✨",
+        chatbotHeader: "🤖 Gia sư Endy (Hướng dẫn giải Toán 2)",
+        chipHintCurrent: "💡 Gợi ý bài đang làm", chipCarry: "🧱 Cách cộng có nhớ", chipClock: "⏰ Cách xem giờ 24h", chipMul: "✖️ Mẹo bảng nhân 2, 5",
+        submitAnswer: "Trả lời", fillBlankWarn: "Con cần điền câu trả lời đã nhé!",
+        wrongFeedbackPrefix: "Đáp án đúng là:",
+        guideItems: [
+          "Điền Họ tên và Lớp để lưu điểm và nhận Thẻ Bài Vinh Danh cuối bài.",
+          "Chọn thời gian học (15–60 phút) để Endy nhắc con nghỉ giải lao bảo vệ mắt.",
+          "Nếu con suy nghĩ quá lâu (60 giây) hoặc rời máy, Endy sẽ hiện thông báo nhắc nhở dịu dàng.",
+          "Nếu làm nhầm 3 câu liên tiếp, Endy sẽ dừng lại ôn kỹ phương pháp để con làm lại thật vững.",
+          "Bấm <strong>💡 Gợi ý từng bước</strong>, <strong>🧊 Mô phỏng 3D</strong> hoặc hỏi <strong>🤖 Gia sư Endy</strong> bất cứ lúc nào gặp câu khó!"
+        ]
+      },
+      en: {
+        appTitle: "Math Discovery with Endy",
+        introTagline: "Grade 2 Math • Bilingual VN–EN • 3D CPA Simulations & Endy AI Tutor",
+        btnStudentMode: "Enter Endy's Classroom (Student)",
+        btnDirectLab: "3D Interactive Math Lab",
+        btnParentMode: "Parent Portal & Progress Analytics",
+        lockTitle: "SESSION LOCKED",
+        lockMsg: "Please take a break or contact your teacher.",
+        timeoutTitle: "⏰ TIME FOR A BREAK!",
+        timeoutBtn: "I'm refreshed, let's continue!",
+        parentLoginTitle: "👨‍👩‍👧‍👦 Parent Login",
+        parentLoginSub: "Enter your child's details to view charts and Endy's advice",
+        labelChildName: "Child's Full Name:",
+        labelStudentName: "Your Full Name:",
+        labelClass: "Class:",
+        btnLookup: "🔍 View Progress Report",
+        parentDashTitle: "📊 STUDENT LEARNING REPORT",
+        dashOverview: "📌 Performance Overview",
+        dashTotalLessons: "Lessons Completed",
+        dashAvgScore: "Average Score",
+        dashChartTitle: "📈 Recent Progress Chart",
+        dashEndyAdvice: "🤖 Endy Pedagogical Insights",
+        dashClickHint: "(Click any lesson below for tailored guidance from Endy)",
+        dashStrengths: "🏆 Key Strengths (≥ 80 pts):",
+        dashWeaknesses: "🔧 Areas to Practice (< 60 pts):",
+        dashLeaderboard: "🏆 Class Leaderboard by Topic",
+        btnViewLeaderboard: "🔍 View Leaderboard",
+        btnBackIntro: "⬅ Back to Welcome Screen",
+        modalAdviceTitle: "🤖 Endy Parent Consultation",
+        btnThanksEndy: "Thank you, Endy!",
+        settingsTitle: "⏱️ Eye-Care Study Timer",
+        settingsDesc: "How long before Endy reminds you to take an eye break?",
+        unitMin: "Mins", unitMinShort: "min", unitHour: "hr",
+        btnContinue: "Continue ▶",
+        reviewTitle: "🛑 Pause & Review with Endy!",
+        reviewSub: "You missed 3 questions in a row. Endy will walk you through the steps so you can ace them!",
+        btnOpenLabHint: "🧊 Open 3D Lab",
+        btnRetryWrong: "Got it! Retry those 3 questions",
+        remedialTitle: "📚 Key Concepts Review Sheet",
+        btnGotIt: "Got it, let's practice!",
+        rewardTitle: "🎁 Your Achievement Card!",
+        rewardLoading: "Designing your award card...",
+        btnDownloadCard: "⬇️ Download Award Card",
+        btnClose: "Close",
+        labTitle: "🧊 Endy's 3D Interactive Math Lab (CPA Model)",
+        labSubtitle: "Rotate 3D solids, regroup 3D blocks, and explore math visually!",
+        tabB10: "🧱 3D Base-10 Blocks", tab3D: "🧊 3D Solids (Rotate)", tabNL: "📏 Number Line (10)",
+        tabScale: "⚖️ 3D Scale (kg)", tabClock: "⏰ 3D Clock", tabArray: "✖️ 3D Array",
+        btnSetProblem: "🔄 Set Problem", btnStep1: "💡 Step 1: Highlight 10", btnRegroup: "✨ Step 2: Regroup 3D Ten",
+        colTens: "TENS (3D Ten-Rods)", colOnes: "ONES (3D Unit Cubes)",
+        shapeCube: "🎲 Cube", shapeCuboid: "📦 Cuboid", shapeCylinder: "🥫 Cylinder", shapeSphere: "⚽ Sphere",
+        drag3DHint: "👆 Drag mouse or finger on the shape to rotate 360°!",
+        btnSimulate: "✨ Visualize Make-10 Jump",
+        labelRows: "Rows:", labelCols: "Per row:", btnSwapArray: "🔀 Swap (Commutative)",
+        loginHeading: "Welcome to Endy's Math Adventure!",
+        loginSub: "Enter your name and class so Endy can track your stars and certificates.",
+        btnGuide: "📖 Guide", btnVideo: "🎬 Video", btnStartNow: "🚀 Start Exploring",
+        labBannerTitle: "🧊 Endy's 3D Interactive Math Lab",
+        labBannerDesc: "3D Base-10 Blocks • 360° 3D Solids • Make-10 Number Line • 3D Scale • Smart Clock • Arrays",
+        btnOpenLab: "Open 3D Lab ✨",
+        selectTopicTitle: "15 Grade 2 Math Adventures",
+        btnBackTopics: "⬅ All Topics",
+        btnReadAloud: "Read Aloud", btnHintStep: "Step Hint", btnContextLab: "3D Lab",
+        btnBackLessons: "⬅ Lesson List",
+        resultScoreLabel: "Your Final Score:",
+        btnGetReward: "🎁 Claim Award Card", btnRemedial: "📚 Review Concepts",
+        btnViewRank: "🏆 Leaderboard", btnNextLesson: "Next Lesson ▶",
+        guideTitle: "📖 How to Learn with Endy", btnUnderstood: "Got it!",
+        thRank: "Rank", thName: "Student Name", thClass: "Class", thScore: "Total Score",
+        videoTitle: "🎬 Tutorial Video",
+        askEndyBubble: "Ask Endy how to solve! ✨",
+        chatbotHeader: "🤖 Endy Math Tutor (Grade 2)",
+        chipHintCurrent: "💡 Hint for current Q", chipCarry: "🧱 Regrouping trick", chipClock: "⏰ 24h Clock guide", chipMul: "✖️ Times 2 & 5",
+        submitAnswer: "Submit", fillBlankWarn: "Please type your answer first!",
+        wrongFeedbackPrefix: "The correct answer is:",
+        guideItems: [
+          "Enter your Name and Class to save progress and earn collectible Award Cards.",
+          "Set an eye-care study timer (15–60 min) so Endy reminds you to rest.",
+          "If you stay idle or think for 60 seconds, Endy will gently check in to help.",
+          "Missing 3 questions in a row triggers a helpful step-by-step review with Endy.",
+          "Click <strong>💡 Step Hint</strong>, <strong>🧊 3D Lab</strong>, or chat with <strong>🤖 Endy Tutor</strong> anytime!"
+        ]
+      }
+    };
+
+    /* =====================================================================
+       3. 15 TOPICS & 79 LESSONS (GDPT 2018 BILINGUAL + 3D LAB MAPPING)
+       ===================================================================== */
+    const TOPIC_DATA = [
+      { id: 1, sim: "sim-nl", icon: "🔢", title: "Chủ đề 1: Ôn tập và bổ sung", titleEn: "Topic 1: Review & Extensions",
+        lessons: [
+          { id: 1, name: "Bài 1: Ôn tập các số đến 100", nameEn: "Lesson 1: Numbers up to 100" },
+          { id: 2, name: "Bài 2: Tia số, số liền trước, số liền sau", nameEn: "Lesson 2: Number Line, Predecessor & Successor" },
+          { id: 3, name: "Bài 3: Các thành phần của phép cộng, phép trừ", nameEn: "Lesson 3: Parts of Addition & Subtraction" },
+          { id: 4, name: "Bài 4: Hơn kém nhau bao nhiêu", nameEn: "Lesson 4: How Many More or Fewer" },
+          { id: 5, name: "Bài 5: Ôn tập phép cộng, phép trừ (không nhớ)", nameEn: "Lesson 5: Add & Subtract without Regrouping" },
+          { id: 6, name: "Bài 6: Kiểm tra chủ đề 1", nameEn: "Lesson 6: Topic 1 Quiz", isTest: true }
+        ]
+      },
+      { id: 2, sim: "sim-nl", icon: "➕", title: "Chủ đề 2: Phép cộng, phép trừ trong phạm vi 20", titleEn: "Topic 2: Addition & Subtraction within 20",
+        lessons: [
+          { id: 7, name: "Bài 7: Phép cộng (qua 10) trong phạm vi 20", nameEn: "Lesson 7: Addition Bridging 10" },
+          { id: 8, name: "Bài 8: Bảng cộng (qua 10)", nameEn: "Lesson 8: Addition Table (Bridging 10)" },
+          { id: 9, name: "Bài 9: Bài toán thêm, bớt một số đơn vị", nameEn: "Lesson 9: Adding & Taking Away Problems" },
+          { id: 10, name: "Bài 10: Luyện tập chung", nameEn: "Lesson 10: Mixed Practice" },
+          { id: 11, name: "Bài 11: Phép trừ (qua 10) trong phạm vi 20", nameEn: "Lesson 11: Subtraction Bridging 10" },
+          { id: 12, name: "Bài 12: Bảng trừ (qua 10)", nameEn: "Lesson 12: Subtraction Table (Bridging 10)" },
+          { id: 13, name: "Bài 13: Bài toán về nhiều hơn, ít hơn", nameEn: "Lesson 13: More Than & Less Than" },
+          { id: 14, name: "Bài 14: Kiểm tra chủ đề 2", nameEn: "Lesson 14: Topic 2 Quiz", isTest: true }
+        ]
+      },
+      { id: 3, sim: "sim-scale", icon: "⚖️", title: "Chủ đề 3: Làm quen với khối lượng, dung tích", titleEn: "Topic 3: Mass (kg) & Capacity (L)",
+        lessons: [
+          { id: 15, name: "Bài 15: Ki-lô-gam", nameEn: "Lesson 15: Kilograms (kg)" },
+          { id: 16, name: "Bài 16: Lít", nameEn: "Lesson 16: Liters (L)" },
+          { id: 17, name: "Bài 17: Thực hành và trải nghiệm", nameEn: "Lesson 17: Hands-on Measurement" },
+          { id: 18, name: "Bài 18: Kiểm tra chủ đề 3", nameEn: "Lesson 18: Topic 3 Quiz", isTest: true }
+        ]
+      },
+      { id: 4, sim: "sim-b10", icon: "🧱", title: "Chủ đề 4: Phép cộng, trừ (có nhớ) trong phạm vi 100", titleEn: "Topic 4: Regrouping within 100",
+        lessons: [
+          { id: 19, name: "Bài 19: Phép cộng (có nhớ) số có 2 chữ số với 1 chữ số", nameEn: "Lesson 19: 2-Digit + 1-Digit (Regrouping)" },
+          { id: 20, name: "Bài 20: Phép cộng (có nhớ) số có 2 chữ số với 2 chữ số", nameEn: "Lesson 20: 2-Digit + 2-Digit (Regrouping)" },
+          { id: 21, name: "Bài 21: Luyện tập chung", nameEn: "Lesson 21: Mixed Practice" },
+          { id: 22, name: "Bài 22: Phép trừ (có nhớ) số có 2 chữ số cho 1 chữ số", nameEn: "Lesson 22: 2-Digit − 1-Digit (Regrouping)" },
+          { id: 23, name: "Bài 23: Phép trừ (có nhớ) số có 2 chữ số cho 2 chữ số", nameEn: "Lesson 23: 2-Digit − 2-Digit (Regrouping)" },
+          { id: 24, name: "Bài 24: Kiểm tra chủ đề 4", nameEn: "Lesson 24: Topic 4 Quiz", isTest: true }
+        ]
+      },
+      { id: 5, sim: "sim-3d", icon: "📐", title: "Chủ đề 5: Làm quen với hình phẳng", titleEn: "Topic 5: Plane Geometry (2D Shapes)",
+        lessons: [
+          { id: 25, name: "Bài 25: Điểm, đoạn thẳng, đường thẳng, đường cong", nameEn: "Lesson 25: Points, Segments & Curves" },
+          { id: 26, name: "Bài 26: Đường gấp khúc. Hình tứ giác", nameEn: "Lesson 26: Polylines & Quadrilaterals" },
+          { id: 27, name: "Bài 27: Thực hành gấp, cắt, ghép, xếp hình", nameEn: "Lesson 27: Folding & Composing Shapes" },
+          { id: 28, name: "Bài 28: Kiểm tra chủ đề 5", nameEn: "Lesson 28: Topic 5 Quiz", isTest: true }
+        ]
+      },
+      { id: 6, sim: "sim-clock", icon: "⏰", title: "Chủ đề 6: Ngày – giờ, giờ – phút, ngày – tháng", titleEn: "Topic 6: Time, Clocks & Calendars",
+        lessons: [
+          { id: 29, name: "Bài 29: Ngày – giờ, giờ – phút", nameEn: "Lesson 29: Days, Hours & Minutes" },
+          { id: 30, name: "Bài 30: Ngày – tháng", nameEn: "Lesson 30: Days & Months" },
+          { id: 31, name: "Bài 31: Thực hành xem đồng hồ, xem lịch", nameEn: "Lesson 31: Telling Time & Calendars" },
+          { id: 32, name: "Bài 32: Kiểm tra chủ đề 6", nameEn: "Lesson 32: Topic 6 Quiz", isTest: true }
+        ]
+      },
+      { id: 7, sim: "sim-b10", icon: "📘", title: "Chủ đề 7: Ôn tập học kì 1", titleEn: "Topic 7: Semester 1 Review",
+        lessons: [
+          { id: 33, name: "Bài 33: Ôn tập phép cộng, phép trừ", nameEn: "Lesson 33: Review Add & Subtract" },
+          { id: 34, name: "Bài 34: Ôn tập hình phẳng", nameEn: "Lesson 34: Review 2D Geometry" },
+          { id: 35, name: "Bài 35: Ôn tập đo lường", nameEn: "Lesson 35: Review Measurement" },
+          { id: 36, name: "Bài 36: Kiểm tra học kì 1", nameEn: "Lesson 36: Semester 1 Exam", isTest: true }
+        ]
+      },
+      { id: 8, sim: "sim-array", icon: "✖️", title: "Chủ đề 8: Phép nhân, phép chia", titleEn: "Topic 8: Multiplication & Division",
+        lessons: [
+          { id: 37, name: "Bài 37: Phép nhân", nameEn: "Lesson 37: Intro to Multiplication" },
+          { id: 38, name: "Bài 38: Thừa số, tích", nameEn: "Lesson 38: Factors & Products" },
+          { id: 39, name: "Bài 39: Bảng nhân 2", nameEn: "Lesson 39: Times Table of 2" },
+          { id: 40, name: "Bài 40: Bảng nhân 5", nameEn: "Lesson 40: Times Table of 5" },
+          { id: 41, name: "Bài 41: Phép chia", nameEn: "Lesson 41: Intro to Division" },
+          { id: 42, name: "Bài 42: Số bị chia, số chia, thương", nameEn: "Lesson 42: Dividend, Divisor & Quotient" },
+          { id: 43, name: "Bài 43: Bảng chia 2", nameEn: "Lesson 43: Division Table of 2" },
+          { id: 44, name: "Bài 44: Bảng chia 5", nameEn: "Lesson 44: Division Table of 5" },
+          { id: 45, name: "Bài 45: Kiểm tra chủ đề 8", nameEn: "Lesson 45: Topic 8 Quiz", isTest: true }
+        ]
+      },
+      { id: 9, sim: "sim-3d", icon: "🧊", title: "Chủ đề 9: Làm quen với hình khối", titleEn: "Topic 9: 3D Solid Shapes",
+        lessons: [
+          { id: 46, name: "Bài 46: Khối trụ, khối cầu", nameEn: "Lesson 46: Cylinders & Spheres" },
+          { id: 47, name: "Bài 47: Kiểm tra chủ đề 9", nameEn: "Lesson 47: Topic 9 Quiz", isTest: true }
+        ]
+      },
+      { id: 10, sim: "sim-b10", icon: "💯", title: "Chủ đề 10: Các số trong phạm vi 1000", titleEn: "Topic 10: Numbers up to 1000",
+        lessons: [
+          { id: 48, name: "Bài 48: Đơn vị, chục, trăm, nghìn", nameEn: "Lesson 48: Place Value to 1000" },
+          { id: 49, name: "Bài 49: Các số tròn trăm, tròn chục", nameEn: "Lesson 49: Round Numbers" },
+          { id: 50, name: "Bài 50: So sánh các số tròn trăm, tròn chục", nameEn: "Lesson 50: Comparing Round Numbers" },
+          { id: 51, name: "Bài 51: Số có ba chữ số", nameEn: "Lesson 51: 3-Digit Numbers" },
+          { id: 52, name: "Bài 52: Viết số thành tổng các trăm, chục, đơn vị", nameEn: "Lesson 52: Expanded Form" },
+          { id: 53, name: "Bài 53: So sánh các số có ba chữ số", nameEn: "Lesson 53: Comparing 3-Digit Numbers" },
+          { id: 54, name: "Bài 54: Kiểm tra chủ đề 10", nameEn: "Lesson 54: Topic 10 Quiz", isTest: true }
+        ]
+      },
+      { id: 11, sim: "sim-scale", icon: "📏", title: "Chủ đề 11: Độ dài & Tiền Việt Nam", titleEn: "Topic 11: Length Units & Money",
+        lessons: [
+          { id: 55, name: "Bài 55: Đề-xi-mét. Mét. Ki-lô-mét", nameEn: "Lesson 55: dm, m, km" },
+          { id: 56, name: "Bài 56: Giới thiệu tiền Việt Nam", nameEn: "Lesson 56: Vietnamese Currency (VND)" },
+          { id: 57, name: "Bài 57: Thực hành đo độ dài", nameEn: "Lesson 57: Length Measurement" },
+          { id: 58, name: "Bài 58: Kiểm tra chủ đề 11", nameEn: "Lesson 58: Topic 11 Quiz", isTest: true }
+        ]
+      },
+      { id: 12, sim: "sim-b10", icon: "🧮", title: "Chủ đề 12: Phép cộng, phép trừ phạm vi 1000", titleEn: "Topic 12: Add & Subtract within 1000",
+        lessons: [
+          { id: 59, name: "Bài 59: Phép cộng (không nhớ) phạm vi 1000", nameEn: "Lesson 59: Addition (No Regrouping)" },
+          { id: 60, name: "Bài 60: Phép cộng (có nhớ) phạm vi 1000", nameEn: "Lesson 60: Addition (With Regrouping)" },
+          { id: 61, name: "Bài 61: Phép trừ (không nhớ) phạm vi 1000", nameEn: "Lesson 61: Subtraction (No Regrouping)" },
+          { id: 62, name: "Bài 62: Phép trừ (có nhớ) phạm vi 1000", nameEn: "Lesson 62: Subtraction (With Regrouping)" },
+          { id: 63, name: "Bài 63: Kiểm tra chủ đề 12", nameEn: "Lesson 63: Topic 12 Quiz", isTest: true }
+        ]
+      },
+      { id: 13, sim: "sim-array", icon: "📊", title: "Chủ đề 13: Thống kê & Xác suất", titleEn: "Topic 13: Data & Probability",
+        lessons: [
+          { id: 64, name: "Bài 64: Thu thập, phân loại, kiểm đếm", nameEn: "Lesson 64: Collecting Data" },
+          { id: 65, name: "Bài 65: Biểu đồ tranh", nameEn: "Lesson 65: Pictographs" },
+          { id: 66, name: "Bài 66: Chắc chắn, có thể, không thể", nameEn: "Lesson 66: Certain, Possible, Impossible" },
+          { id: 67, name: "Bài 67: Kiểm tra chủ đề 13", nameEn: "Lesson 67: Topic 13 Quiz", isTest: true }
+        ]
+      },
+      { id: 14, sim: "sim-b10", icon: "🎯", title: "Chủ đề 14: Ôn tập cuối năm", titleEn: "Topic 14: Year-End Review",
+        lessons: [
+          { id: 68, name: "Bài 68: Ôn tập số phạm vi 1000", nameEn: "Lesson 68: Review Numbers to 1000" },
+          { id: 69, name: "Bài 69: Ôn tập cộng, trừ", nameEn: "Lesson 69: Review Add & Subtract" },
+          { id: 70, name: "Bài 70: Ôn tập nhân, chia", nameEn: "Lesson 70: Review Multiply & Divide" },
+          { id: 71, name: "Bài 71: Ôn tập hình học, đo lường", nameEn: "Lesson 71: Review Geometry & Units" },
+          { id: 72, name: "Bài 72: Ôn tập kiểm đếm", nameEn: "Lesson 72: Review Data & Logic" },
+          { id: 73, name: "Bài 73: Kiểm tra cuối năm (phần 1)", nameEn: "Lesson 73: Year-End Practice", isTest: true }
+        ]
+      },
+      { id: 15, sim: "sim-b10", icon: "🏆", title: "Kiểm tra cuối năm", titleEn: "Final Year-End Exams",
+        lessons: [
+          { id: 74, name: "Bài kiểm tra cuối năm số 1", nameEn: "Final Exam #1", isFinalTest: true },
+          { id: 75, name: "Bài kiểm tra cuối năm số 2", nameEn: "Final Exam #2", isFinalTest: true },
+          { id: 76, name: "Bài kiểm tra cuối năm số 3", nameEn: "Final Exam #3", isFinalTest: true },
+          { id: 77, name: "Bài kiểm tra cuối năm số 4", nameEn: "Final Exam #4", isFinalTest: true },
+          { id: 78, name: "Bài kiểm tra cuối năm số 5", nameEn: "Final Exam #5", isFinalTest: true },
+          { id: 79, name: "Bài kiểm tra cuối năm số 6", nameEn: "Final Exam #6", isFinalTest: true }
+        ]
+      }
+    ];
+
+    /* =====================================================================
+       4. PROCEDURAL DYNAMIC MATH GENERATOR WITH 2-LEVEL PROGRESSIVE HINTS
+       ===================================================================== */
+    const IS_GAS = (typeof google !== 'undefined' && google.script && google.script.run);
+
+    const MathGen = {
+      rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; },
+      pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; },
+      makeMCQ(viQ, enQ, ans, distractors, viExp, enExp, viH1, enH1, viH2, enH2) {
+        const isEn = currentLang === 'en';
+        const set = new Set([String(ans)]);
+        for (const d of distractors) {
+          if (set.size < 4 && d !== null && d !== undefined && String(d) !== String(ans)) set.add(String(d));
+        }
+        let guard = 0;
+        while (set.size < 4 && guard++ < 25) {
+          const num = parseInt(ans);
+          if (!isNaN(num)) set.add(String(Math.max(0, num + this.pick([-10, -3, -2, -1, 1, 2, 3, 10]))));
+          else break;
+        }
+        const opts = Array.from(set).sort(() => 0.5 - Math.random());
+        return {
+          DeBai: isEn ? enQ : viQ,
+          DeBaiEn: isEn ? "" : enQ,
+          LoaiCauHoi: "TRAC_NGHIEM",
+          LuaChonA: opts[0], LuaChonB: opts[1], LuaChonC: opts[2], LuaChonD: opts[3],
+          DapAn: String(ans),
+          GiaiThich: isEn ? enExp : viExp,
+          Hint1: isEn ? (enH1 || "Read carefully and break the numbers into tens and ones.") : (viH1 || "Con hãy đọc kỹ đề và tách số thành hàng chục, hàng đơn vị nhé!"),
+          Hint2: isEn ? (enH2 || enExp) : (viH2 || viExp)
+        };
+      },
+      makeFill(viQ, enQ, ans, viExp, enExp, viH1, enH1, viH2, enH2) {
+        const isEn = currentLang === 'en';
+        return {
+          DeBai: isEn ? enQ : viQ,
+          DeBaiEn: isEn ? "" : enQ,
+          LoaiCauHoi: "DIEN_KHUYET",
+          DapAn: String(ans),
+          GiaiThich: isEn ? enExp : viExp,
+          Hint1: isEn ? (enH1 || "Think step by step!") : (viH1 || "Con hãy tính từng bước từ hàng đơn vị trước nhé!"),
+          Hint2: isEn ? (enH2 || enExp) : (viH2 || viExp)
+        };
+      },
+      makeTF(viQ, enQ, isTrue, viExp, enExp, viH1, enH1) {
+        const isEn = currentLang === 'en';
+        const tLabel = isEn ? "True" : "Đúng", fLabel = isEn ? "False" : "Sai";
+        return {
+          DeBai: isEn ? enQ : viQ,
+          DeBaiEn: isEn ? "" : enQ,
+          LoaiCauHoi: "DUNG_SAI",
+          LuaChonA: tLabel, LuaChonB: fLabel,
+          DapAn: isTrue ? tLabel : fLabel,
+          GiaiThich: isEn ? enExp : viExp,
+          Hint1: isEn ? enH1 : viH1,
+          Hint2: isEn ? enExp : viExp
+        };
+      },
+
+      genTopic1() {
+        const type = this.rand(1, 5);
+        if (type === 1) {
+          const n = this.rand(12, 98), after = Math.random() > 0.5, ans = after ? n + 1 : n - 1;
+          return this.makeFill(
+            after ? `Số liền sau của số ${n} là: __` : `Số liền trước của số ${n} là: __`,
+            after ? `Number right after ${n}: __` : `Number right before ${n}: __`,
+            ans,
+            after ? `${n} + 1 = ${ans}.` : `${n} − 1 = ${ans}.`,
+            after ? `${n} + 1 = ${ans}.` : `${n} − 1 = ${ans}.`,
+            after ? "Số liền sau thì lấy số đó cộng thêm 1." : "Số liền trước thì lấy số đó bớt đi 1.",
+            after ? "Add 1 to find the next number." : "Subtract 1 to find the previous number."
+          );
+        }
+        if (type === 2) {
+          const t = this.rand(2, 9), o = this.rand(1, 9), num = t * 10 + o;
+          return this.makeMCQ(
+            `Số gồm ${t} chục và ${o} đơn vị là số nào?`, `Which number has ${t} tens and ${o} ones?`,
+            num, [o * 10 + t, t * 100 + o, t + o],
+            `${t} chục = ${t * 10}, cộng ${o} = ${num}.`, `${t} tens = ${t * 10}, plus ${o} = ${num}.`,
+            `Chữ số hàng chục viết trước (${t}), chữ số hàng đơn vị viết sau (${o}).`,
+            `Write tens digit (${t}) first, then ones digit (${o}).`
+          );
+        }
+        if (type === 3) {
+          const t1 = this.rand(1, 5), o1 = this.rand(1, 4), t2 = this.rand(1, 4), o2 = this.rand(1, 5);
+          const a = t1 * 10 + o1, b = t2 * 10 + o2;
+          return this.makeFill(
+            `Tính nhẩm (không nhớ): ${a} + ${b} = __`, `Mental addition: ${a} + ${b} = __`,
+            a + b, `${o1}+${o2}=${o1+o2}, ${t1}+${t2}=${t1+t2} → ${a+b}.`, `${a} + ${b} = ${a+b}.`,
+            `Cộng hàng đơn vị (${o1} + ${o2}) rồi cộng hàng chục (${t1} + ${t2}).`,
+            `Add ones (${o1} + ${o2}), then add tens (${t1} + ${t2}).`
+          );
+        }
+        const x = this.rand(14, 34), d = this.rand(4, 12);
+        return this.makeMCQ(
+          `An có ${x + d} viên bi, Bình có ${x} viên bi. An có nhiều hơn Bình bao nhiêu viên bi?`,
+          `An has ${x + d} marbles and Binh has ${x}. How many more does An have?`,
+          d, [d + 2, d - 1, d + 10],
+          `Lấy ${x + d} − ${x} = ${d} viên bi.`, `${x + d} − ${x} = ${d} marbles.`,
+          "Muốn tìm nhiều hơn bao nhiêu, ta lấy số lớn trừ đi số bé.",
+          "Subtract the smaller number from the bigger number."
+        );
+      },
+
+      genTopic2() {
+        const type = this.rand(1, 3);
+        if (type === 1) {
+          const a = this.rand(6, 9), b = this.rand(11 - a, 9), toTen = 10 - a, rem = b - toTen;
+          return this.makeMCQ(
+            `Tính (qua 10): ${a} + ${b} = ?`, `Add bridging 10: ${a} + ${b} = ?`,
+            a + b, [a + b - 1, a + b + 1, a + b - 2],
+            `Tách ${b} = ${toTen} + ${rem}. Ta có ${a} + ${toTen} = 10, rồi 10 + ${rem} = ${a + b}.`,
+            `Split ${b} = ${toTen} + ${rem}. ${a} + ${toTen} = 10, then 10 + ${rem} = ${a + b}.`,
+            `Dùng mẹo làm tròn 10: ${a} cần thêm mấy để đủ 10? (Thêm ${toTen}!)`,
+            `Make-10 trick: How much does ${a} need to reach 10? (Add ${toTen}!)`,
+            `Tách ${b} thành ${toTen} và ${rem}. Sau đó lấy 10 + ${rem}!`,
+            `Split ${b} into ${toTen} and ${rem}. Now add 10 + ${rem}!`
+          );
+        }
+        if (type === 2) {
+          const total = this.rand(11, 18), sub = this.rand(total - 9, 9), ans = total - sub;
+          return this.makeFill(
+            `Tính phép trừ qua 10: ${total} − ${sub} = __`, `Subtract bridging 10: ${total} − ${sub} = __`,
+            ans, `${total} − ${sub} = ${ans}.`, `${total} − ${sub} = ${ans}.`,
+            `Trừ để về 10 trước: ${total} − ${total - 10} = 10.`,
+            `Subtract to 10 first: ${total} − ${total - 10} = 10.`,
+            `Còn phải trừ thêm ${sub - (total - 10)} nữa từ 10!`,
+            `Now subtract ${sub - (total - 10)} more from 10!`
+          );
+        }
+        const a = this.rand(7, 9), b = this.rand(4, 8);
+        return this.makeMCQ(
+          `Endy có ${a} quả táo, Mai tặng thêm ${b} quả táo nữa. Endy có tất cả bao nhiêu quả táo?`,
+          `Endy has ${a} apples and gets ${b} more. How many apples in total?`,
+          a + b, [a + b - 1, a + b + 1, a + b - 2],
+          `${a} + ${b} = ${a + b} quả táo.`, `${a} + ${b} = ${a + b} apples.`,
+          `"Tặng thêm" nghĩa là mình dùng phép Cộng (+).`, `"Gets more" means we use Addition (+).`
+        );
+      },
+
+      genTopic3() {
+        const a = this.rand(3, 18), b = this.rand(2, 14), isKg = Math.random() > 0.4;
+        if (isKg) {
+          return this.makeMCQ(
+            `Tính khối lượng: ${a} kg + ${b} kg = ?`, `Total mass: ${a} kg + ${b} kg = ?`,
+            `${a + b} kg`, [`${a + b + 1} kg`, `${a + b - 1} kg`, `${a + b + 2} kg`],
+            `${a} + ${b} = ${a + b} kg.`, `${a} + ${b} = ${a + b} kg.`,
+            "Cộng hai số lại và giữ nguyên đơn vị kg.", "Add the two numbers and keep kg."
+          );
+        }
+        const big = Math.max(a, b) + 6, small = Math.min(a, b);
+        return this.makeFill(
+          `Can nước có ${big} lít, rót ra ${small} lít. Còn lại __ lít.`,
+          `A jug has ${big} L. After pouring out ${small} L, __ L remain.`,
+          big - small, `${big} − ${small} = ${big - small} lít.`, `${big} − ${small} = ${big - small} L.`,
+          `"Rót ra" nghĩa là bớt đi — dùng phép trừ (${big} − ${small}).`,
+          `"Pouring out" means subtraction (${big} − ${small}).`
+        );
+      },
+
+      genTopic4() {
+        const isAdd = Math.random() > 0.5;
+        if (isAdd) {
+          const t1 = this.rand(1, 5), o1 = this.rand(5, 9), t2 = this.rand(1, 8 - t1), o2 = this.rand(10 - o1, 9);
+          const a = t1 * 10 + o1, b = t2 * 10 + o2, ans = a + b;
+          return this.makeMCQ(
+            `Tính phép cộng có nhớ: ${a} + ${b} = ?`, `Add with regrouping: ${a} + ${b} = ?`,
+            ans, [ans - 10, ans + 10, ans - 1],
+            `${o1} + ${o2} = ${o1 + o2} viết ${(o1 + o2) % 10} nhớ 1; ${t1} + ${t2} + 1 = ${Math.floor(ans / 10)} → ${ans}.`,
+            `${o1} + ${o2} = ${o1 + o2} (carry 1); ${t1} + ${t2} + 1 = ${Math.floor(ans / 10)} → ${ans}.`,
+            `Bước 1: Cộng hàng đơn vị ${o1} + ${o2} = ${o1 + o2} (viết ${(o1 + o2) % 10}, nhớ 1 sang hàng chục).`,
+            `Step 1: Add ones ${o1} + ${o2} = ${o1 + o2} (write ${(o1 + o2) % 10}, carry 1 ten).`,
+            `Bước 2: Cộng hàng chục ${t1} + ${t2} và ĐỪNG QUÊN cộng thêm 1 nhớ!`,
+            `Step 2: Add tens ${t1} + ${t2} plus the carried 1!`
+          );
+        } else {
+          const t1 = this.rand(3, 9), o1 = this.rand(0, 6), t2 = this.rand(1, t1 - 2), o2 = this.rand(o1 + 1, 9);
+          const a = t1 * 10 + o1, b = t2 * 10 + o2, ans = a - b;
+          return this.makeMCQ(
+            `Tính phép trừ có nhớ: ${a} − ${b} = ?`, `Subtract with regrouping: ${a} − ${b} = ?`,
+            ans, [ans + 10, ans - 10, ans + 1],
+            `Mượn 1 chục: ${10 + o1} − ${o2} = ${10 + o1 - o2}; hàng chục: ${t1} − ${t2} − 1 = ${Math.floor(ans / 10)} → ${ans}.`,
+            `Borrow 1 ten: ${10 + o1} − ${o2} = ${10 + o1 - o2}; tens: ${t1 - 1} − ${t2} = ${Math.floor(ans / 10)} → ${ans}.`,
+            `Vì ${o1} < ${o2}, ta mượn 1 chục thành ${10 + o1} rồi trừ đi ${o2}.`,
+            `Since ${o1} < ${o2}, borrow 1 ten to make ${10 + o1}, then subtract ${o2}.`,
+            `Hàng chục của ${a} sau khi cho mượn 1 chỉ còn ${t1 - 1}, rồi trừ tiếp ${t2}!`,
+            `After borrowing 1 ten, tens place is ${t1 - 1}; subtract ${t2}!`
+          );
+        }
+      },
+
+      genTopic5() {
+        const a = this.rand(3, 12), b = this.rand(4, 14), c = this.rand(3, 11), ans = a + b + c;
+        return this.makeMCQ(
+          `Đường gấp khúc ABCD gồm 3 đoạn thẳng dài ${a} cm, ${b} cm và ${c} cm. Độ dài đường gấp khúc là:`,
+          `Polyline ABCD has 3 segments: ${a} cm, ${b} cm, and ${c} cm. Total length:`,
+          `${ans} cm`, [`${ans + 2} cm`, `${ans - 2} cm`, `${a + b} cm`],
+          `Cộng cả 3 đoạn: ${a} + ${b} + ${c} = ${ans} cm.`, `Add all 3 segments: ${a} + ${b} + ${c} = ${ans} cm.`,
+          "Độ dài đường gấp khúc bằng tổng độ dài các đoạn thẳng cộng lại.",
+          "Add all segment lengths together."
+        );
+      },
+
+      genTopic6() {
+        const pm = this.rand(1, 10), h24 = pm + 12, pVi = pm <= 5 ? "chiều" : "tối";
+        return this.makeMCQ(
+          `${pm} giờ ${pVi} còn gọi là mấy giờ?`, `What is ${pm}:00 PM in 24-hour clock?`,
+          currentLang === 'en' ? `${h24}:00` : `${h24} giờ`,
+          currentLang === 'en' ? [`${h24 - 1}:00`, `${h24 + 1}:00`, `${pm + 10}:00`] : [`${h24 - 1} giờ`, `${h24 + 1} giờ`, `${pm + 10} giờ`],
+          `Lấy ${pm} + 12 = ${h24} giờ.`, `Add 12: ${pm} + 12 = ${h24}:00.`,
+          "Để đổi giờ chiều/tối sang hệ 24 giờ, con chỉ cần lấy số giờ cộng thêm 12!",
+          "To convert PM time to 24-hour format, simply add 12!"
+        );
+      },
+
+      genTopic8() {
+        const base = this.pick([2, 5]), mul = this.rand(2, 10), prod = base * mul;
+        if (Math.random() > 0.45) {
+          return this.makeMCQ(
+            `Tính: ${base} × ${mul} = ?`, `Multiply: ${base} × ${mul} = ?`,
+            prod, [prod + base, prod - base, base + mul],
+            `${base} × ${mul} = ${prod}.`, `${base} × ${mul} = ${prod}.`,
+            `Con hãy đếm cách ${base} đúng ${mul} lần (hoặc mở Mảng 3D để đếm sao nhé!).`,
+            `Skip-count by ${base} exactly ${mul} times!`
+          );
+        }
+        return this.makeFill(
+          `Tính thương: ${prod} : ${base} = __`, `Divide: ${prod} ÷ ${base} = __`,
+          mul, `Vì ${base} × ${mul} = ${prod} nên ${prod} : ${base} = ${mul}.`, `Since ${base} × ${mul} = ${prod}, answer is ${mul}.`,
+          `Hỏi ngược lại: ${base} nhân với mấy thì bằng ${prod}?`, `Ask: ${base} times what equals ${prod}?`
+        );
+      },
+
+      genTopic9() {
+        const bank = [
+          { vi: "Quả bóng đá", en: "A soccer ball", sVi: "Khối cầu", sEn: "Sphere" },
+          { vi: "Viên bi tròn", en: "A round marble", sVi: "Khối cầu", sEn: "Sphere" },
+          { vi: "Lon sữa đặc", en: "A milk can", sVi: "Khối trụ", sEn: "Cylinder" },
+          { vi: "Chiếc trống trường", en: "A drum", sVi: "Khối trụ", sEn: "Cylinder" },
+          { vi: "Khối Rubik", en: "A Rubik's cube", sVi: "Khối lập phương", sEn: "Cube" }
+        ];
+        const o = this.pick(bank), en = currentLang === 'en';
+        return this.makeMCQ(
+          `${o.vi} có dạng hình khối nào?`, `What 3D solid is ${o.en.toLowerCase()}?`,
+          en ? o.sEn : o.sVi,
+          en ? ["Sphere", "Cylinder", "Cube", "Cuboid"] : ["Khối cầu", "Khối trụ", "Khối lập phương", "Khối hộp chữ nhật"],
+          `${o.vi} có dạng ${o.sVi}.`, `${o.en} is a ${o.sEn}.`,
+          "Bấm nút 🧊 Mô phỏng 3D để xoay các hình khối và so sánh nhé!",
+          "Click 🧊 3D Lab to rotate and compare the solid shapes!"
+        );
+      },
+
+      genTopic10() {
+        const h = this.rand(1, 9), t = this.rand(0, 9), o = this.rand(1, 9), num = h * 100 + t * 10 + o;
+        return this.makeMCQ(
+          `Số gồm ${h} trăm, ${t} chục và ${o} đơn vị viết là:`, `Number with ${h} hundreds, ${t} tens, ${o} ones:`,
+          num, [o * 100 + t * 10 + h, h * 100 + o * 10 + t, num + 10],
+          `${h}00 + ${t * 10} + ${o} = ${num}.`, `${h}00 + ${t * 10} + ${o} = ${num}.`,
+          `Viết lần lượt từ trái sang phải: Trăm (${h}) → Chục (${t}) → Đơn vị (${o}).`,
+          `Write from left to right: Hundreds (${h}) → Tens (${t}) → Ones (${o}).`
+        );
+      },
+
+      genTopic11() {
+        const m = this.rand(2, 9), askCm = Math.random() > 0.5;
+        return this.makeFill(
+          askCm ? `Đổi đơn vị: ${m} m = __ cm` : `Đổi đơn vị: ${m} m = __ dm`,
+          askCm ? `Convert: ${m} m = __ cm` : `Convert: ${m} m = __ dm`,
+          askCm ? m * 100 : m * 10,
+          askCm ? `1 m = 100 cm → ${m * 100} cm.` : `1 m = 10 dm → ${m * 10} dm.`,
+          askCm ? `1 m = 100 cm → ${m * 100} cm.` : `1 m = 10 dm → ${m * 10} dm.`,
+          askCm ? "Ghi nhớ: 1 mét = 100 xăng-ti-mét." : "Ghi nhớ: 1 mét = 10 đề-xi-mét.",
+          askCm ? "Remember: 1 m = 100 cm." : "Remember: 1 m = 10 dm."
+        );
+      },
+
+      genTopic12() {
+        const isAdd = Math.random() > 0.5;
+        const a = isAdd ? this.rand(120, 560) : this.rand(450, 950);
+        const b = isAdd ? this.rand(105, 390) : this.rand(110, 410);
+        const ans = isAdd ? a + b : a - b;
+        return this.makeMCQ(
+          isAdd ? `Tính: ${a} + ${b} = ?` : `Tính: ${a} − ${b} = ?`,
+          isAdd ? `Calculate: ${a} + ${b} = ?` : `Calculate: ${a} − ${b} = ?`,
+          ans, [ans + 10, ans - 10, ans + 100],
+          `${a} ${isAdd ? '+' : '−'} ${b} = ${ans}.`, `${a} ${isAdd ? '+' : '−'} ${b} = ${ans}.`,
+          "Đặt tính thẳng cột: Hàng đơn vị trước, rồi đến hàng chục, cuối cùng là hàng trăm!",
+          "Align columns: Ones first, then Tens, then Hundreds!"
+        );
+      },
+
+      genTopic13() {
+        const events = [
+          { vi: "Trong hộp chỉ có toàn bóng màu đỏ. Lấy ra 1 quả bóng màu xanh là sự kiện:", en: "A box has ONLY red balls. Picking a blue ball is:", aVi: "Không thể", aEn: "Impossible" },
+          { vi: "Trong lọ chỉ có toàn kẹo dâu. Lấy ra 1 viên kẹo dâu là sự kiện:", en: "A jar has ONLY strawberry candies. Picking strawberry is:", aVi: "Chắc chắn", aEn: "Certain" },
+          { vi: "Trong túi có cả bi xanh và bi đỏ. Nhắm mắt lấy 1 viên bi đỏ là sự kiện:", en: "A bag has blue and red marbles. Picking a red marble is:", aVi: "Có thể", aEn: "Possible" }
+        ];
+        const e = this.pick(events), en = currentLang === 'en';
+        return this.makeMCQ(
+          e.vi, e.en, en ? e.aEn : e.aVi,
+          en ? ["Certain", "Possible", "Impossible"] : ["Chắc chắn", "Có thể", "Không thể"],
+          `Đáp án đúng là "${e.aVi}".`, `Correct answer: "${e.aEn}".`,
+          "Xem trong hộp có những màu nào để biết sự việc có xảy ra được không nhé!",
+          "Check what colors exist in the container!"
+        );
+      },
+
+      generateSet(topicId, lessonId, count = 10) {
+        const mapFn = {
+          1: () => this.genTopic1(), 2: () => this.genTopic2(), 3: () => this.genTopic3(),
+          4: () => this.genTopic4(), 5: () => this.genTopic5(), 6: () => this.genTopic6(),
+          7: () => this.pick([() => this.genTopic1(), () => this.genTopic2(), () => this.genTopic3(), () => this.genTopic4(), () => this.genTopic5(), () => this.genTopic6()])(),
+          8: () => this.genTopic8(), 9: () => this.genTopic9(), 10: () => this.genTopic10(),
+          11: () => this.genTopic11(), 12: () => this.genTopic12(), 13: () => this.genTopic13(),
+          14: () => this.pick([() => this.genTopic4(), () => this.genTopic8(), () => this.genTopic10(), () => this.genTopic11(), () => this.genTopic12(), () => this.genTopic13()])(),
+          15: () => this.pick([() => this.genTopic2(), () => this.genTopic3(), () => this.genTopic4(), () => this.genTopic6(), () => this.genTopic8(), () => this.genTopic9(), () => this.genTopic10(), () => this.genTopic11(), () => this.genTopic12(), () => this.genTopic13()])()
+        };
+        const gen = mapFn[topicId] || mapFn[15];
+        const out = [], seen = new Set();
+        let tries = 0;
+        while (out.length < count && tries++ < count * 14) {
+          const q = gen();
+          if (!seen.has(q.DeBai)) { seen.add(q.DeBai); out.push(q); }
+        }
+        return out;
+      }
+    };
+
+    /* =====================================================================
+       5. SMART ENDY SOCRATIC MATH TUTOR ENGINE (WORKS 100% ON VERCEL & GAS)
+       ===================================================================== */
+    const EndyTutor = {
+      solve(userMsg, currentQText, lang) {
+        const en = lang === 'en';
+        const text = (userMsg + " " + (currentQText || "")).toLowerCase();
+
+        // Detect arithmetic expression like "28 + 15", "52 - 17", "2 x 5", "10 : 2"
+        const exprMatch = text.match(/(\d+)\s*([+\-−x×*:÷/])\s*(\d+)/);
+        if (exprMatch) {
+          const a = parseInt(exprMatch[1]), op = exprMatch[2], b = parseInt(exprMatch[3]);
+          if (op === '+') {
+            if (a < 10 && b < 10 && a + b > 10) {
+              const to10 = 10 - a, rem = b - to10;
+              return en
+                ? `🤖 **Endy's Make-10 Guide for ${a} + ${b}:**\n1️⃣ ${a} needs **${to10}** more to make **10**.\n2️⃣ Split ${b} into **${to10} + ${rem}**.\n3️⃣ Add: 10 + ${rem} = **?**\n👉 Open **📏 Number Line** in the 3D Lab to see the jump!`
+                : `🤖 **Endy hướng dẫn tách số qua 10 cho ${a} + ${b}:**\n1️⃣ Số ${a} cần thêm **${to10}** để tròn **10**.\n2️⃣ Ta tách ${b} = **${to10} + ${rem}**.\n3️⃣ Giờ con chỉ cần tính: **10 + ${rem}** là ra ngay!\n👉 Con có thể mở **📏 Tia số** trong Phòng 3D để xem bước nhảy nhé!`;
+            }
+            const oSum = (a % 10) + (b % 10);
+            const carry = oSum >= 10 ? 1 : 0;
+            return en
+              ? `🤖 **Endy's Step-by-Step Guide for ${a} + ${b}:**\n1️⃣ Add the **Ones**: ${a % 10} + ${b % 10} = **${oSum}**${carry ? ` (write **${oSum % 10}**, carry **1** to tens!)` : ''}.\n2️⃣ Add the **Tens**: ${Math.floor(a / 10)} + ${Math.floor(b / 10)}${carry ? ' + 1 (carried)' : ''}.\n👉 Try putting ${a} + ${b} into **🧱 3D Base-10 Blocks**!`
+              : `🤖 **Endy hướng dẫn đặt tính ${a} + ${b}:**\n1️⃣ Cộng **hàng đơn vị** trước: ${a % 10} + ${b % 10} = **${oSum}**${carry ? ` → viết **${oSum % 10}**, nhớ **1** sang hàng chục!` : ''}.\n2️⃣ Cộng **hàng chục**: ${Math.floor(a / 10)} + ${Math.floor(b / 10)}${carry ? ' thêm **1 nhớ** nữa nhé!' : ''}.\n👉 Con bấm **🧊 Mô phỏng 3D** để xem các khối ghép lại nha!`;
+          }
+          if (op === '-' || op === '−') {
+            const needBorrow = (a % 10) < (b % 10);
+            return en
+              ? `🤖 **Endy's Subtraction Guide for ${a} − ${b}:**\n1️⃣ Look at the **Ones**: ${a % 10} and ${b % 10}. ${needBorrow ? `Since ${a % 10} < ${b % 10}, borrow 1 ten → **${10 + (a % 10)} − ${b % 10}**.` : `Subtract ${a % 10} − ${b % 10}.`}\n2️⃣ Now subtract the **Tens**${needBorrow ? ' (remember you lent 1 ten!)' : ''}.\n👉 What answer do you get?`
+              : `🤖 **Endy hướng dẫn phép trừ ${a} − ${b}:**\n1️⃣ Xét **hàng đơn vị**: ${needBorrow ? `Vì ${a % 10} nhỏ hơn ${b % 10}, ta mượn 1 chục thành **${10 + (a % 10)} − ${b % 10}**!` : `Lấy ${a % 10} − ${b % 10}.`}\n2️⃣ Trừ **hàng chục**${needBorrow ? ' (nhớ trừ thêm 1 chục vừa cho mượn nhé!)' : ''}.\n👉 Con tính ra bao nhiêu nào?`;
+          }
+          if (op === 'x' || op === '×' || op === '*') {
+            return en
+              ? `🤖 **Endy's Multiplication Guide for ${a} × ${b}:**\nThink of **${a} × ${b}** as adding **${a}** together **${b}** times (or skip-counting by ${a}!).\n👉 Open **✖️ 3D Array** in the Lab to count the stars!`
+              : `🤖 **Endy hướng dẫn phép nhân ${a} × ${b}:**\nPhép nhân **${a} × ${b}** nghĩa là lấy số **${a}** cộng với nhau **${b} lần** (hoặc đếm cách ${a} đơn vị).\n👉 Con mở **✖️ Mảng 3D Phép nhân** để nhìn thấy ngay số ngôi sao nhé!`;
+          }
+          if (op === ':' || op === '÷' || op === '/') {
+            return en
+              ? `🤖 **Endy's Division Guide for ${a} ÷ ${b}:**\nAsk yourself: **${b} × ? = ${a}**.\nCheck the times table of ${b} and you'll find the quotient right away!`
+              : `🤖 **Endy hướng dẫn phép chia ${a} : ${b}:**\nCon hãy nhẩm ngược theo bảng nhân ${b}: **${b} nhân với mấy thì bằng ${a}?**\nTìm được số đó là ra ngay thương của phép chia!`;
+          }
+        }
+
+        if (text.includes('giờ') || text.includes('clock') || text.includes('pm') || text.includes('chiều')) {
+          return en
+            ? `⏰ **24-Hour Clock Tip:**\n• Morning (AM): Keep the number as is (e.g., 8:00 AM = 08:00).\n• Afternoon/Evening (PM): **Add 12**! (Example: 3:00 PM → 3 + 12 = **15:00**).`
+            : `⏰ **Mẹo xem giờ 24h của Endy:**\n• Buổi sáng: giữ nguyên số giờ (vd: 8 giờ sáng).\n• Buổi chiều / tối: lấy số giờ **cộng thêm 12**! (Ví dụ: 3 giờ chiều → 3 + 12 = **15 giờ**).`;
+        }
+        if (text.includes('khối') || text.includes('cube') || text.includes('cylinder') || text.includes('sphere')) {
+          return en
+            ? `🧊 **3D Solids Tip:**\n• **Sphere (⚽):** Round everywhere, rolls in any direction.\n• **Cylinder (🥫):** 2 flat circular bases + 1 curved surface.\n• **Cube (🎲):** 6 equal square faces!\n👉 Open **🧊 3D Solids** in the Lab to rotate them!`
+            : `🧊 **Mẹo nhận biết Hình khối 3D:**\n• **Khối cầu (⚽):** Tròn đều mọi phía, lăn được mọi hướng.\n• **Khối trụ (🥫):** Có 2 mặt đáy hình tròn bằng nhau.\n• **Khối lập phương (🎲):** Có 6 mặt đều là hình vuông!\n👉 Mở tab **🧊 Hình khối 3D** để tự tay xoay 360° nhé!`;
+        }
+        if (text.includes('nhớ') || text.includes('carry') || text.includes('regroup')) {
+          return en
+            ? `🧱 **Regrouping Golden Rule:**\nWhenever the Ones add up to **10 or more**, bundle 10 ones into **1 Ten-Rod** and carry it to the Tens column!`
+            : `🧱 **Quy tắc vàng Cộng có nhớ:**\nHễ cộng hàng đơn vị ra kết quả **từ 10 trở lên**, ta viết chữ số hàng đơn vị và **nhớ 1 chục** sang cột hàng chục để cộng tiếp!`;
+        }
+        return en
+          ? `🤖 Hi! Type any math problem (like \`28 + 15\`, \`52 - 17\`, \`5 x 4\`) or click **"💡 Hint for current Q"** and I'll walk you through it step-by-step!`
+          : `🤖 Chào con! Con hãy gõ phép tính đang làm (ví dụ: \`28 + 15\`, \`52 - 17\`, \`2 x 5\`) hoặc bấm nút **"💡 Gợi ý bài đang làm"** ngay bên dưới, Endy sẽ hướng dẫn từng bước siêu dễ hiểu nhé!`;
+      }
+    };
+
+    const Backend = {
+      setTopicData(jsonStr) { if (IS_GAS) google.script.run.setTopicData(jsonStr); },
+      getQuestions(topicId, lessonId, isTestOrFinal, onSuccess) {
+        const targetCount = isTestOrFinal ? 20 : (state.preferredQuestionCount || 10);
+        if (IS_GAS) {
+          google.script.run
+            .withSuccessHandler(qs => (qs && !qs.error && qs.length > 0) ? onSuccess(qs) : onSuccess(MathGen.generateSet(topicId, lessonId, targetCount)))
+            .withFailureHandler(() => onSuccess(MathGen.generateSet(topicId, lessonId, targetCount)))
+            .getQuestions(topicId, lessonId, JSON.stringify(TOPIC_DATA));
+        } else {
+          setTimeout(() => onSuccess(MathGen.generateSet(topicId, lessonId, targetCount)), 200);
+        }
+      },
+      saveResult(topicId, payloadStr, onSuccess) {
+        if (IS_GAS) google.script.run.withSuccessHandler(onSuccess).saveResult(topicId, payloadStr);
+        else {
+          const mock = [
+            { rank: 1, name: state.studentInfo.name || "Minh An", class: state.studentInfo.class || "2A", score: Math.max(95, state.currentQuiz.score) },
+            { rank: 2, name: "Trần Gia Bảo", class: "2A", score: 90 },
+            { rank: 3, name: "Lê Ngọc Hân", class: "2B", score: 85 }
+          ];
+          setTimeout(() => onSuccess({ status: "success", leaderboardData: mock }), 200);
+        }
+      },
+      getLeaderboard(topicId, onSuccess) {
+        if (IS_GAS) google.script.run.withSuccessHandler(onSuccess).getLeaderboard(topicId);
+        else setTimeout(() => onSuccess([
+          { rank: 1, name: state.studentInfo.name || "Nguyễn Minh An", class: state.studentInfo.class || "2A", score: 95 },
+          { rank: 2, name: "Trần Gia Bảo", class: "2A", score: 90 },
+          { rank: 3, name: "Lê Ngọc Hân", class: "2B", score: 85 },
+          { rank: 4, name: "Phạm Đức Anh", class: "2C", score: 80 }
+        ]), 200);
+      },
+      getParentData(name, cls, onSuccess) {
+        if (IS_GAS) google.script.run.withSuccessHandler(onSuccess).getParentData(name, cls);
+        else setTimeout(() => onSuccess({
+          summary: { totalLessons: 6, avgScore: 84 },
+          history: [
+            { topicId: 1, lessonName: "Bài 1", score: 95 },
+            { topicId: 2, lessonName: "Bài 7", score: 85 },
+            { topicId: 3, lessonName: "Bài 15", score: 90 },
+            { topicId: 4, lessonName: "Bài 20", score: 55 },
+            { topicId: 6, lessonName: "Bài 29", score: 80 },
+            { topicId: 8, lessonName: "Bài 39", score: 100 }
+          ]
+        }), 300);
+      },
+      askEndy(input, studentName, contextText, statsJson, onSuccess) {
+        if (IS_GAS) {
+          google.script.run.withSuccessHandler(onSuccess)
+            .withFailureHandler(() => onSuccess(EndyTutor.solve(typeof input === 'string' ? input : '', contextText, currentLang)))
+            .askGemini(input, studentName, contextText, statsJson);
+        } else {
+          setTimeout(() => {
+            if (input && input.type === 'parent_advice') {
+              onSuccess(currentLang === 'en'
+                ? `**🤖 Endy's Pedagogical Advice for ${studentName} (${input.lesson}):**\n• Score: ${input.score}/100.\n• **Action Plan:** Spend 10 minutes in the **3D Math Lab** (Base-10 Blocks & Number Line) to build deep visual intuition!`
+                : `**🤖 Endy Tư Vấn cho bé ${studentName} (${input.lesson}):**\n• Kết quả đạt: ${input.score}/100 điểm.\n• **Đề xuất:** Phụ huynh hãy cùng con thực hành 10 phút với **Phòng thí nghiệm 3D** (Khối 3D có nhớ & Tia số qua 10) để con hiểu sâu bản chất thay vì học thuộc nhé!`
+              );
+            } else if (input && input.wrongQuestions) {
+              const list = input.wrongQuestions.map((q, i) => `${i + 1}. ${q}`).join('\n');
+              onSuccess(currentLang === 'en'
+                ? `🤖 **Let's review the 3 questions you missed:**\n${list}\n\n💡 **Endy's Tip:** Slow down, click **💡 Step Hint** or open **🧊 3D Lab** before choosing your answer. You've got this!`
+                : `🤖 **Endy điểm lại 3 câu con vừa nhầm nhé:**\n${list}\n\n💡 **Bí kíp của Endy:** Đừng vội chọn ngay! Con hãy bấm **💡 Gợi ý từng bước** hoặc mở **🧊 Mô phỏng 3D** để kiểm tra lại phép tính từng bước một. Chắc chắn lần này con sẽ làm đúng hết!`
+              );
+            } else {
+              const lastMsg = Array.isArray(input) && input.length ? input[input.length - 1].parts[0].text : String(input || '');
+              onSuccess(EndyTutor.solve(lastMsg, contextText, currentLang));
+            }
+          }, 350);
+        }
+      }
+    };
+
+    /* =====================================================================
+       6. STATE, DOM & AUDIO
+       ===================================================================== */
+    const DOM = {
+      introScreen: document.getElementById("intro-screen"),
+      loginScreen: document.getElementById("login-screen"),
+      topicSelectionScreen: document.getElementById("topic-selection-screen"),
+      mainMenuScreen: document.getElementById("main-menu-screen"),
+      quizScreen: document.getElementById("quiz-screen"),
+      parentDashboard: document.getElementById("parent-dashboard"),
+      parentLoginModal: document.getElementById("parent-login-modal"),
+      parentAdviceModal: document.getElementById("parent-advice-modal"),
+      resultModal: document.getElementById("result-modal"),
+      guideModal: document.getElementById("guide-modal"),
+      leaderboardModal: document.getElementById("leaderboard-modal"),
+      videoModal: document.getElementById("video-modal"),
+      settingsModal: document.getElementById("settings-modal"),
+      timeoutModal: document.getElementById("timeout-modal"),
+      remedialModal: document.getElementById("remedial-modal"),
+      remedialContent: document.getElementById("remedial-content"),
+      reviewModal: document.getElementById("review-modal"),
+      reviewContent: document.getElementById("review-content"),
+      rewardModal: document.getElementById("reward-modal"),
+      rewardImagePreview: document.getElementById("reward-image-preview"),
+      downloadRewardLink: document.getElementById("download-reward-link"),
+      rewardLoading: document.getElementById("reward-loading"),
+      rewardCanvas: document.getElementById("reward-canvas"),
+      mathLabModal: document.getElementById("math-lab-modal"),
+      toastNotification: document.getElementById("toast-notification"),
+      chatbotWrapper: document.getElementById("chatbot-wrapper"),
+      chatbotContainer: document.getElementById("chatbot-container"),
+      chatbotMessages: document.getElementById("chatbot-messages"),
+      chatbotInput: document.getElementById("chatbot-input"),
+      chatbotSendBtn: document.getElementById("chatbot-send-btn"),
+      chatbotMicBtn: document.getElementById("chatbot-mic-btn"),
+      totalScoreDisplay: document.getElementById("total-score-display"),
+      studentInfoDisplay: document.getElementById("student-info-display"),
+      studentNameInput: document.getElementById("student-name"),
+      studentClassInput: document.getElementById("student-class"),
+      backgroundMusic: document.getElementById("background-music"),
+      answerArea: document.getElementById("answer-area"),
+      feedbackArea: document.getElementById("feedback-area"),
+      leaderboardBody: document.getElementById("leaderboard-body"),
+      leaderboardTitle: document.getElementById("leaderboard-title"),
+      lessonMenuTitle: document.getElementById("lesson-menu-title"),
+      lessonGrid: document.getElementById("lesson-grid"),
+      topicGrid: document.getElementById("topic-grid"),
+      progressBar: document.getElementById("progress-bar"),
+      streakNotification: document.getElementById("streak-notification"),
+      lockScreen: document.getElementById("lock-screen"),
+      btnReward: document.getElementById("btn-reward"),
+      btnRemedial: document.getElementById("btn-remedial"),
+      btnContinueSettings: document.getElementById("btn-continue-settings"),
+      headerMusicBtn: document.getElementById("header-music-btn")
+    };
+
+    const SOUNDS = {
+      correct: document.getElementById("correct-sound"),
+      incorrect: document.getElementById("incorrect-sound"),
+      result: document.getElementById("result-sound"),
+      fail: document.getElementById("fail-sound"),
+      timeout: document.getElementById("timeout-sound"),
+      violation: document.getElementById("violation-sound"),
+      locked: document.getElementById("locked-sound"),
+      advice: document.getElementById("advice-sound")
+    };
+
+    let state = {
+      studentInfo: { name: "", class: "" },
+      allTimeScores: JSON.parse(localStorage.getItem('endy_math_scores') || '{}'),
+      preferredQuestionCount: 10,
+      currentTopicId: 1,
+      currentQuiz: { baiId: 0, title: "", questions: [], currentIndex: 0, score: 0, isTest: false, isFinalTest: false },
+      currentHintStep: 0,
+      isChatbotInitialized: false,
+      thinkingTimer: null,
+      toastTimer: null,
+      violationCount: 0,
+      consecutiveCorrect: 0,
+      consecutiveIncorrect: 0,
+      wrongQuestionsContent: [],
+      scoreBeforeStreak: 0,
+      studyTimeMinutes: 0,
+      studyTimer: null,
+      sessionQuestions: 0,
+      sessionCorrect: 0,
+      parentSearchName: ""
+    };
+
+    let chatHistoryContext = [];
+    const BAD_WORDS = ["lồn", "cặc", "địt", "đụ", "buồi", "dái", "vcl", "đm", "dm", "đéo", "đù", "ngu", "chó"];
+
+    function playSoundSafe(audioObj, fallbackFreq = 660) {
+      if (audioObj && audioObj.play) { audioObj.currentTime = 0; audioObj.play().catch(() => playBeep(fallbackFreq)); }
+      else playBeep(fallbackFreq);
+    }
+    function playBeep(freq = 660) {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator(), g = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.35, ctx.currentTime + 0.14);
+        g.gain.setValueAtTime(0.12, ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+        osc.connect(g); g.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + 0.25);
+      } catch (e) {}
+    }
+
+    /* =====================================================================
+       7. LANGUAGE, SPEECH & NAVIGATION
+       ===================================================================== */
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('endy_math_lang', lang);
+      document.documentElement.lang = lang;
+      document.querySelectorAll('.lang-vi-btn').forEach(b => b.classList.toggle('active', lang === 'vi'));
+      document.querySelectorAll('.lang-en-btn').forEach(b => b.classList.toggle('active', lang === 'en'));
+
+      const dict = I18N[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const k = el.getAttribute('data-i18n');
+        if (dict[k]) el.textContent = dict[k];
+      });
+      const gl = document.getElementById('guide-list');
+      if (gl) gl.innerHTML = dict.guideItems.map(i => `<li style="margin-bottom:8px;">${i}</li>`).join('');
+      DOM.chatbotInput.placeholder = lang === 'vi' ? 'Nhập phép tính hoặc hỏi Endy...' : 'Type a math problem or ask Endy...';
+      document.getElementById('mode-indicator-badge').textContent = IS_GAS
+        ? (lang === 'vi' ? '☁️ Kết nối Google Sheets' : '☁️ Cloud Connected')
+        : (lang === 'vi' ? '🧊 Phiên bản 3D Pro' : '🧊 3D Pro Edition');
+
+      if (!DOM.topicSelectionScreen.classList.contains('hidden')) renderTopicGrid();
+      if (!DOM.mainMenuScreen.classList.contains('hidden')) selectTopic(state.currentTopicId);
+      if (!DOM.mathLabModal.classList.contains('hidden')) {
+        updateBase10Explanation();
+        updateSolidInfo();
+        renderNumberLine();
+        updateScaleUI();
+        updateClockExplanation();
+        renderArraySim();
+      }
+      if (speechRecognitionObj) speechRecognitionObj.lang = lang === 'vi' ? 'vi-VN' : 'en-US';
+    }
+
+    function speakText(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text.replace(/__/g, currentLang === 'vi' ? ' chấm chấm ' : ' blank '));
+      u.lang = currentLang === 'vi' ? 'vi-VN' : 'en-US';
+      u.rate = 0.94;
+      window.speechSynthesis.speak(u);
+    }
+    function speakCurrentQuestion() { const q = document.getElementById('question-area'); if (q) speakText(q.innerText); }
+
+    function showToast(msg) {
+      DOM.toastNotification.innerText = msg;
+      DOM.toastNotification.classList.add("show");
+      clearTimeout(state.toastTimer);
+      state.toastTimer = setTimeout(() => DOM.toastNotification.classList.remove("show"), 3000);
+    }
+    function showScreen(screen) {
+      document.body.classList.toggle('is-parent-mode', screen === DOM.parentDashboard);
+      [DOM.introScreen, DOM.loginScreen, DOM.topicSelectionScreen, DOM.mainMenuScreen, DOM.quizScreen, DOM.parentDashboard].forEach(s => s.classList.add("hidden"));
+      screen.classList.remove("hidden");
+    }
+    function goToStudentMode() { showScreen(DOM.loginScreen); document.querySelectorAll('.student-only').forEach(e => e.style.display = 'none'); }
+    function openStandaloneLab() { DOM.introScreen.classList.add("hidden"); showScreen(DOM.loginScreen); openMathLab('sim-b10'); }
+    function goToParentMode() { DOM.introScreen.classList.add("hidden"); DOM.parentLoginModal.classList.remove("hidden"); }
+    function backToIntro() { DOM.parentLoginModal.classList.add("hidden"); DOM.parentDashboard.classList.add("hidden"); showScreen(DOM.introScreen); }
+    function goHomeOrIntro() { if (state.studentInfo.name) showTopicSelection(); else backToIntro(); }
+    function containsBadWord(t) { return BAD_WORDS.some(w => t.toLowerCase().split(/[\s,.]+/).includes(w)); }
+
+    document.getElementById("start-btn").addEventListener("click", () => {
+      const name = DOM.studentNameInput.value.trim(), cls = DOM.studentClassInput.value.trim();
+      if (!name || !cls) return showToast(currentLang === 'vi' ? "Con hãy điền đầy đủ Họ tên và Lớp nhé!" : "Please enter your Name and Class!");
+      if (containsBadWord(name) || containsBadWord(cls)) { playSoundSafe(SOUNDS.violation, 260); return showToast(currentLang === 'vi' ? "Tên chứa từ ngữ chưa phù hợp!" : "Please use polite words!"); }
+      state.studentInfo = { name, class: cls };
+      DOM.studentInfoDisplay.innerText = `🎓 ${name} (${cls})`;
+      DOM.settingsModal.classList.remove("hidden");
+    });
+
+    function selectTime(m, btn) {
+      state.studyTimeMinutes = m;
+      document.querySelectorAll(".time-option-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      DOM.btnContinueSettings.classList.remove("hidden");
+    }
+    function confirmSettings() {
+      if (state.studyTimeMinutes === 0) state.studyTimeMinutes = 30;
+      DOM.settingsModal.classList.add("hidden");
+      DOM.studentInfoDisplay.classList.remove("hidden");
+      document.querySelectorAll('.student-only').forEach(e => e.style.display = 'inline-flex');
+      DOM.chatbotWrapper.classList.remove("hidden");
+      startStudyTimer();
+      updateGrandTotalScore();
+      showTopicSelection();
+    }
+    function startStudyTimer() {
+      clearTimeout(state.studyTimer);
+      if (state.studyTimeMinutes > 0) {
+        state.studyTimer = setTimeout(() => {
+          playSoundSafe(SOUNDS.timeout, 520);
+          document.getElementById("timeout-message").innerHTML = currentLang === 'vi'
+            ? `<b>${state.studentInfo.name}</b> ơi, đã hết thời gian học rồi. Hãy đứng dậy uống nước và nghỉ mắt nhé!`
+            : `Hey <b>${state.studentInfo.name}</b>, time for an eye break! Stretch and rest your eyes!`;
+          DOM.timeoutModal.classList.remove("hidden");
+        }, state.studyTimeMinutes * 60 * 1000);
+      }
+    }
+    function closeTimeout() {
+      DOM.timeoutModal.classList.add("hidden");
+      if (SOUNDS.timeout) { SOUNDS.timeout.pause(); SOUNDS.timeout.currentTime = 0; }
+      state.studyTimer = setTimeout(() => {
+        playSoundSafe(SOUNDS.locked, 240);
+        document.getElementById("lock-msg").innerText = currentLang === 'vi' ? "Em đã học quá thời gian quy định. Hãy nghỉ ngơi và quay lại sau nhé!" : "You exceeded the study time limit. Please rest and come back later!";
+        DOM.lockScreen.classList.remove("hidden");
+      }, state.studyTimeMinutes * 60 * 1000);
+    }
+    function batDauNhac() {
+      ["background-music","correct-sound","incorrect-sound","result-sound","fail-sound","violation-sound","locked-sound","timeout-sound","advice-sound"].forEach(id => {
+        const s = document.getElementById(id);
+        if (s) s.play().then(() => { if (id !== "background-music") { s.pause(); s.currentTime = 0; } else s.volume = 0.22; }).catch(() => {});
+      });
+    }
+
+    /* =====================================================================
+       8. TOPICS, LESSONS, QUIZ + IDLE REMINDER + PROGRESSIVE HINTS
+       ===================================================================== */
+    function showTopicSelection() { clearTimeout(state.thinkingTimer); removeIdleAlert(); renderTopicGrid(); showScreen(DOM.topicSelectionScreen); }
+
+    function renderTopicGrid() {
+      DOM.topicGrid.innerHTML = "";
+      TOPIC_DATA.forEach(t => {
+        const card = document.createElement("div");
+        card.className = "topic-card" + (t.id === 15 ? " is-test" : "");
+        const done = Object.keys(state.allTimeScores[t.id] || {}).length;
+        card.innerHTML = `
+          <div class="topic-badge">${t.icon} ${currentLang === 'vi' ? 'Chủ đề' : 'Topic'} ${t.id}</div>
+          <div class="topic-title-text">${currentLang === 'vi' ? t.title : t.titleEn}</div>
+          <div class="topic-meta"><span>📚 ${t.lessons.length} ${currentLang === 'vi' ? 'bài' : 'lessons'}</span><span>⭐ ${done}/${t.lessons.length}</span></div>`;
+        card.onclick = () => selectTopic(t.id);
+        DOM.topicGrid.appendChild(card);
+      });
+    }
+
+    function selectTopic(topicId) {
+      state.currentTopicId = topicId;
+      if (!state.allTimeScores[topicId]) state.allTimeScores[topicId] = {};
+      updateGrandTotalScore();
+      const topic = TOPIC_DATA.find(t => t.id === topicId);
+      if (!topic) return;
+      DOM.lessonMenuTitle.innerText = `${topic.icon} ${currentLang === 'vi' ? topic.title : topic.titleEn}`;
+      DOM.lessonGrid.innerHTML = "";
+      topic.lessons.forEach(lesson => {
+        const card = document.createElement("div");
+        card.className = "lesson-card" + ((lesson.isTest || lesson.isFinalTest) ? " test" : "");
+        const nameStr = currentLang === 'vi' ? lesson.name : lesson.nameEn;
+        const best = state.allTimeScores[topicId]?.[lesson.id] ?? "--";
+        card.innerHTML = `<div class="lesson-name">${nameStr}</div><div class="lesson-score-pill"><span>${currentLang === 'vi' ? 'Điểm cao nhất' : 'Best Score'}</span><span>${best}/100</span></div>`;
+        card.onclick = () => startQuiz(lesson, nameStr);
+        DOM.lessonGrid.appendChild(card);
+      });
+      showScreen(DOM.mainMenuScreen);
+    }
+
+    function setQuestionCount(n, btnEl) {
+      state.preferredQuestionCount = n;
+      document.querySelectorAll('.qcount-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      showToast(currentLang === 'vi' ? `Đã chọn ${n} câu ngẫu nhiên mỗi bài!` : `Selected ${n} randomized questions!`);
+    }
+
+    function startQuiz(lesson, lessonTitle) {
+      showScreen(DOM.quizScreen);
+      document.getElementById("question-area").innerHTML = currentLang === 'vi' ? "Endy đang tạo đề ngẫu nhiên..." : "Endy is generating fresh questions...";
+      DOM.answerArea.innerHTML = "";
+      DOM.feedbackArea.classList.add("hidden");
+      state.consecutiveCorrect = 0; state.consecutiveIncorrect = 0; state.wrongQuestionsContent = []; state.scoreBeforeStreak = 0;
+      state.currentQuiz = { baiId: lesson.id, title: lessonTitle, questions: [], currentIndex: 0, score: 0, isTest: lesson.isTest || false, isFinalTest: lesson.isFinalTest || false };
+      updateQuizHeader();
+      Backend.getQuestions(state.currentTopicId, lesson.id, lesson.isTest || lesson.isFinalTest, qs => {
+        state.currentQuiz.questions = qs;
+        displayQuestion();
+      });
+    }
+
+    function updateQuizHeader() {
+      document.getElementById("quiz-title").innerText = state.currentQuiz.title;
+      const total = state.currentQuiz.questions.length || 1;
+      document.getElementById("quiz-progress").innerText = `${currentLang === 'vi' ? 'Câu' : 'Q'} ${Math.min(state.currentQuiz.currentIndex + 1, total)}/${total}`;
+      document.getElementById("quiz-score").innerText = state.currentQuiz.score;
+    }
+
+    function removeIdleAlert() {
+      const ov = document.getElementById("thinking-overlay");
+      if (ov) ov.remove();
+    }
+
+    function showProgressiveHint() {
+      const q = state.currentQuiz.questions[state.currentQuiz.currentIndex];
+      if (!q) return;
+      const box = document.getElementById("step-hint-box");
+      state.currentHintStep++;
+      if (state.currentHintStep === 1) {
+        box.innerHTML = `💡 <strong>${currentLang === 'vi' ? 'Gợi ý bước 1 (Endy mách nhỏ)' : 'Step 1 Hint (from Endy)'}:</strong> ${q.Hint1 || q.GiaiThich || ''}`;
+      } else {
+        box.innerHTML = `💡 <strong>${currentLang === 'vi' ? 'Gợi ý bước 2 (Sát đáp án)' : 'Step 2 Hint (Almost there)'}:</strong> ${q.Hint2 || q.GiaiThich || ''}<br><span style="color:#6D28D9;">👉 ${currentLang === 'vi' ? 'Nếu vẫn thấy khó, bấm 🧊 Mô phỏng 3D ngay nhé!' : 'Still tricky? Open 🧊 3D Lab!'}</span>`;
+      }
+      box.classList.remove("hidden");
+      playBeep(720);
+    }
+
+    function displayQuestion() {
+      clearTimeout(state.thinkingTimer);
+      removeIdleAlert();
+      state.currentHintStep = 0;
+      document.getElementById("step-hint-box").classList.add("hidden");
+
+      const total = state.currentQuiz.questions.length;
+      DOM.progressBar.style.width = `${total > 0 ? (state.currentQuiz.currentIndex / total) * 100 : 0}%`;
+      if (state.currentQuiz.currentIndex >= total) return showResult();
+
+      DOM.feedbackArea.classList.add("hidden");
+      const q = state.currentQuiz.questions[state.currentQuiz.currentIndex];
+      const qa = document.getElementById("question-area");
+      const hintLine = document.getElementById("bilingual-hint-line");
+      const qImg = document.getElementById("question-img");
+
+      qa.innerHTML = q.DeBai.replace(/__/g, '<input type="text" class="fill-in-blank-input" id="fill-in-answer" autofocus autocomplete="off">');
+      qa.classList.toggle("long-text", q.DeBai.length > 55);
+      if (currentLang === 'en' && q.DeBaiEn) { hintLine.textContent = `🇬🇧 ${q.DeBaiEn}`; hintLine.classList.remove("hidden"); }
+      else hintLine.classList.add("hidden");
+
+      if (q.HinhAnh && q.HinhAnh.toString().trim() !== "") { qImg.src = q.HinhAnh.toString().trim(); qImg.style.display = "block"; }
+      else { qImg.src = ""; qImg.style.display = "none"; }
+
+      DOM.answerArea.innerHTML = "";
+      if (q.LoaiCauHoi === "TRAC_NGHIEM" || q.LoaiCauHoi === "DUNG_SAI") {
+        const opts = [q.LuaChonA, q.LuaChonB, q.LuaChonC, q.LuaChonD].filter(Boolean).sort(() => 0.5 - Math.random());
+        opts.forEach(opt => {
+          const b = document.createElement("button");
+          b.className = "btn answer-btn";
+          b.innerHTML = opt;
+          b.onclick = e => checkAnswer(opt, b, e);
+          DOM.answerArea.appendChild(b);
+        });
+      } else {
+        DOM.answerArea.innerHTML = `<div id="fill-in-container"><div id="fill-in-feedback"></div><button class="btn btn-start submit-answer-btn">${I18N[currentLang].submitAnswer}</button></div>`;
+        const sb = DOM.answerArea.querySelector(".submit-answer-btn");
+        sb.onclick = e => {
+          const inp = document.getElementById("fill-in-answer");
+          if (!inp || inp.value.trim() === "") { document.getElementById("fill-in-feedback").innerText = I18N[currentLang].fillBlankWarn; return; }
+          checkAnswer(inp.value, sb, e);
+        };
+        setTimeout(() => {
+          const inp = document.getElementById("fill-in-answer");
+          if (inp) { inp.focus(); inp.addEventListener("keypress", ev => { if (ev.key === "Enter") sb.click(); }); }
+        }, 80);
+      }
+      updateQuizHeader();
+
+      // RESTORED ORIGINAL 60-SECOND IDLE / THINKING-TOO-LONG REMINDER
+      state.thinkingTimer = setTimeout(() => {
+        if (!DOM.chatbotContainer.classList.contains("hidden") || !DOM.mathLabModal.classList.contains("hidden")) return;
+        if (document.getElementById("thinking-overlay")) return;
+        const ov = document.createElement("div");
+        ov.id = "thinking-overlay";
+        ov.innerHTML = `
+          <div id="thinking-too-long-alert">
+            <span class="close-modal-x" onclick="removeIdleAlert()">&times;</span>
+            <div style="margin-bottom:8px;">${getEndySVG(76)}</div>
+            <p style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;color:#0F172A;margin-bottom:18px;line-height:1.45;">
+              ${currentLang === 'vi'
+                ? `Bạn <b>${state.studentInfo.name || 'nhỏ'}</b> ơi, con đang suy nghĩ hay rời máy rồi?<br>Câu này hơi khó phải không? Để Endy gợi ý nhé!`
+                : `Hey <b>${state.studentInfo.name || 'friend'}</b>, still there?<br>Is this question tricky? Let Endy help you!`}
+            </p>
+            <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+              <button class="btn btn-guide" onclick="removeIdleAlert(); showProgressiveHint();">💡 ${currentLang === 'vi' ? 'Xem gợi ý' : 'Show Hint'}</button>
+              <button class="btn btn-purple" onclick="removeIdleAlert(); openContextualLab();">🧊 ${currentLang === 'vi' ? 'Mô phỏng 3D' : '3D Lab'}</button>
+              <button class="btn btn-start" onclick="removeIdleAlert(); DOM.chatbotWrapper.click();">🤖 ${currentLang === 'vi' ? 'Hỏi Endy' : 'Ask Endy'}</button>
+            </div>
+          </div>`;
+        document.body.appendChild(ov);
+        playBeep(520);
+      }, 60000);
+    }
+
+    function checkAnswer(userAnswer, btnEl, event) {
+      clearTimeout(state.thinkingTimer);
+      removeIdleAlert();
+      document.querySelectorAll("#answer-area button").forEach(b => b.disabled = true);
+      const q = state.currentQuiz.questions[state.currentQuiz.currentIndex];
+      let delay = 1350;
+      state.sessionQuestions++;
+
+      if (userAnswer.toString().trim().toLowerCase() === q.DapAn.toString().trim().toLowerCase()) {
+        playSoundSafe(SOUNDS.correct, 784);
+        state.currentQuiz.score += 5;
+        state.sessionCorrect++;
+        if (btnEl) btnEl.classList.add("correct");
+        showScoreEffect(event, "+5 🌟", true);
+        state.consecutiveIncorrect = 0;
+        state.consecutiveCorrect++;
+        if (state.consecutiveCorrect === 3) {
+          const msg = currentLang === 'vi' ? ["🔥 Tuyệt vời!", "🌟 Siêu giỏi!", `🎉 ${state.studentInfo.name} xuất sắc!`] : ["🔥 On Fire!", "🌟 Math Star!", `🎉 Awesome ${state.studentInfo.name}!`];
+          showStreakMessage(msg[Math.floor(Math.random() * msg.length)]);
+          state.consecutiveCorrect = 0;
+        }
+      } else {
+        if (state.consecutiveIncorrect === 0) state.scoreBeforeStreak = state.currentQuiz.score;
+        playSoundSafe(SOUNDS.incorrect, 240);
+        if (!state.currentQuiz.isFinalTest) state.currentQuiz.score = Math.max(0, state.currentQuiz.score - 2);
+        if (btnEl) btnEl.classList.add("incorrect");
+        showScoreEffect(event, "-2 💡", false);
+        state.consecutiveCorrect = 0;
+        state.consecutiveIncorrect++;
+        state.wrongQuestionsContent.push(q.DeBai);
+
+        if (state.consecutiveIncorrect === 3 && !state.currentQuiz.isTest && !state.currentQuiz.isFinalTest) {
+          showReviewModal();
+          return;
+        }
+        DOM.feedbackArea.innerHTML = `${I18N[currentLang].wrongFeedbackPrefix} <strong style="color:#DC2626;">${q.DapAn}</strong>${q.GiaiThich ? `<br>💡 <em>${q.GiaiThich}</em>` : ''}`;
+        DOM.feedbackArea.classList.remove("hidden");
+        delay = 3100;
+      }
+
+      if (q.LoaiCauHoi === "TRAC_NGHIEM" || q.LoaiCauHoi === "DUNG_SAI") {
+        document.querySelectorAll("#answer-area button").forEach(b => {
+          if (b.innerHTML.trim().toLowerCase() === q.DapAn.toString().trim().toLowerCase()) b.classList.add("correct");
+        });
+      }
+      updateQuizHeader();
+      setTimeout(() => { state.currentQuiz.currentIndex++; displayQuestion(); }, delay);
+    }
+
+    function showReviewModal() {
+      DOM.reviewModal.classList.remove("hidden");
+      DOM.reviewContent.innerHTML = currentLang === 'vi' ? "🤖 Endy đang xem lại 3 câu vừa rồi..." : "🤖 Endy is reviewing your last 3 questions...";
+      Backend.askEndy({ wrongQuestions: state.wrongQuestionsContent }, state.studentInfo.name, "", null, text => {
+        DOM.reviewContent.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, "<br>");
+      });
+    }
+
+    function retryWrongQuestions() {
+      DOM.reviewModal.classList.add("hidden");
+      const backStep = Math.min(3, state.currentQuiz.currentIndex + 1);
+      state.currentQuiz.currentIndex = Math.max(0, state.currentQuiz.currentIndex - (backStep - 1));
+      state.currentQuiz.score = state.scoreBeforeStreak;
+      state.consecutiveIncorrect = 0; state.wrongQuestionsContent = [];
+      displayQuestion();
+    }
+
+    function showResult() {
+      clearTimeout(state.thinkingTimer);
+      removeIdleAlert();
+      DOM.resultModal.classList.remove("hidden");
+      const score = state.currentQuiz.score;
+      if (!state.allTimeScores[state.currentTopicId]) state.allTimeScores[state.currentTopicId] = {};
+      state.allTimeScores[state.currentTopicId][state.currentQuiz.baiId] = Math.max(score, state.allTimeScores[state.currentTopicId][state.currentQuiz.baiId] || 0);
+      localStorage.setItem('endy_math_scores', JSON.stringify(state.allTimeScores));
+      updateGrandTotalScore();
+
+      const maxPts = (state.currentQuiz.questions.length || 1) * 5;
+      const ratio = score / maxPts;
+      let rText, rCls;
+      if (ratio >= 0.9) { rText = currentLang === 'vi' ? "Hoàn thành Xuất sắc 🏆" : "Outstanding 🏆"; rCls = "excellent"; }
+      else if (ratio >= 0.75) { rText = currentLang === 'vi' ? "Hoàn thành Tốt 🌟" : "Great Job 🌟"; rCls = "good"; }
+      else if (ratio >= 0.5) { rText = currentLang === 'vi' ? "Hoàn thành 👍" : "Completed 👍"; rCls = "pass"; }
+      else { rText = currentLang === 'vi' ? "Cần cố gắng thêm 💪" : "Keep Practicing 💪"; rCls = "fail"; }
+
+      document.getElementById("result-title").innerText = rCls === 'fail'
+        ? (currentLang === 'vi' ? "Cố gắng lên nhé!" : "Keep Going!")
+        : (currentLang === 'vi' ? `Chúc mừng ${state.studentInfo.name}!` : `Congrats, ${state.studentInfo.name}!`);
+      if (rCls === 'fail') playSoundSafe(SOUNDS.fail, 220);
+      else { playSoundSafe(SOUNDS.result, 880); fireConfetti(); }
+
+      document.getElementById("result-message").innerText = state.currentQuiz.title;
+      document.getElementById("final-score").innerText = `${score}/${maxPts}`;
+      const rEl = document.getElementById("rating");
+      rEl.innerText = rText; rEl.className = `rating ${rCls}`;
+      DOM.btnReward.classList.toggle("hidden", !(rCls === 'excellent' || rCls === 'good'));
+      DOM.btnRemedial.classList.toggle("hidden", rCls !== 'fail');
+
+      Backend.saveResult(state.currentTopicId, JSON.stringify({ name: state.studentInfo.name, class: state.studentInfo.class, scores: state.allTimeScores[state.currentTopicId], allTopicsData: JSON.stringify(TOPIC_DATA) }), res => {
+        if (res && res.leaderboardData) onLeaderboardLoaded(res.leaderboardData);
+      });
+    }
+
+    function updateGrandTotalScore() {
+      let tot = 0;
+      Object.values(state.allTimeScores).forEach(t => Object.values(t).forEach(s => { if (typeof s === 'number') tot += s; }));
+      DOM.totalScoreDisplay.innerText = `⭐ ${tot}`;
+    }
+
+    /* =====================================================================
+       9. REWARD CARD, LEADERBOARD & PARENT DASHBOARD
+       ===================================================================== */
+    function generateRewardCard() {
+      DOM.rewardModal.classList.remove("hidden");
+      const canvas = DOM.rewardCanvas, ctx = canvas.getContext('2d');
+      canvas.width = 800; canvas.height = 540;
+      const grad = ctx.createLinearGradient(0, 0, 800, 540);
+      grad.addColorStop(0, "#FEF08A"); grad.addColorStop(0.5, "#BAE6FD"); grad.addColorStop(1, "#38BDF8");
+      ctx.fillStyle = grad; ctx.fillRect(0, 0, 800, 540);
+      ctx.strokeStyle = "#FFFFFF"; ctx.lineWidth = 18; ctx.strokeRect(24, 24, 752, 492);
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#0369A1"; ctx.font = "bold 38px 'Baloo 2', cursive";
+      ctx.fillText("🏆 KHÁM PHÁ TOÁN HỌC CÙNG ENDY 🏆", 400, 115);
+      ctx.fillStyle = "#DC2626"; ctx.font = "bold 54px 'Baloo 2', cursive";
+      ctx.fillText(state.studentInfo.name || "Học sinh Xuất sắc", 400, 245);
+      ctx.fillStyle = "#1E293B"; ctx.font = "bold 26px 'Nunito', sans-serif";
+      ctx.fillText(state.currentQuiz.title, 400, 325);
+      ctx.fillStyle = "#15803D"; ctx.font = "bold 36px 'Baloo 2', cursive";
+      ctx.fillText(`Điểm số: ${state.currentQuiz.score} 🌟`, 400, 415);
+      const url = canvas.toDataURL("image/png");
+      DOM.rewardImagePreview.src = url; DOM.downloadRewardLink.href = url;
+      DOM.rewardLoading.classList.add("hidden");
+      DOM.rewardImagePreview.classList.remove("hidden");
+      DOM.downloadRewardLink.classList.remove("hidden");
+      fireConfetti();
+    }
+
+    function openLeaderboard() {
+      const t = TOPIC_DATA.find(x => x.id === state.currentTopicId) || TOPIC_DATA[0];
+      DOM.leaderboardTitle.innerText = `🏆 ${currentLang === 'vi' ? t.title : t.titleEn}`;
+      DOM.leaderboardModal.classList.remove("hidden");
+      DOM.leaderboardBody.innerHTML = '<tr><td colspan="4">...</td></tr>';
+      Backend.getLeaderboard(t.id, onLeaderboardLoaded);
+    }
+    function onLeaderboardLoaded(data) {
+      DOM.leaderboardBody.innerHTML = "";
+      if (!data || !data.length) { DOM.leaderboardBody.innerHTML = '<tr><td colspan="4">--</td></tr>'; return; }
+      data.slice(0, 12).forEach(p => {
+        const tr = document.createElement("tr");
+        if (p.name === state.studentInfo.name || p.name === state.parentSearchName) tr.classList.add("current-user-row");
+        const m = p.rank === 1 ? "🥇 1" : p.rank === 2 ? "🥈 2" : p.rank === 3 ? "🥉 3" : p.rank;
+        tr.innerHTML = `<td>${m}</td><td>${p.name}</td><td>${p.class}</td><td>${p.score}</td>`;
+        DOM.leaderboardBody.appendChild(tr);
+      });
+    }
+
+    let progressChartInstance = null;
+    function submitParentLogin() {
+      const name = document.getElementById("parent-student-name").value.trim(), cls = document.getElementById("parent-student-class").value.trim();
+      if (!name || !cls) return showToast(currentLang === 'vi' ? "Nhập đầy đủ Họ tên và Lớp!" : "Fill in Name and Class!");
+      state.parentSearchName = name;
+      DOM.parentLoginModal.classList.add("hidden");
+      document.getElementById("parent-student-title").innerText = `${name} — ${currentLang === 'vi' ? 'Lớp' : 'Class'} ${cls}`;
+      Backend.getParentData(name, cls, renderParentDashboard);
+    }
+    function renderParentDashboard(data) {
+      showScreen(DOM.parentDashboard);
+      const history = data.history || [], sum = data.summary || { totalLessons: 0, avgScore: 0 };
+      document.getElementById("dash-total-lessons").innerText = sum.totalLessons;
+      document.getElementById("dash-avg-score").innerText = sum.avgScore;
+      const ctx = document.getElementById("progressChart").getContext("2d");
+      if (progressChartInstance) progressChartInstance.destroy();
+      progressChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: { labels: history.map(h => h.lessonName), datasets: [{ data: history.map(h => h.score), borderColor: '#0EA5E9', backgroundColor: 'rgba(14,165,233,0.18)', borderWidth: 3, tension: 0.35, fill: true, pointRadius: 5, pointBackgroundColor: '#F97316' }] },
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } }
+      });
+      const sL = document.getElementById("strength-list"), wL = document.getElementById("weakness-list");
+      sL.innerHTML = ""; wL.innerHTML = "";
+      history.forEach(item => {
+        const li = document.createElement("li");
+        if (item.score >= 80) { li.className = "analysis-item item-strength"; li.innerHTML = `<span>🌟 ${item.lessonName}</span><strong>${item.score}/100</strong>`; li.onclick = () => showParentAdvice(item.lessonName, item.score); sL.appendChild(li); }
+        else if (item.score < 60) { li.className = "analysis-item item-weakness"; li.innerHTML = `<span>🔧 ${item.lessonName}</span><strong>${item.score}/100</strong>`; li.onclick = () => showParentAdvice(item.lessonName, item.score); wL.appendChild(li); }
+      });
+      document.getElementById("leaderboard-topic-select").innerHTML = TOPIC_DATA.map(t => `<option value="${t.id}">${currentLang === 'vi' ? t.title : t.titleEn}</option>`).join('');
+    }
+    function viewSelectedLeaderboard() { state.currentTopicId = parseInt(document.getElementById("leaderboard-topic-select").value) || 1; openLeaderboard(); }
+    function showParentAdvice(lessonName, score) {
+      playSoundSafe(SOUNDS.advice, 600);
+      DOM.parentAdviceModal.classList.remove("hidden");
+      document.getElementById("advice-lesson-name").innerText = `${lessonName} (${score}/100)`;
+      document.getElementById("parent-advice-content").innerHTML = "🤖 Endy...";
+      Backend.askEndy({ type: 'parent_advice', lesson: lessonName, score }, state.parentSearchName, "", null, t => {
+        document.getElementById("parent-advice-content").innerHTML = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, "<br>");
+      });
+    }
+
+    /* =====================================================================
+       10. 6 INTERACTIVE 3D SIMULATIONS (INCLUDING 360° ROTATABLE 3D SOLIDS)
+       ===================================================================== */
+    function openMathLab(tabId = 'sim-b10') {
+      DOM.mathLabModal.classList.remove("hidden");
+      selectLabTab(tabId, document.querySelector(`.lab-tab-btn[data-sim="${tabId}"]`));
+      initBase10Sim();
+      initSolid3DEngine();
+      renderNumberLine();
+      resetScaleSim();
+      initLabClockNumbers();
+      setLabClock(8, 30);
+      renderArraySim();
+    }
+    function openContextualLab() {
+      const t = TOPIC_DATA.find(x => x.id === state.currentTopicId);
+      openMathLab(t ? t.sim : 'sim-b10');
+    }
+    function closeMathLab() { DOM.mathLabModal.classList.add("hidden"); }
+    function selectLabTab(tabId, btnEl) {
+      document.querySelectorAll('.lab-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.sim-box').forEach(s => s.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    /* SIM 1: 3D BASE-10 BLOCKS */
+    let b10State = { a: 28, b: 15, op: '+', tens: 3, ones: 13, step: 0 };
+    function initBase10Sim() {
+      const a = Math.max(11, Math.min(89, parseInt(document.getElementById('b10-a').value) || 28));
+      const b = Math.max(2, Math.min(59, parseInt(document.getElementById('b10-b').value) || 15));
+      const op = document.getElementById('b10-op').value;
+      if (op === '+') b10State = { a, b, op, tens: Math.floor(a / 10) + Math.floor(b / 10), ones: (a % 10) + (b % 10), step: 0 };
+      else {
+        const big = Math.max(a, b), small = Math.min(a, b);
+        document.getElementById('b10-a').value = big; document.getElementById('b10-b').value = small;
+        b10State = { a: big, b: small, op, tens: Math.floor(big / 10), ones: big % 10, step: 0 };
+      }
+      renderBase10Visual();
+      updateBase10Explanation();
+    }
+    function renderBase10Visual() {
+      document.getElementById('b10-tens-val').innerText = b10State.tens;
+      document.getElementById('b10-ones-val').innerText = b10State.ones;
+      document.getElementById('b10-tens-box').innerHTML = Array(Math.max(0, b10State.tens)).fill('<div class="rod-3d"><span></span><span></span><span></span><span></span><span></span></div>').join('');
+      let onesHtml = '';
+      for (let i = 0; i < Math.max(0, b10State.ones); i++) {
+        const hl = (b10State.step === 1 && i < 10) ? ' highlight-bundle' : '';
+        onesHtml += `<div class="cube-3d${hl}">1</div>`;
+      }
+      document.getElementById('b10-ones-box').innerHTML = onesHtml;
+    }
+    function highlightBase10Step() {
+      if (b10State.step >= 2) return;
+      b10State.step = 1;
+      renderBase10Visual();
+      updateBase10Explanation();
+      playBeep(660);
+    }
+    function triggerBase10Regroup() {
+      if (b10State.step === 2) return;
+      if (b10State.op === '+' && b10State.ones >= 10) { b10State.ones -= 10; b10State.tens += 1; }
+      else if (b10State.op === '-') {
+        const nO = b10State.b % 10, nT = Math.floor(b10State.b / 10);
+        if (b10State.ones < nO && b10State.tens > 0) { b10State.tens -= 1; b10State.ones += 10; }
+        b10State.ones -= nO; b10State.tens -= nT;
+      }
+      b10State.step = 2;
+      renderBase10Visual();
+      updateBase10Explanation();
+      playBeep(880);
+    }
+    function updateBase10Explanation() {
+      const { a, b, op, tens, ones, step } = b10State, ans = op === '+' ? a + b : a - b;
+      const el = document.getElementById('b10-explanation');
+      if (step === 0) {
+        el.innerHTML = currentLang === 'vi'
+          ? `🤖 Phép tính <strong>${a} ${op} ${b}</strong>: Hiện có <strong>${tens} thanh 3D (chục)</strong> và <strong>${ones} khối 3D (đơn vị)</strong>. Bấm <strong>💡 Bước 1</strong> rồi <strong>✨ Bước 2</strong> để quan sát phép có nhớ 3D!`
+          : `🤖 Problem <strong>${a} ${op} ${b}</strong>: We have <strong>${tens} 3D ten-rods</strong> and <strong>${ones} 3D unit cubes</strong>. Click <strong>Step 1</strong> then <strong>Step 2</strong>!`;
+      } else if (step === 1) {
+        el.innerHTML = currentLang === 'vi'
+          ? `💡 <strong>Bước 1:</strong> Đã đánh dấu vàng <strong>10 khối đơn vị</strong> đủ để ghép thành 1 thanh chục 3D! Bấm <strong>✨ Bước 2</strong> để gom lại nhé!`
+          : `💡 <strong>Step 1:</strong> Highlighted <strong>10 unit cubes</strong> ready to fuse into 1 3D ten-rod! Click <strong>Step 2</strong>!`;
+      } else {
+        el.innerHTML = currentLang === 'vi'
+          ? `🎉 <strong>Hoàn thành!</strong> Kết quả cuối cùng có <strong>${tens} thanh chục</strong> và <strong>${ones} khối đơn vị</strong> → <strong>${a} ${op} ${b} = ${ans}</strong>!`
+          : `🎉 <strong>Done!</strong> Final model has <strong>${tens} tens</strong> and <strong>${ones} ones</strong> → <strong>${a} ${op} ${b} = ${ans}</strong>!`;
+      }
+    }
+
+    /* SIM 2: TRUE 360° ROTATABLE 3D SOLID SHAPES ENGINE (PURE 3D PROJECTION) */
+    let solidType = 'cube', rotX = -0.42, rotY = 0.65, dragging3D = false, lastX = 0, lastY = 0, solidInit = false;
+    function initSolid3DEngine() {
+      if (solidInit) { drawSolid3D(); updateSolidInfo(); return; }
+      solidInit = true;
+      const cvs = document.getElementById('solid-3d-canvas');
+      const startDrag = (x, y) => { dragging3D = true; lastX = x; lastY = y; };
+      const moveDrag = (x, y) => {
+        if (!dragging3D) return;
+        rotY += (x - lastX) * 0.012;
+        rotX += (y - lastY) * 0.012;
+        lastX = x; lastY = y;
+        drawSolid3D();
+      };
+      const endDrag = () => { dragging3D = false; };
+      cvs.addEventListener('mousedown', e => startDrag(e.clientX, e.clientY));
+      window.addEventListener('mousemove', e => moveDrag(e.clientX, e.clientY));
+      window.addEventListener('mouseup', endDrag);
+      cvs.addEventListener('touchstart', e => { const t = e.touches[0]; startDrag(t.clientX, t.clientY); });
+      cvs.addEventListener('touchmove', e => { const t = e.touches[0]; moveDrag(t.clientX, t.clientY); e.preventDefault(); });
+      cvs.addEventListener('touchend', endDrag);
+      setInterval(() => { if (!dragging3D && !DOM.mathLabModal.classList.contains('hidden')) { rotY += 0.012; drawSolid3D(); } }, 35);
+      drawSolid3D();
+      updateSolidInfo();
+    }
+    function setSolidShape(t) { solidType = t; drawSolid3D(); updateSolidInfo(); playBeep(700); }
+    function project3D(p, cx, cy, scale) {
+      const cy1 = Math.cos(rotY), sy1 = Math.sin(rotY);
+      let x = p[0] * cy1 - p[2] * sy1, z = p[0] * sy1 + p[2] * cy1;
+      const cx1 = Math.cos(rotX), sx1 = Math.sin(rotX);
+      let y = p[1] * cx1 - z * sx1, z2 = p[1] * sx1 + z * cx1;
+      const f = 380 / (420 + z2 * scale);
+      return [cx + x * scale * f, cy + y * scale * f, z2];
+    }
+    function drawSolid3D() {
+      const cvs = document.getElementById('solid-3d-canvas');
+      if (!cvs) return;
+      const ctx = cvs.getContext('2d'), w = cvs.width, h = cvs.height, cx = w / 2, cy = h / 2;
+      ctx.clearRect(0, 0, w, h);
+
+      if (solidType === 'sphere') {
+        const R = 82;
+        const grad = ctx.createRadialGradient(cx - 28, cy - 28, 10, cx, cy, R);
+        grad.addColorStop(0, "#FEF08A"); grad.addColorStop(0.45, "#F97316"); grad.addColorStop(1, "#9A3412");
+        ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fillStyle = grad; ctx.fill();
+        ctx.strokeStyle = "rgba(255,255,255,0.45)"; ctx.lineWidth = 2;
+        for (let lat = -0.6; lat <= 0.6; lat += 0.4) {
+          ctx.beginPath();
+          for (let a = 0; a <= Math.PI * 2 + 0.1; a += 0.15) {
+            const p = project3D([Math.cos(a) * Math.cos(lat), Math.sin(lat), Math.sin(a) * Math.cos(lat)], cx, cy, R);
+            if (a === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
+          }
+          ctx.stroke();
+        }
+        return;
+      }
+
+      if (solidType === 'cylinder') {
+        const segs = 24, R = 0.72, H = 0.9;
+        const top = [], bot = [];
+        for (let i = 0; i < segs; i++) {
+          const a = (i / segs) * Math.PI * 2;
+          top.push(project3D([Math.cos(a) * R, -H, Math.sin(a) * R], cx, cy, 85));
+          bot.push(project3D([Math.cos(a) * R, H, Math.sin(a) * R], cx, cy, 85));
+        }
+        const faces = [];
+        for (let i = 0; i < segs; i++) {
+          const j = (i + 1) % segs;
+          const zAvg = (top[i][2] + top[j][2] + bot[j][2] + bot[i][2]) / 4;
+          faces.push({ pts: [top[i], top[j], bot[j], bot[i]], z: zAvg, col: i % 2 ? '#38BDF8' : '#0EA5E9' });
+        }
+        faces.push({ pts: top, z: top.reduce((s, p) => s + p[2], 0) / segs, col: '#BAE6FD' });
+        faces.push({ pts: bot, z: bot.reduce((s, p) => s + p[2], 0) / segs, col: '#0284C7' });
+        faces.sort((a, b) => b.z - a.z).forEach(f => {
+          ctx.beginPath();
+          f.pts.forEach((p, idx) => idx === 0 ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1]));
+          ctx.closePath(); ctx.fillStyle = f.col; ctx.fill();
+          ctx.strokeStyle = "#0369A1"; ctx.lineWidth = 1.2; ctx.stroke();
+        });
+        return;
+      }
+
+      // Cube or Cuboid
+      const sx = solidType === 'cuboid' ? 1.25 : 0.82, sy = 0.82, sz = 0.82;
+      const verts = [
+        [-sx,-sy,-sz],[sx,-sy,-sz],[sx,sy,-sz],[-sx,sy,-sz],
+        [-sx,-sy,sz],[sx,-sy,sz],[sx,sy,sz],[-sx,sy,sz]
+      ].map(v => project3D(v, cx, cy, 84));
+      const fDefs = [
+        { idx: [0,1,2,3], col: '#38BDF8' }, { idx: [4,5,6,7], col: '#0EA5E9' },
+        { idx: [0,1,5,4], col: '#BAE6FD' }, { idx: [2,3,7,6], col: '#0284C7' },
+        { idx: [0,3,7,4], col: '#7DD3FC' }, { idx: [1,2,6,5], col: '#0369A1' }
+      ];
+      fDefs.map(f => ({ pts: f.idx.map(i => verts[i]), z: f.idx.reduce((s, i) => s + verts[i][2], 0) / 4, col: f.col }))
+        .sort((a, b) => b.z - a.z).forEach(f => {
+          ctx.beginPath();
+          f.pts.forEach((p, i) => i === 0 ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1]));
+          ctx.closePath(); ctx.fillStyle = f.col; ctx.fill();
+          ctx.strokeStyle = "#FFFFFF"; ctx.lineWidth = 2.2; ctx.stroke();
+        });
+    }
+    function updateSolidInfo() {
+      const info = {
+        cube: { vi: ["6 mặt vuông bằng nhau", "12 cạnh", "8 đỉnh"], en: ["6 equal square faces", "12 edges", "8 vertices"], expVi: "🎲 <strong>Khối lập phương</strong> giống như viên xúc xắc hoặc khối Rubik!", expEn: "🎲 A <strong>Cube</strong> looks like a dice or Rubik's cube!" },
+        cuboid: { vi: ["6 mặt hình chữ nhật", "12 cạnh", "8 đỉnh"], en: ["6 rectangular faces", "12 edges", "8 vertices"], expVi: "📦 <strong>Khối hộp chữ nhật</strong> giống như hộp sữa, viên gạch hoặc quyển sách!", expEn: "📦 A <strong>Cuboid</strong> looks like a cereal box or brick!" },
+        cylinder: { vi: ["2 mặt đáy hình tròn", "1 mặt cong", "Lăn được 1 hướng"], en: ["2 circular bases", "1 curved surface", "Rolls smoothly"], expVi: "🥫 <strong>Khối trụ</strong> giống như lon sữa, chiếc trống, hộp cầu lông!", expEn: "🥫 A <strong>Cylinder</strong> looks like a tin can or drum!" },
+        sphere: { vi: ["1 mặt cong tròn đều", "0 cạnh", "Lăn mọi hướng"], en: ["1 round surface", "0 edges", "Rolls any way"], expVi: "⚽ <strong>Khối cầu</strong> giống như quả bóng đá, viên bi, quả địa cầu!", expEn: "⚽ A <strong>Sphere</strong> looks like a soccer ball or marble!" }
+      }[solidType];
+      const arr = currentLang === 'vi' ? info.vi : info.en;
+      document.getElementById('shape-stats-bar').innerHTML = arr.map(s => `<span class="shape-stat-chip">${s}</span>`).join('');
+      document.getElementById('solid-3d-explanation').innerHTML = currentLang === 'vi' ? info.expVi : info.expEn;
+    }
+
+    /* SIM 3: NUMBER LINE */
+    function renderNumberLine() {
+      let a = Math.max(5, Math.min(9, parseInt(document.getElementById('nl-a').value) || 8));
+      let b = Math.max(2, Math.min(9, parseInt(document.getElementById('nl-b').value) || 5));
+      const toTen = 10 - a, rem = b - toTen, sum = a + b, svg = document.getElementById('nl-svg');
+      const startX = 35, step = 33, yLine = 118;
+      let html = `<line x1="${startX}" y1="${yLine}" x2="${startX + 20 * step}" y2="${yLine}" stroke="#334155" stroke-width="4" stroke-linecap="round"/>`;
+      for (let i = 0; i <= 20; i++) {
+        const x = startX + i * step, isKey = (i === a || i === 10 || i === sum);
+        html += `<line x1="${x}" y1="${yLine - (isKey ? 12 : 6)}" x2="${x}" y2="${yLine + (isKey ? 12 : 6)}" stroke="${isKey ? '#EA580C' : '#64748B'}" stroke-width="${isKey ? 3.5 : 2}"/>`;
+        html += `<text x="${x}" y="${yLine + 28}" text-anchor="middle" font-family="Baloo 2" font-size="${isKey ? 16 : 13}" font-weight="800" fill="${i === 10 ? '#0284C7' : (isKey ? '#EA580C' : '#475569')}">${i}</text>`;
+      }
+      const xA = startX + a * step, x10 = startX + 10 * step, xSum = startX + sum * step;
+      if (toTen > 0 && b >= toTen) {
+        html += `<path d="M ${xA} ${yLine - 10} Q ${(xA + x10) / 2} 32 ${x10} ${yLine - 10}" fill="none" stroke="#0EA5E9" stroke-width="4" stroke-dasharray="6,3"/>`;
+        html += `<circle cx="${x10}" cy="${yLine}" r="6" fill="#0284C7"/><text x="${(xA + x10) / 2}" y="44" text-anchor="middle" font-family="Baloo 2" font-size="16" font-weight="800" fill="#0284C7">+${toTen}</text>`;
+        if (rem > 0) {
+          html += `<path d="M ${x10} ${yLine - 10} Q ${(x10 + xSum) / 2} 32 ${xSum} ${yLine - 10}" fill="none" stroke="#22C55E" stroke-width="4"/>`;
+          html += `<circle cx="${xSum}" cy="${yLine}" r="8" fill="#16A34A"/><text x="${(x10 + xSum) / 2}" y="44" text-anchor="middle" font-family="Baloo 2" font-size="16" font-weight="800" fill="#15803D">+${rem}</text>`;
+        }
+      }
+      svg.innerHTML = html;
+      document.getElementById('nl-explanation').innerHTML = currentLang === 'vi'
+        ? `🤖 <strong>Tách số qua 10:</strong> ${a} + ${b} = (${a} + ${toTen}) + ${Math.max(0, rem)} = 10 + ${Math.max(0, rem)} = <strong>${sum}</strong>!`
+        : `🤖 <strong>Make-10 Jump:</strong> ${a} + ${b} = (${a} + ${toTen}) + ${Math.max(0, rem)} = 10 + ${Math.max(0, rem)} = <strong>${sum}</strong>!`;
+    }
+
+    /* SIM 4: 3D SCALE */
+    let scaleState = { emoji: '🍉', leftKg: 3, rightItems: [] };
+    function setScaleTarget(e, kg) { scaleState = { emoji: e, leftKg: kg, rightItems: [] }; updateScaleUI(); }
+    function addScaleRight(kg) { if (scaleState.rightItems.length < 6) { scaleState.rightItems.push(kg); updateScaleUI(); playBeep(680); } }
+    function resetScaleSim() { scaleState.rightItems = []; updateScaleUI(); }
+    function updateScaleUI() {
+      const rSum = scaleState.rightItems.reduce((a, b) => a + b, 0), diff = rSum - scaleState.leftKg;
+      document.getElementById('lab-left-tray').innerHTML = `<span style="font-size:24px;">${scaleState.emoji}</span><span class="w-chip">${scaleState.leftKg}kg</span>`;
+      document.getElementById('lab-right-tray').innerHTML = scaleState.rightItems.map(w => `<span class="w-chip" style="background:#EA580C;">${w}kg</span>`).join('');
+      document.getElementById('lab-scale-beam').style.transform = `rotate(${Math.max(-14, Math.min(14, diff * 4.5))}deg)`;
+      const n = document.getElementById('scale-explanation');
+      n.innerHTML = diff === 0
+        ? (currentLang === 'vi' ? `🎉 <strong>Cân thăng bằng!</strong> ${scaleState.leftKg} kg = ${rSum} kg.` : `🎉 <strong>Balanced!</strong> ${scaleState.leftKg} kg = ${rSum} kg.`)
+        : (diff < 0
+          ? (currentLang === 'vi' ? `⚖️ Bên trái (${scaleState.leftKg} kg) > Bên phải (${rSum} kg). Cần thêm ${scaleState.leftKg - rSum} kg!` : `⚖️ Left (${scaleState.leftKg} kg) > Right (${rSum} kg). Add ${scaleState.leftKg - rSum} kg!`)
+          : (currentLang === 'vi' ? `⚖️ Bên phải (${rSum} kg) > Bên trái (${scaleState.leftKg} kg). Bấm 🔄 thử lại!` : `⚖️ Right (${rSum} kg) > Left (${scaleState.leftKg} kg). Click 🔄 to reset!`));
+    }
+
+    /* SIM 5: 3D CLOCK */
+    let labClockMin = 510, clockNumsInit = false;
+    function initLabClockNumbers() {
+      if (clockNumsInit) return; clockNumsInit = true;
+      const c = document.getElementById('lab-analog-clock');
+      for (let n = 1; n <= 12; n++) {
+        const a = n * 30 * Math.PI / 180, d = document.createElement('div');
+        d.className = 'clock-num'; d.textContent = n;
+        d.style.left = `${96 + 78 * Math.sin(a) - 13}px`; d.style.top = `${96 - 78 * Math.cos(a) - 13}px`;
+        c.appendChild(d);
+      }
+    }
+    function setLabClock(h, m) { labClockMin = ((h * 60 + m) % 1440 + 1440) % 1440; updateLabClockUI(); playBeep(740); }
+    function stepClock(dm) { labClockMin = (labClockMin + dm) % 1440; updateLabClockUI(); playBeep(740); }
+    function updateLabClockUI() {
+      const h = Math.floor(labClockMin / 60), m = labClockMin % 60;
+      document.getElementById('lab-min-hand').style.transform = `rotate(${m * 6}deg)`;
+      document.getElementById('lab-hr-hand').style.transform = `rotate(${(h % 12) * 30 + m * 0.5}deg)`;
+      document.getElementById('lab-digital-clock').innerText = `${String(h).padStart(2, '0')} : ${String(m).padStart(2, '0')}`;
+      updateClockExplanation();
+    }
+    function updateClockExplanation() {
+      const h = Math.floor(labClockMin / 60), m = labClockMin % 60, h12 = h % 12 || 12;
+      const pVi = h < 12 ? "sáng" : (h < 18 ? "chiều" : "tối");
+      document.getElementById('clock-explanation').innerHTML = currentLang === 'vi'
+        ? `🤖 Đồng hồ chỉ <strong>${h} giờ ${m} phút</strong> (<strong>${h12} giờ ${m === 30 ? 'rưỡi' : m + ' phút'} ${pVi}</strong>).`
+        : `🤖 Time: <strong>${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}</strong> (<strong>${h12}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}</strong>).`;
+    }
+
+    /* SIM 6: 3D MULTIPLICATION ARRAY */
+    function renderArraySim() {
+      const r = Math.max(1, Math.min(5, parseInt(document.getElementById('arr-rows').value) || 2));
+      const c = Math.max(1, Math.min(10, parseInt(document.getElementById('arr-cols').value) || 5));
+      let html = '';
+      for (let i = 0; i < r; i++) html += `<div class="array-row">${Array(c).fill('<div class="array-cell-3d">⭐</div>').join('')}</div>`;
+      document.getElementById('arr-grid-stage').innerHTML = html;
+      document.getElementById('arr-explanation').innerHTML = currentLang === 'vi'
+        ? `🤖 <strong>${r} hàng</strong> × <strong>${c} ngôi sao</strong> = ${Array(r).fill(c).join(' + ')} = <strong>${r * c}</strong>!`
+        : `🤖 <strong>${r} rows</strong> × <strong>${c} stars</strong> = ${Array(r).fill(c).join(' + ')} = <strong>${r * c}</strong>!`;
+    }
+    function swapArraySim() {
+      const rEl = document.getElementById('arr-rows'), cEl = document.getElementById('arr-cols'), t = rEl.value;
+      rEl.value = Math.min(5, parseInt(cEl.value) || 2); cEl.value = t;
+      renderArraySim(); playBeep(760);
+    }
+
+    /* =====================================================================
+       11. CHATBOT ENDY + QUICK CHIPS + BILINGUAL VOICE + CONFETTI
+       ===================================================================== */
+    DOM.chatbotWrapper.addEventListener("click", () => {
+      DOM.chatbotContainer.classList.toggle("hidden");
+      if (!state.isChatbotInitialized) {
+        DOM.chatbotMessages.innerHTML = "";
+        chatHistoryContext = [];
+        addMessage(currentLang === 'vi'
+          ? `Xin chào ${state.studentInfo.name || 'bạn nhỏ'}! Mình là **Endy** 🤖. Con cứ gõ phép tính (vd: 28 + 15) hoặc bấm nút gợi ý bên dưới, Endy sẽ hướng dẫn cách giải từng bước nhé!`
+          : `Hi ${state.studentInfo.name || 'explorer'}! I'm **Endy** 🤖. Type any math problem (e.g. 28 + 15) or click a quick chip below for step-by-step guidance!`, "bot-message");
+        state.isChatbotInitialized = true;
+      }
+    });
+
+    function addMessage(text, cls) {
+      const d = document.createElement("div");
+      d.className = `chat-message ${cls}`;
+      d.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, "<br>");
+      DOM.chatbotMessages.appendChild(d);
+      DOM.chatbotMessages.scrollTop = DOM.chatbotMessages.scrollHeight;
+    }
+
+    function quickAskEndy(mode) {
+      const map = {
+        current: currentLang === 'vi' ? "Hướng dẫn mình giải bài đang làm" : "Help me solve the current question",
+        carry: currentLang === 'vi' ? "Cách cộng có nhớ thế nào?" : "How does regrouping work?",
+        clock: currentLang === 'vi' ? "Cách đổi giờ chiều sang 24 giờ?" : "How to convert PM to 24h clock?",
+        mul: currentLang === 'vi' ? "Mẹo tính nhanh bảng nhân 2 và 5" : "Tips for 2 and 5 times tables"
+      };
+      DOM.chatbotInput.value = map[mode] || "";
+      sendMessage();
+    }
+
+    function sendMessage() {
+      const prompt = DOM.chatbotInput.value.trim();
+      if (!prompt) return;
+      if (containsBadWord(prompt)) {
+        state.violationCount++;
+        playSoundSafe(SOUNDS.violation, 240);
+        addMessage(prompt, "user-message");
+        DOM.chatbotInput.value = "";
+        addMessage(currentLang === 'vi' ? "Hãy nghiêm túc học tập nhé! Nếu tiếp tục vi phạm hệ thống sẽ tạm khóa phiên học đấy!" : "Please use polite words and focus on learning!", "bot-message");
+        if (state.violationCount >= 3) { playSoundSafe(SOUNDS.locked, 220); DOM.lockScreen.classList.remove("hidden"); }
+        return;
+      }
+      addMessage(prompt, "user-message");
+      DOM.chatbotInput.value = "";
+      chatHistoryContext.push({ role: "user", parts: [{ text: prompt }] });
+      const qText = !DOM.quizScreen.classList.contains("hidden") ? document.getElementById("question-area").innerText.trim() : "";
+      Backend.askEndy(chatHistoryContext.slice(-10), state.studentInfo.name, qText, JSON.stringify({ lang: currentLang }), res => {
+        const clean = String(res).replace(/\$/g, '');
+        addMessage(clean, "bot-message");
+        chatHistoryContext.push({ role: "model", parts: [{ text: clean }] });
+      });
+    }
+
+    DOM.chatbotSendBtn.addEventListener("click", sendMessage);
+    DOM.chatbotInput.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage(); });
+
+    let speechRecognitionObj = null;
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      speechRecognitionObj = new SR();
+      speechRecognitionObj.lang = currentLang === 'vi' ? 'vi-VN' : 'en-US';
+      speechRecognitionObj.interimResults = true;
+      let rec = false;
+      DOM.chatbotMicBtn.addEventListener('click', () => {
+        if (rec) { speechRecognitionObj.stop(); return; }
+        speechRecognitionObj.lang = currentLang === 'vi' ? 'vi-VN' : 'en-US';
+        try { speechRecognitionObj.start(); } catch (e) {}
+      });
+      speechRecognitionObj.onstart = () => { rec = true; DOM.chatbotMicBtn.classList.add('is-recording'); };
+      speechRecognitionObj.onresult = ev => { let t = ''; for (let i = 0; i < ev.results.length; i++) t += ev.results[i][0].transcript; DOM.chatbotInput.value = t; };
+      speechRecognitionObj.onend = () => { rec = false; DOM.chatbotMicBtn.classList.remove('is-recording'); };
+    } else DOM.chatbotMicBtn.style.display = 'none';
+
+    function showStreakMessage(text) { DOM.streakNotification.innerText = text; DOM.streakNotification.classList.remove("hidden"); setTimeout(() => DOM.streakNotification.classList.add("hidden"), 2200); }
+    function showScoreEffect(ev, text, ok) {
+      const el = document.createElement('div');
+      el.className = 'floating-score'; el.innerText = text; el.style.color = ok ? '#16A34A' : '#EF4444';
+      el.style.left = `${(ev && ev.clientX ? ev.clientX : window.innerWidth / 2) - 20}px`;
+      el.style.top = `${(ev && ev.clientY ? ev.clientY : window.innerHeight / 2) - 20}px`;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 950);
+    }
+    function fireConfetti() {
+      const cvs = document.getElementById('confetti-canvas'), ctx = cvs.getContext('2d');
+      cvs.width = window.innerWidth; cvs.height = window.innerHeight;
+      const cols = ['#EF4444','#0EA5E9','#FACC15','#22C55E','#F97316','#8B5CF6'];
+      const pts = Array.from({ length: 120 }, () => ({ x: Math.random() * cvs.width, y: Math.random() * -cvs.height, s: Math.random() * 8 + 5, c: cols[Math.floor(Math.random() * cols.length)], vy: Math.random() * 4 + 2.5, a: Math.random() * 6 }));
+      const t0 = Date.now();
+      (function anim() {
+        if (Date.now() - t0 > 2600) { ctx.clearRect(0, 0, cvs.width, cvs.height); return; }
+        ctx.clearRect(0, 0, cvs.width, cvs.height);
+        pts.forEach(p => { p.y += p.vy; p.x += Math.sin(p.a) * 2; p.a += 0.08; ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2); ctx.fill(); });
+        requestAnimationFrame(anim);
+      })();
+    }
+
+    /* =====================================================================
+       12. WIRE-UPS & INIT
+       ===================================================================== */
+    document.getElementById("home-btn").addEventListener("click", showTopicSelection);
+    document.getElementById("header-trophy-btn").addEventListener("click", openLeaderboard);
+    document.getElementById("leaderboard-btn").addEventListener("click", openLeaderboard);
+    document.getElementById("close-leaderboard-x").addEventListener("click", () => DOM.leaderboardModal.classList.add("hidden"));
+    document.getElementById("header-video-btn").addEventListener("click", () => DOM.videoModal.classList.remove("hidden"));
+    document.getElementById("login-video-btn").addEventListener("click", () => DOM.videoModal.classList.remove("hidden"));
+    document.getElementById("close-video-x").addEventListener("click", () => { DOM.videoModal.classList.add("hidden"); const i = document.getElementById('instruction-video'); if (i) { const s = i.src; i.src = ''; i.src = s; } });
+    document.getElementById("guide-btn").addEventListener("click", () => DOM.guideModal.classList.remove("hidden"));
+    document.getElementById("close-guide-btn").addEventListener("click", () => DOM.guideModal.classList.add("hidden"));
+    document.getElementById("btn-back-to-topics").addEventListener("click", showTopicSelection);
+    document.getElementById("btn-back-to-menu").addEventListener("click", () => selectTopic(state.currentTopicId));
+    document.getElementById("back-to-menu-btn-result").addEventListener("click", () => { DOM.resultModal.classList.add("hidden"); selectTopic(state.currentTopicId); });
+    DOM.btnRemedial.addEventListener("click", () => {
+      DOM.resultModal.classList.add("hidden"); DOM.remedialModal.classList.remove("hidden");
+      DOM.remedialContent.innerHTML = "🤖 Endy...";
+      Backend.askEndy({ wrongQuestions: [state.currentQuiz.title] }, state.studentInfo.name, state.currentQuiz.title, null, t => {
+        DOM.remedialContent.innerHTML = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, "<br>");
+      });
+    });
+    DOM.headerMusicBtn.addEventListener("click", () => {
+      if (DOM.backgroundMusic.paused) { DOM.backgroundMusic.play().catch(() => {}); DOM.headerMusicBtn.innerText = "🔊"; }
+      else { DOM.backgroundMusic.pause(); DOM.headerMusicBtn.innerText = "🔇"; }
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("intro-mascot-svg").innerHTML = getEndySVG(96);
+      document.getElementById("header-mascot-svg").innerHTML = getEndySVG(38);
+      document.getElementById("login-mascot-svg").innerHTML = getEndySVG(84);
+      document.getElementById("chatbot-fab-svg").innerHTML = getEndySVG(48);
+      setLanguage(currentLang);
+      Backend.setTopicData(JSON.stringify(TOPIC_DATA));
+    });
+  </script>
+</body>
+</html>
