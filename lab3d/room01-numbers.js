@@ -220,6 +220,13 @@ export const Room01Numbers = {
         ${state.ones >= 10 ? `<button class="mdl-btn mdl-btn-warn" style="width:100%;margin-top:6px;" id="r1-regroup-10">✨ ${isEn ? 'Bundle 10 Ones → 1 Ten' : 'Gom 10 đơn vị → 1 chục'}</button>` : ''}
         ${state.tens >= 10 ? `<button class="mdl-btn mdl-btn-success" style="width:100%;margin-top:6px;" id="r1-regroup-100">✨ ${isEn ? 'Bundle 10 Tens → 1 Hundred' : 'Gom 10 chục → 1 trăm'}</button>` : ''}
 
+        <div class="mdl-section-title">📚 ${isEn ? 'Guided Practice Presets' : 'Chọn nhanh bài mẫu thực hành'}</div>
+        <div class="mdl-control-row">
+          <button class="mdl-btn" id="r1-ex-1" style="font-size:0.78rem;">${isEn ? 'Build 235' : 'Dựng 235'}</button>
+          <button class="mdl-btn" id="r1-ex-2" style="font-size:0.78rem;">${isEn ? '14 Ones → 1T 4O' : 'Gom 14 lẻ'}</button>
+          <button class="mdl-btn" id="r1-ex-3" style="font-size:0.78rem;">${isEn ? 'Compare 145 & 154' : 'So sánh 145 & 154'}</button>
+        </div>
+
         <div class="mdl-challenge-box">
           <div class="mdl-section-title" style="margin-top:0;color:#FEF08A;">🎯 ${isEn ? 'Practice Challenge' : 'Thử thách thực hành'}</div>
           ${state.challengeTarget === null
@@ -284,6 +291,10 @@ export const Room01Numbers = {
       bind('r1-regroup-100', () => {
         if (state.tens >= 10) { state.tens -= 10; state.hundreds += 1; ctx.playTone(920); rebuild3D(); }
       });
+
+      bind('r1-ex-1', () => { state.mode = 'explore'; setNumber(235); });
+      bind('r1-ex-2', () => { state.mode = 'explore'; state.thousands = 0; state.hundreds = 0; state.tens = 1; state.ones = 14; rebuild3D(); });
+      bind('r1-ex-3', () => { state.mode = 'compare'; state.compareB = 154; setNumber(145); });
 
       bind('r1-new-ch', () => {
         state.challengeTarget = Math.floor(Math.random() * 450) + 112;
