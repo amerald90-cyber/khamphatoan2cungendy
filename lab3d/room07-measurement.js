@@ -10,9 +10,9 @@ import { THREE } from './lab-engine.js';
 
 export const Room07Measurement = {
   id: 'room07',
-  mount(engine, ctx) {
+  mount(engine, ctx, initialStation = 'ruler') {
     const state = {
-      station: 'ruler', // 'ruler' | 'scale' | 'liquid' | 'clock'
+      station: initialStation, // 'ruler' | 'scale' | 'liquid' | 'clock'
       objLen: 12,       // cm (1..20)
       scaleLeft: 3,     // kg
       scaleRight: 1,    // kg
@@ -201,9 +201,9 @@ export const Room07Measurement = {
         dialTex.colorSpace = THREE.SRGBColorSpace;
         const dialMesh = new THREE.Mesh(
           new THREE.CircleGeometry(2.14, 48),
-          new THREE.MeshBasicMaterial({ map: dialTex })
+          new THREE.MeshBasicMaterial({ map: dialTex, side: THREE.DoubleSide })
         );
-        dialMesh.position.set(0, 2.7, 0.2);
+        dialMesh.position.set(0, 2.7, 0.22);
         engine.roomGroup.add(dialMesh);
 
         const h = Math.floor(state.clockMin / 60), m = state.clockMin % 60;
