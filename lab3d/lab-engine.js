@@ -205,29 +205,36 @@ export class Lab3DEngine {
   onClick(fn) { this.clickHandlers.push(fn); }
   registerInteractive(mesh) { this.interactiveMeshes.push(mesh); }
 
-  // Helper: Create crisp CanvasTexture for numbers/labels in 3D space
-  createLabelSprite(text, bgColor = '#0284C7', textColor = '#FFFFFF', scale = 1.4) {
+  // Helper: Create crisp AUTO-SIZED CanvasTexture for 3D labels (NEVER clips long Vietnamese text!)
+  createLabelSprite(text, bgColor = '#0284C7', textColor = '#FFFFFF', scale = 1.2) {
+    const str = String(text);
     const cvs = document.createElement('canvas');
-    cvs.width = 256;
-    cvs.height = 128;
+    const tmpCtx = cvs.getContext('2d');
+    tmpCtx.font = 'bold 46px "Baloo 2", sans-serif';
+    const textW = tmpCtx.measureText(str).width;
+    const w = Math.max(220, Math.ceil(textW + 72));
+    const h = 112;
+    cvs.width = w;
+    cvs.height = h;
     const ctx = cvs.getContext('2d');
     ctx.fillStyle = bgColor;
     ctx.beginPath();
-    ctx.roundRect(12, 16, 232, 96, 28);
+    ctx.roundRect(10, 14, w - 20, h - 28, 28);
     ctx.fill();
     ctx.lineWidth = 6;
-    ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.9)';
     ctx.stroke();
     ctx.fillStyle = textColor;
-    ctx.font = 'bold 54px "Baloo 2", sans-serif';
+    ctx.font = 'bold 46px "Baloo 2", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(String(text), 128, 66);
+    ctx.fillText(str, w / 2, h / 2 + 2);
 
     const tex = new THREE.CanvasTexture(cvs);
+    tex.colorSpace = THREE.SRGBColorSpace;
     const mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
     const sprite = new THREE.Sprite(mat);
-    sprite.scale.set(scale * 2, scale, 1);
+    sprite.scale.set(scale * (w / h), scale, 1);
     return sprite;
   }
 
