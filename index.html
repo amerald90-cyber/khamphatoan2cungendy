@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="lab3d/lab-styles.css">
   <style>
     :root {
       --primary: #0EA5E9;
@@ -2254,7 +2255,13 @@
       screen.classList.remove("hidden");
     }
     function goToStudentMode() { showScreen(DOM.loginScreen); document.querySelectorAll('.student-only').forEach(e => e.style.display = 'none'); }
-    function openStandaloneLab() { DOM.introScreen.classList.add("hidden"); showScreen(DOM.loginScreen); openMathLab('sim-b10'); }
+    function openStandaloneLab() {
+      if (typeof window.openMathDiscoveryLab === 'function') {
+        window.openMathDiscoveryLab(null);
+      } else {
+        DOM.introScreen.classList.add("hidden"); showScreen(DOM.loginScreen); openMathLab('sim-b10');
+      }
+    }
     function goToParentMode() { DOM.introScreen.classList.add("hidden"); DOM.parentLoginModal.classList.remove("hidden"); }
     function backToIntro() { DOM.parentLoginModal.classList.add("hidden"); DOM.parentDashboard.classList.add("hidden"); showScreen(DOM.introScreen); }
     function goHomeOrIntro() { if (state.studentInfo.name) showTopicSelection(); else backToIntro(); }
@@ -2675,6 +2682,11 @@
        10. 6 INTERACTIVE 3D SIMULATIONS (INCLUDING 360° ROTATABLE 3D SOLIDS)
        ===================================================================== */
     function openMathLab(tabId = 'sim-b10') {
+      if (typeof window.openMathDiscoveryLab === 'function') {
+        const mapRoom = { 'sim-b10': 'room03', 'sim-nl': 'room02', 'sim-array': 'room04' };
+        window.openMathDiscoveryLab(mapRoom[tabId] || null);
+        return;
+      }
       DOM.mathLabModal.classList.remove("hidden");
       selectLabTab(tabId, document.querySelector(`.lab-tab-btn[data-sim="${tabId}"]`));
       initBase10Sim();
@@ -2686,6 +2698,11 @@
       renderArraySim();
     }
     function openContextualLab() {
+      if (typeof window.openMathDiscoveryLab === 'function') {
+        const topicToRoom = { 1: 'room01', 2: 'room02', 4: 'room03', 7: 'room03', 8: 'room04', 10: 'room01', 12: 'room03' };
+        const r = topicToRoom[state.currentTopicId];
+        if (r) { window.openMathDiscoveryLab(r); return; }
+      }
       const t = TOPIC_DATA.find(x => x.id === state.currentTopicId);
       openMathLab(t ? t.sim : 'sim-b10');
     }
@@ -3101,5 +3118,6 @@
       Backend.setTopicData(JSON.stringify(TOPIC_DATA));
     });
   </script>
+  <script type="module" src="lab3d/lab-shell.js"></script>
 </body>
 </html>
