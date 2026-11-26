@@ -7,6 +7,10 @@ import { Room01Numbers } from './room01-numbers.js';
 import { Room02NumberLine } from './room02-numberline.js';
 import { Room03AddSub } from './room03-addsub.js';
 import { Room04MulDiv } from './room04-muldiv.js';
+import { Room05Area } from './room05-area.js';
+import { Room06Geometry } from './room06-geometry.js';
+import { Room07Measurement } from './room07-measurement.js';
+import { Room08MathCity } from './room08-mathcity.js';
 
 const ROOMS_META = [
   {
@@ -38,32 +42,32 @@ const ROOMS_META = [
     tags: ['Mảng 3D', 'Giao hoán 90°', 'Chia có dư'], module: Room04MulDiv
   },
   {
-    id: 'room05', num: '05', live: false, icon: '🏙️', color: 'linear-gradient(135deg,#14B8A6,#0F766E)',
+    id: 'room05', num: '05', live: true, icon: '🏙️', color: 'linear-gradient(135deg,#14B8A6,#0F766E)',
     titleVi: 'Thành phố Diện tích', titleEn: 'Area & Perimeter City',
-    descVi: 'Lát gạch ô vuông 3D, đếm diện tích S = a × b, phân biệt diện tích và chu vi (Giai đoạn 4).',
-    descEn: 'Tile 3D square grids, explore area S = a × b, and compare area vs perimeter (Stage 4).',
-    tags: ['Giai đoạn 4', 'Lát gạch 3D', 'S & P']
+    descVi: 'Lát gạch ô vuông 3D, đếm diện tích S = a × b, bật hàng rào phân biệt diện tích & chu vi, so sánh 2 hình.',
+    descEn: 'Tile 3D square grids, calculate area S = a × b, toggle perimeter fence, and compare 2 rectangles.',
+    tags: ['Lát gạch 3D', 'S = a × b', 'Chu vi P'], module: Room05Area
   },
   {
-    id: 'room06', num: '06', live: false, icon: '🧊', color: 'linear-gradient(135deg,#EC4899,#BE185D)',
+    id: 'room06', num: '06', live: true, icon: '🧊', color: 'linear-gradient(135deg,#EC4899,#BE185D)',
     titleVi: 'Bảo tàng Hình học 3D', titleEn: '3D Geometry Museum',
-    descVi: '9 hình học 2D/3D, xoay 360°, đếm mặt–cạnh–đỉnh và mở/đóng hình khai triển 3D (Giai đoạn 4).',
-    descEn: '9 geometric solids, 360° orbit, faces/edges/vertices inspector, and animated 3D Nets (Stage 4).',
-    tags: ['Giai đoạn 4', '9 hình khối', 'Khai triển 3D']
+    descVi: 'Đầy đủ 9 hình học 2D/3D, xoay 360°, đếm mặt–cạnh–đỉnh và mở/đóng hình khai triển 3D trực tiếp!',
+    descEn: 'All 9 geometric shapes, 360° orbit, faces/edges/vertices inspector, and live unfolding 3D Cube Net!',
+    tags: ['9 hình học', 'Khai triển 3D', 'Khung xương'], module: Room06Geometry
   },
   {
-    id: 'room07', num: '07', live: false, icon: '⚖️', color: 'linear-gradient(135deg,#F59E0B,#B45309)',
+    id: 'room07', num: '07', live: true, icon: '⚖️', color: 'linear-gradient(135deg,#F59E0B,#B45309)',
     titleVi: 'Đo lường & Đại lượng 3D', titleEn: '3D Measurement Lab',
-    descVi: 'Thước đo, cân điện tử & cân đĩa 3D, bình chia vạch lít, đồng hồ kim/điện tử và lịch (Giai đoạn 4).',
-    descEn: '3D ruler, balance & digital scales, liter beakers, clocks, and calendar (Stage 4).',
-    tags: ['Giai đoạn 4', 'kg / lít', 'Đồng hồ 3D']
+    descVi: '4 trạm 3D thực tế: Thước đo cm/dm, Cân đĩa kg, Bình đong dung tích Lít có mực nước, Đồng hồ 3D & Lịch.',
+    descEn: '4 interactive 3D stations: Ruler (cm/dm), Balance Scale (kg), Liter Beaker, 3D Clock & Calendar.',
+    tags: ['Thước 3D', 'Cân kg', 'Bình Lít', 'Đồng hồ'], module: Room07Measurement
   },
   {
-    id: 'room08', num: '08', live: false, icon: '🌆', color: 'linear-gradient(135deg,#6366F1,#4338CA)',
+    id: 'room08', num: '08', live: true, icon: '🌆', color: 'linear-gradient(135deg,#6366F1,#4338CA)',
     titleVi: 'Thành phố Toán học 3D', titleEn: 'Math City 3D World',
-    descVi: '6 khu vực thực tế: Siêu thị, Công viên, Nhà ga, Công trường, Nhà hàng, Khu dân cư (Giai đoạn 5).',
-    descEn: '6 interactive 3D zones: Supermarket, Park, Station, Construction, Restaurant, Neighborhood (Stage 5).',
-    tags: ['Giai đoạn 5', '6 Khu vực', 'Ứng dụng thực tế']
+    descVi: 'Bản đồ 3D 6 khu vực: Siêu thị, Công viên, Nhà ga, Công trường, Nhà hàng, Khu dân cư — bay tới giải nhiệm vụ!',
+    descEn: 'Interactive 3D city with 6 landmarks: Market, Park, Station, Construction, Restaurant & Neighborhood!',
+    tags: ['6 Khu vực 3D', 'Camera bay', 'Toán thực tế'], module: Room08MathCity
   }
 ];
 
