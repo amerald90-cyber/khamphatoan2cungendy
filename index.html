@@ -1111,7 +1111,16 @@
           <label for="student-name" data-i18n="labelStudentName">Họ và tên của con:</label>
           <input type="text" id="student-name" placeholder="Ví dụ: Nguyễn Minh An">
         </div>
+        
         <div class="form-group">
+          <label data-i18n="labelClassGrade">Chọn khối lớp:</label>
+          <div style="display:flex;gap:8px;margin-top:4px;">
+            <button type="button" id="login-grade-btn-1" class="btn btn-soft" style="flex:1;padding:8px 4px;font-weight:800;font-size:0.9rem;" onclick="setLoginGrade(1)">🎒 Lớp 1</button>
+            <button type="button" id="login-grade-btn-2" class="btn btn-soft" style="flex:1;padding:8px 4px;font-weight:800;font-size:0.9rem;border-color:#0284C7;background:#E0F2FE;color:#0284C7;" onclick="setLoginGrade(2)">🌟 Lớp 2</button>
+            <button type="button" id="login-grade-btn-3" class="btn btn-soft" style="flex:1;padding:8px 4px;font-weight:800;font-size:0.9rem;" onclick="setLoginGrade(3)">🚀 Lớp 3</button>
+          </div>
+        </div>
+<div class="form-group">
           <label for="student-class" data-i18n="labelClass">Lớp:</label>
           <input type="text" id="student-class" placeholder="Ví dụ: 2A">
         </div>
@@ -1132,8 +1141,20 @@
         </div>
         <button class="btn btn-guide" onclick="openMathLab('sim-b10')" data-i18n="btnOpenLab">Mở mô phỏng 3D ✨</button>
       </div>
-      <div class="screen-hero">
-        <div class="screen-title">🗺️ <span data-i18n="selectTopicTitle">Hành trình 15 Chủ đề Toán 2</span></div>
+      
+      <!-- THANH CHỌN KHỐI LỚP HỌC (LỚP 1 - LỚP 2 - LỚP 3) -->
+      <div class="grade-selector-container" style="display:flex;justify-content:center;align-items:center;gap:12px;margin:14px 0 18px;flex-wrap:wrap;">
+        <span style="font-weight:800;font-size:1.05rem;color:#0F172A;display:flex;align-items:center;gap:6px;">
+          📚 <span data-i18n="selectGradeLabel">Chọn khối lớp học:</span>
+        </span>
+        <div style="display:inline-flex;background:#F1F5F9;padding:4px;border-radius:999px;border:2px solid #CBD5E1;box-shadow:0 2px 6px rgba(0,0,0,0.06);">
+          <button id="btn-grade-1" class="grade-pill-btn" onclick="selectGrade(1)" style="padding:7px 16px;border-radius:999px;border:none;font-weight:800;font-size:0.92rem;cursor:pointer;transition:all 0.2s;background:transparent;color:#475569;">🎒 Lớp 1 (41 bài)</button>
+          <button id="btn-grade-2" class="grade-pill-btn active" onclick="selectGrade(2)" style="padding:7px 16px;border-radius:999px;border:none;font-weight:800;font-size:0.92rem;cursor:pointer;transition:all 0.2s;background:#0284C7;color:#fff;box-shadow:0 2px 8px rgba(2,132,199,0.35);">🌟 Lớp 2 (79 bài)</button>
+          <button id="btn-grade-3" class="grade-pill-btn" onclick="selectGrade(3)" style="padding:7px 16px;border-radius:999px;border:none;font-weight:800;font-size:0.92rem;cursor:pointer;transition:all 0.2s;background:transparent;color:#475569;">🚀 Lớp 3 (81 bài)</button>
+        </div>
+      </div>
+<div class="screen-hero">
+        <div class="screen-title">🗺️ <span id="select-topic-title-span" data-i18n="selectTopicTitle">Hành trình 15 Chủ đề Toán 2 (79 bài học)</span></div>
       </div>
       <div id="topic-grid" class="topic-grid"></div>
     </div>
@@ -1480,7 +1501,330 @@
     /* =====================================================================
        3. 15 TOPICS & 79 LESSONS (GDPT 2018 BILINGUAL + 3D LAB MAPPING)
        ===================================================================== */
-    const TOPIC_DATA = [
+    
+    /* =====================================================================
+       HỆ THỐNG MA TRẬN TOÁN TIỂU HỌC LIÊN THÔNG (LỚP 1 - LỚP 2 - LỚP 3)
+       Chuẩn Bộ sách 'Kết nối tri thức với cuộc sống' - GDPT 2018
+    ===================================================================== */
+    const GRADE_1_TOPICS = [
+  {
+    "id": 101,
+    "grade": 1,
+    "sim": "sim-b10",
+    "icon": "🔟",
+    "title": "Chủ đề 1: Các số từ 0 đến 10",
+    "titleEn": "Topic 1: Numbers 0 to 10",
+    "lessons": [
+      {
+        "id": 1001,
+        "name": "Bài 1: Các số 0, 1, 2, 3, 4, 5",
+        "nameEn": "Lesson 1: Numbers 0, 1, 2, 3, 4, 5"
+      },
+      {
+        "id": 1002,
+        "name": "Bài 2: Các số 6, 7, 8, 9, 10",
+        "nameEn": "Lesson 2: Numbers 6, 7, 8, 9, 10"
+      },
+      {
+        "id": 1003,
+        "name": "Bài 3: Nhiều hơn, ít hơn, bằng nhau",
+        "nameEn": "Lesson 3: More, Fewer, Equal"
+      },
+      {
+        "id": 1004,
+        "name": "Bài 4: So sánh số trong phạm vi 10",
+        "nameEn": "Lesson 4: Comparing Numbers within 10"
+      },
+      {
+        "id": 1005,
+        "name": "Bài 5: Mấy và mấy (Tách - gộp số)",
+        "nameEn": "Lesson 5: Number Bonds (Compose & Decompose)"
+      },
+      {
+        "id": 1006,
+        "name": "Bài 6: Luyện tập chung & Kiểm tra chủ đề 1",
+        "nameEn": "Lesson 6: Topic 1 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 102,
+    "grade": 1,
+    "sim": "sim-geo",
+    "icon": "🔺",
+    "title": "Chủ đề 2: Làm quen với một số hình phẳng",
+    "titleEn": "Topic 2: 2D Geometric Shapes",
+    "lessons": [
+      {
+        "id": 1007,
+        "name": "Bài 7: Hình vuông, hình tròn, tam giác, chữ nhật",
+        "nameEn": "Lesson 7: Square, Circle, Triangle, Rectangle"
+      },
+      {
+        "id": 1008,
+        "name": "Bài 8: Thực hành lắp ghép, xếp hình",
+        "nameEn": "Lesson 8: Tangram & Shape Puzzles"
+      },
+      {
+        "id": 1009,
+        "name": "Bài 9: Luyện tập chung & Kiểm tra chủ đề 2",
+        "nameEn": "Lesson 9: Topic 2 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 103,
+    "grade": 1,
+    "sim": "sim-add",
+    "icon": "➕",
+    "title": "Chủ đề 3: Phép cộng, phép trừ trong phạm vi 10",
+    "titleEn": "Topic 3: Addition & Subtraction within 10",
+    "lessons": [
+      {
+        "id": 1010,
+        "name": "Bài 10: Phép cộng trong phạm vi 10",
+        "nameEn": "Lesson 10: Addition within 10"
+      },
+      {
+        "id": 1011,
+        "name": "Bài 11: Phép trừ trong phạm vi 10",
+        "nameEn": "Lesson 11: Subtraction within 10"
+      },
+      {
+        "id": 1012,
+        "name": "Bài 12: Bảng cộng, bảng trừ trong phạm vi 10",
+        "nameEn": "Lesson 12: Addition & Subtraction Tables"
+      },
+      {
+        "id": 1013,
+        "name": "Bài 13: Luyện tập chung & Kiểm tra chủ đề 3",
+        "nameEn": "Lesson 13: Topic 3 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 104,
+    "grade": 1,
+    "sim": "sim-geo",
+    "icon": "🧊",
+    "title": "Chủ đề 4: Làm quen với một số hình khối",
+    "titleEn": "Topic 4: 3D Shapes & Spatial Orientation",
+    "lessons": [
+      {
+        "id": 1014,
+        "name": "Bài 14: Khối lập phương, khối hộp chữ nhật",
+        "nameEn": "Lesson 14: Cubes & Rectangular Prisms"
+      },
+      {
+        "id": 1015,
+        "name": "Bài 15: Vị trí, định hướng trong không gian",
+        "nameEn": "Lesson 15: Position & Spatial Directions"
+      },
+      {
+        "id": 1016,
+        "name": "Bài 16: Luyện tập chung & Kiểm tra chủ đề 4",
+        "nameEn": "Lesson 16: Topic 4 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 105,
+    "grade": 1,
+    "sim": "sim-b10",
+    "icon": "📝",
+    "title": "Chủ đề 5: Ôn tập học kì 1",
+    "titleEn": "Topic 5: Semester 1 Review",
+    "lessons": [
+      {
+        "id": 1017,
+        "name": "Bài 17: Ôn tập các số trong phạm vi 10",
+        "nameEn": "Lesson 17: Review Numbers within 10"
+      },
+      {
+        "id": 1018,
+        "name": "Bài 18: Ôn tập phép cộng, phép trừ trong phạm vi 10",
+        "nameEn": "Lesson 18: Review Addition & Subtraction within 10"
+      },
+      {
+        "id": 1019,
+        "name": "Bài 19: Ôn tập hình học và đo lường",
+        "nameEn": "Lesson 19: Review Geometry"
+      },
+      {
+        "id": 1020,
+        "name": "Bài 20: Ôn tập chung học kì 1",
+        "nameEn": "Lesson 20: Semester 1 Final Review",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 106,
+    "grade": 1,
+    "sim": "sim-b10",
+    "icon": "💯",
+    "title": "Chủ đề 6: Các số đến 100",
+    "titleEn": "Topic 6: Numbers up to 100",
+    "lessons": [
+      {
+        "id": 1021,
+        "name": "Bài 21: Số có hai chữ số (Chục và Đơn vị)",
+        "nameEn": "Lesson 21: 2-Digit Numbers (Tens & Ones)"
+      },
+      {
+        "id": 1022,
+        "name": "Bài 22: So sánh số có hai chữ số",
+        "nameEn": "Lesson 22: Comparing 2-Digit Numbers"
+      },
+      {
+        "id": 1023,
+        "name": "Bài 23: Bảng các số từ 1 đến 100",
+        "nameEn": "Lesson 23: 100 Chart"
+      },
+      {
+        "id": 1024,
+        "name": "Bài 24: Luyện tập chung & Kiểm tra chủ đề 6",
+        "nameEn": "Lesson 24: Topic 6 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 107,
+    "grade": 1,
+    "sim": "sim-scale",
+    "icon": "📏",
+    "title": "Chủ đề 7: Độ dài và đo độ dài",
+    "titleEn": "Topic 7: Length & Measurement",
+    "lessons": [
+      {
+        "id": 1025,
+        "name": "Bài 25: Dài hơn, ngắn hơn",
+        "nameEn": "Lesson 25: Longer & Shorter"
+      },
+      {
+        "id": 1026,
+        "name": "Bài 26: Đơn vị đo độ dài xăng-ti-mét (cm)",
+        "nameEn": "Lesson 26: Centimeters (cm)"
+      },
+      {
+        "id": 1027,
+        "name": "Bài 27: Thực hành ước lượng và đo độ dài",
+        "nameEn": "Lesson 27: Estimating & Measuring"
+      },
+      {
+        "id": 1028,
+        "name": "Bài 28: Luyện tập chung & Kiểm tra chủ đề 7",
+        "nameEn": "Lesson 28: Topic 7 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 108,
+    "grade": 1,
+    "sim": "sim-add",
+    "icon": "🧮",
+    "title": "Chủ đề 8: Phép cộng, phép trừ (không nhớ) trong phạm vi 100",
+    "titleEn": "Topic 8: Add & Subtract (no regroup) within 100",
+    "lessons": [
+      {
+        "id": 1029,
+        "name": "Bài 29: Cộng số có hai chữ số với số có một chữ số",
+        "nameEn": "Lesson 29: Add 2-digit to 1-digit"
+      },
+      {
+        "id": 1030,
+        "name": "Bài 30: Cộng số có hai chữ số với số có hai chữ số",
+        "nameEn": "Lesson 30: Add 2-digit to 2-digit"
+      },
+      {
+        "id": 1031,
+        "name": "Bài 31: Trừ số có hai chữ số cho số có một chữ số",
+        "nameEn": "Lesson 31: Subtract 1-digit from 2-digit"
+      },
+      {
+        "id": 1032,
+        "name": "Bài 32: Trừ số có hai chữ số cho số có hai chữ số",
+        "nameEn": "Lesson 32: Subtract 2-digit from 2-digit"
+      },
+      {
+        "id": 1033,
+        "name": "Bài 33: Luyện tập chung & Kiểm tra chủ đề 8",
+        "nameEn": "Lesson 33: Topic 8 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 109,
+    "grade": 1,
+    "sim": "sim-clock",
+    "icon": "⏰",
+    "title": "Chủ đề 9: Thời gian. Giờ và lịch",
+    "titleEn": "Topic 9: Time, Clock & Calendar",
+    "lessons": [
+      {
+        "id": 1034,
+        "name": "Bài 34: Xem giờ đúng trên đồng hồ",
+        "nameEn": "Lesson 34: Telling Time on the Hour"
+      },
+      {
+        "id": 1035,
+        "name": "Bài 35: Các ngày trong tuần",
+        "nameEn": "Lesson 35: Days of the Week"
+      },
+      {
+        "id": 1036,
+        "name": "Bài 36: Thực hành xem lịch và giờ",
+        "nameEn": "Lesson 36: Reading Calendar & Clocks"
+      },
+      {
+        "id": 1037,
+        "name": "Bài 37: Luyện tập chung & Kiểm tra chủ đề 9",
+        "nameEn": "Lesson 37: Topic 9 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 110,
+    "grade": 1,
+    "sim": "sim-b10",
+    "icon": "🏆",
+    "title": "Chủ đề 10: Ôn tập cuối năm",
+    "titleEn": "Topic 10: Year-End Review",
+    "lessons": [
+      {
+        "id": 1038,
+        "name": "Bài 38: Ôn tập các số và phép tính phạm vi 10",
+        "nameEn": "Lesson 38: Review Operations within 10"
+      },
+      {
+        "id": 1039,
+        "name": "Bài 39: Ôn tập các số và phép tính phạm vi 100",
+        "nameEn": "Lesson 39: Review Operations within 100"
+      },
+      {
+        "id": 1040,
+        "name": "Bài 40: Ôn tập hình học và đo lường",
+        "nameEn": "Lesson 40: Review Geometry & Measurement"
+      },
+      {
+        "id": 1041,
+        "name": "Bài 41: Ôn tập chung cuối năm toàn diện",
+        "nameEn": "Lesson 41: Comprehensive Year-End Quiz",
+        "isTest": true
+      }
+    ]
+  }
+];
+
+    const GRADE_2_TOPICS = [
       { id: 1, sim: "sim-nl", icon: "🔢", title: "Chủ đề 1: Ôn tập và bổ sung", titleEn: "Topic 1: Review & Extensions",
         lessons: [
           { id: 1, name: "Bài 1: Ôn tập các số đến 100", nameEn: "Lesson 1: Numbers up to 100" },
@@ -1621,6 +1965,651 @@
         ]
       }
     ];
+    const GRADE_3_TOPICS = [
+  {
+    "id": 301,
+    "grade": 3,
+    "sim": "sim-nl",
+    "icon": "🔢",
+    "title": "Chủ đề 1: Ôn tập và bổ sung",
+    "titleEn": "Topic 1: Review & Additions",
+    "lessons": [
+      {
+        "id": 3001,
+        "name": "Bài 1: Ôn tập các số đến 1 000",
+        "nameEn": "Lesson 1: Numbers up to 1,000"
+      },
+      {
+        "id": 3002,
+        "name": "Bài 2: Ôn tập phép cộng, phép trừ phạm vi 1 000",
+        "nameEn": "Lesson 2: Add & Subtract within 1,000"
+      },
+      {
+        "id": 3003,
+        "name": "Bài 3: Tìm thành phần trong phép cộng, trừ",
+        "nameEn": "Lesson 3: Finding Unknown Terms (+/-)"
+      },
+      {
+        "id": 3004,
+        "name": "Bài 4: Ôn tập bảng nhân 2, 5; bảng chia 2, 5",
+        "nameEn": "Lesson 4: Multiplication & Division by 2, 5"
+      },
+      {
+        "id": 3005,
+        "name": "Bài 5: Bảng nhân 3, bảng chia 3",
+        "nameEn": "Lesson 5: Multiplication & Division by 3"
+      },
+      {
+        "id": 3006,
+        "name": "Bài 6: Bảng nhân 4, bảng chia 4",
+        "nameEn": "Lesson 6: Multiplication & Division by 4"
+      },
+      {
+        "id": 3007,
+        "name": "Bài 7: Ôn tập hình học và đo lường",
+        "nameEn": "Lesson 7: Geometry & Measurement Review"
+      },
+      {
+        "id": 3008,
+        "name": "Bài 8: Luyện tập chung & Kiểm tra chủ đề 1",
+        "nameEn": "Lesson 8: Topic 1 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 302,
+    "grade": 3,
+    "sim": "sim-mul",
+    "icon": "✖️",
+    "title": "Chủ đề 2: Bảng nhân, bảng chia",
+    "titleEn": "Topic 2: Times & Division Tables (6-9)",
+    "lessons": [
+      {
+        "id": 3009,
+        "name": "Bài 9: Bảng nhân 6, bảng chia 6",
+        "nameEn": "Lesson 9: Multiplication & Division by 6"
+      },
+      {
+        "id": 3010,
+        "name": "Bài 10: Bảng nhân 7, bảng chia 7",
+        "nameEn": "Lesson 10: Multiplication & Division by 7"
+      },
+      {
+        "id": 3011,
+        "name": "Bài 11: Bảng nhân 8, bảng chia 8",
+        "nameEn": "Lesson 11: Multiplication & Division by 8"
+      },
+      {
+        "id": 3012,
+        "name": "Bài 12: Bảng nhân 9, bảng chia 9",
+        "nameEn": "Lesson 12: Multiplication & Division by 9"
+      },
+      {
+        "id": 3013,
+        "name": "Bài 13: Tìm thành phần trong phép nhân, chia",
+        "nameEn": "Lesson 13: Finding Unknown Terms (x/:)"
+      },
+      {
+        "id": 3014,
+        "name": "Bài 14: Một phần mấy (Phân số cơ bản)",
+        "nameEn": "Lesson 14: Unit Fractions (1/n)"
+      },
+      {
+        "id": 3015,
+        "name": "Bài 15: Luyện tập chung & Kiểm tra chủ đề 2",
+        "nameEn": "Lesson 15: Topic 2 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 303,
+    "grade": 3,
+    "sim": "sim-geo",
+    "icon": "📐",
+    "title": "Chủ đề 3: Làm quen với hình phẳng, hình khối",
+    "titleEn": "Topic 3: 2D, 3D Shapes & Angles",
+    "lessons": [
+      {
+        "id": 3016,
+        "name": "Bài 16: Điểm ở giữa, trung điểm của đoạn thẳng",
+        "nameEn": "Lesson 16: Midpoint of a Segment"
+      },
+      {
+        "id": 3017,
+        "name": "Bài 17: Hình tròn. Tâm, bán kính, đường kính",
+        "nameEn": "Lesson 17: Circle, Center, Radius, Diameter"
+      },
+      {
+        "id": 3018,
+        "name": "Bài 18: Góc, góc vuông, góc không vuông",
+        "nameEn": "Lesson 18: Angles, Right Angles"
+      },
+      {
+        "id": 3019,
+        "name": "Bài 19: Hình tam giác, tứ giác, chữ nhật, vuông",
+        "nameEn": "Lesson 19: Triangles, Quadrilaterals, Rectangles"
+      },
+      {
+        "id": 3020,
+        "name": "Bài 20: Thực hành vẽ góc vuông, đường tròn",
+        "nameEn": "Lesson 20: Drawing Right Angles & Circles"
+      },
+      {
+        "id": 3021,
+        "name": "Bài 21: Khối lập phương, khối hộp chữ nhật",
+        "nameEn": "Lesson 21: Cubes & Rectangular Prisms"
+      },
+      {
+        "id": 3022,
+        "name": "Bài 22: Luyện tập chung & Kiểm tra chủ đề 3",
+        "nameEn": "Lesson 22: Topic 3 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 304,
+    "grade": 3,
+    "sim": "sim-mul",
+    "icon": "➗",
+    "title": "Chủ đề 4: Phép nhân, phép chia trong phạm vi 100",
+    "titleEn": "Topic 4: Multiply & Divide within 100",
+    "lessons": [
+      {
+        "id": 3023,
+        "name": "Bài 23: Nhân số có hai chữ số với số có một chữ số",
+        "nameEn": "Lesson 23: 2-digit by 1-digit Multiplication"
+      },
+      {
+        "id": 3024,
+        "name": "Bài 24: Gấp một số lên một số lần",
+        "nameEn": "Lesson 24: Multiplying by a Factor"
+      },
+      {
+        "id": 3025,
+        "name": "Bài 25: Phép chia hết, phép chia có dư",
+        "nameEn": "Lesson 25: Exact & Remainder Division"
+      },
+      {
+        "id": 3026,
+        "name": "Bài 26: Chia số có hai chữ số cho số có một chữ số",
+        "nameEn": "Lesson 26: 2-digit by 1-digit Division"
+      },
+      {
+        "id": 3027,
+        "name": "Bài 27: Giảm một số đi một số lần",
+        "nameEn": "Lesson 27: Dividing by a Factor"
+      },
+      {
+        "id": 3028,
+        "name": "Bài 28: Bài toán giải bằng hai phép tính",
+        "nameEn": "Lesson 28: Two-step Word Problems"
+      },
+      {
+        "id": 3029,
+        "name": "Bài 29: Luyện tập chung & Kiểm tra chủ đề 4",
+        "nameEn": "Lesson 29: Topic 4 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 305,
+    "grade": 3,
+    "sim": "sim-scale",
+    "icon": "🌡️",
+    "title": "Chủ đề 5: Đơn vị đo độ dài, khối lượng, dung tích, nhiệt độ",
+    "titleEn": "Topic 5: Measurement Units (mm, g, ml, °C)",
+    "lessons": [
+      {
+        "id": 3030,
+        "name": "Bài 30: Mi-li-mét (mm)",
+        "nameEn": "Lesson 30: Millimeters (mm)"
+      },
+      {
+        "id": 3031,
+        "name": "Bài 31: Gam (g)",
+        "nameEn": "Lesson 31: Grams (g)"
+      },
+      {
+        "id": 3032,
+        "name": "Bài 32: Mi-li-lít (ml)",
+        "nameEn": "Lesson 32: Milliliters (ml)"
+      },
+      {
+        "id": 3033,
+        "name": "Bài 33: Nhiệt độ. Đơn vị đo nhiệt độ (°C)",
+        "nameEn": "Lesson 33: Temperature (°C)"
+      },
+      {
+        "id": 3034,
+        "name": "Bài 34: Thực hành và trải nghiệm đo lường",
+        "nameEn": "Lesson 34: Hands-on Measurement Lab"
+      },
+      {
+        "id": 3035,
+        "name": "Bài 35: Luyện tập chung & Kiểm tra chủ đề 5",
+        "nameEn": "Lesson 35: Topic 5 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 306,
+    "grade": 3,
+    "sim": "sim-mul",
+    "icon": "🧮",
+    "title": "Chủ đề 6: Phép nhân, phép chia trong phạm vi 1 000",
+    "titleEn": "Topic 6: Multiply & Divide within 1,000",
+    "lessons": [
+      {
+        "id": 3036,
+        "name": "Bài 36: Nhân số có ba chữ số với số có một chữ số",
+        "nameEn": "Lesson 36: 3-digit by 1-digit Multiplication"
+      },
+      {
+        "id": 3037,
+        "name": "Bài 37: Chia số có ba chữ số cho số có một chữ số",
+        "nameEn": "Lesson 37: 3-digit by 1-digit Division"
+      },
+      {
+        "id": 3038,
+        "name": "Bài 38: Biểu thức số. Tính giá trị biểu thức",
+        "nameEn": "Lesson 38: Order of Operations & Expressions"
+      },
+      {
+        "id": 3039,
+        "name": "Bài 39: So sánh số lớn gấp mấy lần số bé",
+        "nameEn": "Lesson 39: Ratio Comparison"
+      },
+      {
+        "id": 3040,
+        "name": "Bài 40: Luyện tập chung & Kiểm tra chủ đề 6",
+        "nameEn": "Lesson 40: Topic 6 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 307,
+    "grade": 3,
+    "sim": "sim-b10",
+    "icon": "📚",
+    "title": "Chủ đề 7: Ôn tập học kì 1",
+    "titleEn": "Topic 7: Semester 1 Review",
+    "lessons": [
+      {
+        "id": 3041,
+        "name": "Bài 41: Ôn tập nhân, chia phạm vi 100, 1000",
+        "nameEn": "Lesson 41: Review Multiplication & Division"
+      },
+      {
+        "id": 3042,
+        "name": "Bài 42: Ôn tập biểu thức số",
+        "nameEn": "Lesson 42: Review Expressions"
+      },
+      {
+        "id": 3043,
+        "name": "Bài 43: Ôn tập hình học và đo lường",
+        "nameEn": "Lesson 43: Review Geometry & Units"
+      },
+      {
+        "id": 3044,
+        "name": "Bài 44: Ôn tập chung học kì 1",
+        "nameEn": "Lesson 44: Semester 1 Final Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 308,
+    "grade": 3,
+    "sim": "sim-b10",
+    "icon": "🔟",
+    "title": "Chủ đề 8: Các số đến 10 000",
+    "titleEn": "Topic 8: Numbers up to 10,000",
+    "lessons": [
+      {
+        "id": 3045,
+        "name": "Bài 45: Các số có bốn chữ số. Số 10 000",
+        "nameEn": "Lesson 45: 4-digit Numbers & 10,000"
+      },
+      {
+        "id": 3046,
+        "name": "Bài 46: So sánh các số trong phạm vi 10 000",
+        "nameEn": "Lesson 46: Comparing 4-digit Numbers"
+      },
+      {
+        "id": 3047,
+        "name": "Bài 47: Làm quen với chữ số La Mã",
+        "nameEn": "Lesson 47: Roman Numerals (I, V, X)"
+      },
+      {
+        "id": 3048,
+        "name": "Bài 48: Làm tròn số đến hàng chục, hàng trăm",
+        "nameEn": "Lesson 48: Rounding to Tens & Hundreds"
+      },
+      {
+        "id": 3049,
+        "name": "Bài 49: Luyện tập chung & Kiểm tra chủ đề 8",
+        "nameEn": "Lesson 49: Topic 8 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 309,
+    "grade": 3,
+    "sim": "sim-area",
+    "icon": "🟩",
+    "title": "Chủ đề 9: Chu vi, diện tích một số hình phẳng",
+    "titleEn": "Topic 9: Perimeter & Area",
+    "lessons": [
+      {
+        "id": 3050,
+        "name": "Bài 50: Chu vi tam giác, tứ giác, chữ nhật, vuông",
+        "nameEn": "Lesson 50: Perimeter of Polygons"
+      },
+      {
+        "id": 3051,
+        "name": "Bài 51: Diện tích một hình. Xăng-ti-mét vuông (cm²)",
+        "nameEn": "Lesson 51: Concept of Area & cm²"
+      },
+      {
+        "id": 3052,
+        "name": "Bài 52: Diện tích hình chữ nhật, hình vuông",
+        "nameEn": "Lesson 52: Area of Rectangles & Squares"
+      },
+      {
+        "id": 3053,
+        "name": "Bài 53: Luyện tập chung & Kiểm tra chủ đề 9",
+        "nameEn": "Lesson 53: Topic 9 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 310,
+    "grade": 3,
+    "sim": "sim-add",
+    "icon": "➕",
+    "title": "Chủ đề 10: Cộng, trừ, nhân, chia trong phạm vi 10 000",
+    "titleEn": "Topic 10: Operations within 10,000",
+    "lessons": [
+      {
+        "id": 3054,
+        "name": "Bài 54: Phép cộng trong phạm vi 10 000",
+        "nameEn": "Lesson 54: Addition within 10,000"
+      },
+      {
+        "id": 3055,
+        "name": "Bài 55: Phép trừ trong phạm vi 10 000",
+        "nameEn": "Lesson 55: Subtraction within 10,000"
+      },
+      {
+        "id": 3056,
+        "name": "Bài 56: Nhân số có bốn chữ số với số có một chữ số",
+        "nameEn": "Lesson 56: 4-digit by 1-digit Multiplication"
+      },
+      {
+        "id": 3057,
+        "name": "Bài 57: Chia số có bốn chữ số cho số có một chữ số",
+        "nameEn": "Lesson 57: 4-digit by 1-digit Division"
+      },
+      {
+        "id": 3058,
+        "name": "Bài 58: Luyện tập chung & Kiểm tra chủ đề 10",
+        "nameEn": "Lesson 58: Topic 10 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 311,
+    "grade": 3,
+    "sim": "sim-b10",
+    "icon": "💯",
+    "title": "Chủ đề 11: Các số đến 100 000",
+    "titleEn": "Topic 11: Numbers up to 100,000",
+    "lessons": [
+      {
+        "id": 3059,
+        "name": "Bài 59: Các số có năm chữ số. Số 100 000",
+        "nameEn": "Lesson 59: 5-digit Numbers & 100,000"
+      },
+      {
+        "id": 3060,
+        "name": "Bài 60: So sánh các số trong phạm vi 100 000",
+        "nameEn": "Lesson 60: Comparing 5-digit Numbers"
+      },
+      {
+        "id": 3061,
+        "name": "Bài 61: Làm tròn số đến hàng nghìn, hàng chục nghìn",
+        "nameEn": "Lesson 61: Rounding to Thousands"
+      },
+      {
+        "id": 3062,
+        "name": "Bài 62: Luyện tập chung & Kiểm tra chủ đề 11",
+        "nameEn": "Lesson 62: Topic 11 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 312,
+    "grade": 3,
+    "sim": "sim-add",
+    "icon": "🧮",
+    "title": "Chủ đề 12: Cộng, trừ trong phạm vi 100 000",
+    "titleEn": "Topic 12: Add & Subtract within 100,000",
+    "lessons": [
+      {
+        "id": 3063,
+        "name": "Bài 63: Phép cộng trong phạm vi 100 000",
+        "nameEn": "Lesson 63: Addition within 100,000"
+      },
+      {
+        "id": 3064,
+        "name": "Bài 64: Phép trừ trong phạm vi 100 000",
+        "nameEn": "Lesson 64: Subtraction within 100,000"
+      },
+      {
+        "id": 3065,
+        "name": "Bài 65: Luyện tập chung & Kiểm tra chủ đề 12",
+        "nameEn": "Lesson 65: Topic 12 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 313,
+    "grade": 3,
+    "sim": "sim-clock",
+    "icon": "🕒",
+    "title": "Chủ đề 13: Xem đồng hồ. Tháng - năm. Tiền Việt Nam",
+    "titleEn": "Topic 13: Clock, Calendar & Money",
+    "lessons": [
+      {
+        "id": 3066,
+        "name": "Bài 66: Xem đồng hồ (chính xác đến từng phút)",
+        "nameEn": "Lesson 66: Reading Clocks to Minutes"
+      },
+      {
+        "id": 3067,
+        "name": "Bài 67: Thực hành xem đồng hồ, xem lịch",
+        "nameEn": "Lesson 67: Calendar & Clock Practice"
+      },
+      {
+        "id": 3068,
+        "name": "Bài 68: Tiền Việt Nam",
+        "nameEn": "Lesson 68: Vietnamese Currency (VND)"
+      },
+      {
+        "id": 3069,
+        "name": "Bài 69: Luyện tập chung & Kiểm tra chủ đề 13",
+        "nameEn": "Lesson 69: Topic 13 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 314,
+    "grade": 3,
+    "sim": "sim-mul",
+    "icon": "✖️",
+    "title": "Chủ đề 14: Nhân, chia trong phạm vi 100 000",
+    "titleEn": "Topic 14: Multiply & Divide within 100,000",
+    "lessons": [
+      {
+        "id": 3070,
+        "name": "Bài 70: Nhân số có năm chữ số với số có một chữ số",
+        "nameEn": "Lesson 70: 5-digit by 1-digit Multiplication"
+      },
+      {
+        "id": 3071,
+        "name": "Bài 71: Chia số có năm chữ số cho số có một chữ số",
+        "nameEn": "Lesson 71: 5-digit by 1-digit Division"
+      },
+      {
+        "id": 3072,
+        "name": "Bài 72: Luyện tập chung & Kiểm tra chủ đề 14",
+        "nameEn": "Lesson 72: Topic 14 Review & Quiz",
+        "isTest": true
+      }
+    ]
+  },
+  {
+    "id": 315,
+    "grade": 3,
+    "sim": "sim-scale",
+    "icon": "📊",
+    "title": "Chủ đề 15: Làm quen với yếu tố thống kê, xác suất",
+    "titleEn": "Topic 15: Statistics & Probability",
+    "lessons": [
+      {
+        "id": 3073,
+        "name": "Bài 73: Thu thập, phân loại, ghi chép số liệu",
+        "nameEn": "Lesson 73: Data Collection & Tables"
+      },
+      {
+        "id": 3074,
+        "name": "Bài 74: Khả năng xảy ra của một sự kiện",
+        "nameEn": "Lesson 74: Likelihood of Events"
+      },
+      {
+        "id": 3075,
+        "name": "Bài 75: Thực hành và trải nghiệm bảng số liệu",
+        "nameEn": "Lesson 75: Data Analysis Lab"
+      }
+    ]
+  },
+  {
+    "id": 316,
+    "grade": 3,
+    "sim": "sim-b10",
+    "icon": "🎓",
+    "title": "Chủ đề 16: Ôn tập cuối năm",
+    "titleEn": "Topic 16: Year-End Review",
+    "lessons": [
+      {
+        "id": 3076,
+        "name": "Bài 76: Ôn tập các số phạm vi 10 000, 100 000",
+        "nameEn": "Lesson 76: Review Numbers up to 100,000"
+      },
+      {
+        "id": 3077,
+        "name": "Bài 77: Ôn tập phép cộng, phép trừ phạm vi 100 000",
+        "nameEn": "Lesson 77: Review Addition & Subtraction"
+      },
+      {
+        "id": 3078,
+        "name": "Bài 78: Ôn tập phép nhân, phép chia phạm vi 100 000",
+        "nameEn": "Lesson 78: Review Multiplication & Division"
+      },
+      {
+        "id": 3079,
+        "name": "Bài 79: Ôn tập hình học và đo lường",
+        "nameEn": "Lesson 79: Review Geometry & Measurement"
+      },
+      {
+        "id": 3080,
+        "name": "Bài 80: Ôn tập bảng số liệu, khả năng xảy ra sự kiện",
+        "nameEn": "Lesson 80: Review Statistics & Events"
+      },
+      {
+        "id": 3081,
+        "name": "Bài 81: Ôn tập chung cuối năm toàn diện",
+        "nameEn": "Lesson 81: Final Comprehensive Exam",
+        "isTest": true
+      }
+    ]
+  }
+];
+
+
+    const GRADE_MAP = {
+      1: GRADE_1_TOPICS,
+      2: GRADE_2_TOPICS,
+      3: GRADE_3_TOPICS
+    };
+
+    let currentGrade = 2;
+    let TOPIC_DATA = GRADE_2_TOPICS;
+
+    function selectGrade(g) {
+      currentGrade = g;
+      TOPIC_DATA = GRADE_MAP[g] || GRADE_2_TOPICS;
+      [1, 2, 3].forEach(gr => {
+        const btn = document.getElementById('btn-grade-' + gr);
+        if (btn) {
+          if (gr === g) {
+            btn.classList.add('active');
+            btn.style.background = '#0284C7';
+            btn.style.color = '#fff';
+            btn.style.boxShadow = '0 2px 8px rgba(2,132,199,0.35)';
+          } else {
+            btn.classList.remove('active');
+            btn.style.background = 'transparent';
+            btn.style.color = '#475569';
+            btn.style.boxShadow = 'none';
+          }
+        }
+      });
+      const titles = {
+        1: { vi: "Hành trình 10 Chủ đề Toán 1 (41 bài học)", en: "10 Math Topics for Grade 1 (41 lessons)" },
+        2: { vi: "Hành trình 15 Chủ đề Toán 2 (79 bài học)", en: "15 Math Topics for Grade 2 (79 lessons)" },
+        3: { vi: "Hành trình 16 Chủ đề Toán 3 (81 bài học)", en: "16 Math Topics for Grade 3 (81 lessons)" }
+      };
+      const titleSpan = document.getElementById("select-topic-title-span");
+      if (titleSpan) {
+        titleSpan.innerText = currentLang === 'vi' ? titles[g].vi : titles[g].en;
+      }
+      renderTopicGrid();
+      if (typeof updateGrandTotalScore === 'function') updateGrandTotalScore();
+    }
+
+    function setLoginGrade(g) {
+      selectGrade(g);
+      const inputClass = document.getElementById("student-class");
+      if (inputClass) inputClass.value = g + "A";
+      [1, 2, 3].forEach(gr => {
+        const b = document.getElementById("login-grade-btn-" + gr);
+        if (b) {
+          if (gr === g) {
+            b.style.borderColor = '#0284C7';
+            b.style.background = '#E0F2FE';
+            b.style.color = '#0284C7';
+          } else {
+            b.style.borderColor = '#E2E8F0';
+            b.style.background = '#F8FAFC';
+            b.style.color = '#475569';
+          }
+        }
+      });
+    }
+
 
     /* =====================================================================
        4. PROCEDURAL DYNAMIC MATH GENERATOR WITH 2-LEVEL PROGRESSIVE HINTS
@@ -1929,6 +2918,160 @@
         );
       },
 
+      
+      /* --- SINH ĐỀ TOÁN LỚP 1 (Chủ đề 101 - 110) --- */
+      genGrade1(topicId, lessonId) {
+        const isEn = currentLang === 'en';
+        if (topicId === 101 || topicId === 103 || topicId === 105) {
+          // Phép cộng trừ phạm vi 10
+          const a = this.rand(1, 9), b = this.rand(0, 10 - a);
+          const isAdd = Math.random() > 0.5;
+          if (isAdd) {
+            return this.makeFill(
+              `Tính: ${a} + ${b} = ?`,
+              `Calculate: ${a} + ${b} = ?`,
+              a + b,
+              `${a} cộng ${b} bằng ${a + b}.`,
+              `${a} plus ${b} equals ${a + b}.`
+            );
+          } else {
+            const sum = a + b;
+            return this.makeFill(
+              `Tính: ${sum} - ${a} = ?`,
+              `Calculate: ${sum} - ${a} = ?`,
+              b,
+              `${sum} trừ ${a} bằng ${b}.`,
+              `${sum} minus ${a} equals ${b}.`
+            );
+          }
+        } else if (topicId === 102 || topicId === 104) {
+          // Hình phẳng & hình khối lớp 1
+          const shapes = [
+            { vi: "hình vuông", en: "square", q: "Hình có 4 cạnh bằng nhau và 4 góc vuông là hình gì?", qEn: "A shape with 4 equal sides is a:" },
+            { vi: "hình tròn", en: "circle", q: "Hình tròn xoe, không có góc cạnh là hình gì?", qEn: "A round shape with no corners is a:" },
+            { vi: "hình tam giác", en: "triangle", q: "Hình có 3 đỉnh và 3 cạnh là hình gì?", qEn: "A shape with 3 sides and 3 vertices is a:" },
+            { vi: "khối lập phương", en: "cube", q: "Khối xúc xắc có 6 mặt đều là hình vuông là khối gì?", qEn: "A 3D shape like a die with 6 square faces is a:" }
+          ];
+          const sh = this.pick(shapes);
+          return this.makeMCQ(
+            sh.q, sh.qEn,
+            isEn ? sh.en : sh.vi,
+            isEn ? ["square", "circle", "triangle", "cube"] : ["hình vuông", "hình tròn", "hình tam giác", "khối lập phương"],
+            `Đó chính là ${sh.vi}.`, `That is a ${sh.en}.`
+          );
+        } else if (topicId === 106 || topicId === 108 || topicId === 110) {
+          // Số & phép tính không nhớ phạm vi 100
+          const a = this.rand(20, 60), b = this.rand(1, 9);
+          return this.makeFill(
+            `Tính: ${a} + ${b} = ?`,
+            `Calculate: ${a} + ${b} = ?`,
+            a + b,
+            `Lấy hàng chục giữ nguyên, lấy đơn vị cộng đơn vị: ${a % 10} + ${b} = ${(a % 10) + b}, được ${a + b}.`,
+            `Keep the tens, add the ones: ${a} + ${b} = ${a + b}.`
+          );
+        } else if (topicId === 107) {
+          // Độ dài xăng-ti-mét (cm)
+          const a = this.rand(3, 12), b = this.rand(2, 6);
+          return this.makeFill(
+            `Đoạn thẳng dài: ${a} cm + ${b} cm = ? cm`,
+            `Length: ${a} cm + ${b} cm = ? cm`,
+            a + b,
+            `${a} cm + ${b} cm = ${a + b} cm.`,
+            `${a} cm + ${b} cm = ${a + b} cm.`
+          );
+        } else {
+          // Xem giờ đồng hồ lớp 1
+          const h = this.rand(1, 12);
+          return this.makeMCQ(
+            `Kim ngắn chỉ vào số ${h}, kim dài chỉ vào số 12. Đồng hồ chỉ mấy giờ?`,
+            `Short hand points to ${h}, long hand points to 12. What time is it?`,
+            isEn ? `${h} o'clock` : `${h} giờ`,
+            isEn ? [`${h} o'clock`, `${(h % 12) + 1} o'clock`, `${h}:30`, `${h}:15`] : [`${h} giờ`, `${(h % 12) + 1} giờ`, `${h} giờ 30 phút`, `${h} giờ 15 phút`],
+            `Kim phút chỉ số 12, kim giờ chỉ số ${h} nghĩa là đúng ${h} giờ.`,
+            `It is exactly ${h} o'clock.`
+          );
+        }
+      },
+
+      /* --- SINH ĐỀ TOÁN LỚP 3 (Chủ đề 301 - 316) --- */
+      genGrade3(topicId, lessonId) {
+        const isEn = currentLang === 'en';
+        if (topicId === 302 || topicId === 304 || topicId === 306 || topicId === 314) {
+          // Bảng nhân 6, 7, 8, 9 và nhân số có 2, 3 chữ số
+          const a = this.rand(6, 9), b = this.rand(3, 9);
+          const isMul = Math.random() > 0.4;
+          if (isMul) {
+            return this.makeFill(
+              `Tính nhẩm: ${a} × ${b} = ?`,
+              `Calculate: ${a} × ${b} = ?`,
+              a * b,
+              `Bảng nhân ${a}: ${a} × ${b} = ${a * b}.`,
+              `Multiplication table of ${a}: ${a} × ${b} = ${a * b}.`
+            );
+          } else {
+            const prod = a * b;
+            return this.makeFill(
+              `Tính nhẩm: ${prod} : ${a} = ?`,
+              `Calculate: ${prod} : ${a} = ?`,
+              b,
+              `${prod} : ${a} = ${b} (vì ${a} × ${b} = ${prod}).`,
+              `${prod} divided by ${a} equals ${b}.`
+            );
+          }
+        } else if (topicId === 309) {
+          // Chu vi, diện tích hình chữ nhật / hình vuông lớp 3
+          const a = this.rand(4, 9), b = this.rand(2, a - 1);
+          const isArea = Math.random() > 0.5;
+          if (isArea) {
+            return this.makeFill(
+              `Tính diện tích hình chữ nhật có chiều dài ${a} cm, chiều rộng ${b} cm: ? cm²`,
+              `Find area of a rectangle with length ${a} cm and width ${b} cm: ? cm²`,
+              a * b,
+              `Diện tích = chiều dài × chiều rộng = ${a} × ${b} = ${a * b} cm².`,
+              `Area = length × width = ${a} × ${b} = ${a * b} cm².`
+            );
+          } else {
+            return this.makeFill(
+              `Tính chu vi hình chữ nhật có chiều dài ${a} cm, chiều rộng ${b} cm: ? cm`,
+              `Find perimeter of a rectangle with length ${a} cm and width ${b} cm: ? cm`,
+              (a + b) * 2,
+              `Chu vi = (chiều dài + chiều rộng) × 2 = (${a} + ${b}) × 2 = ${(a + b) * 2} cm.`,
+              `Perimeter = (length + width) × 2 = (${a} + ${b}) × 2 = ${(a + b) * 2} cm.`
+            );
+          }
+        } else if (topicId === 308 || topicId === 310 || topicId === 311 || topicId === 312) {
+          // Số & phép tính phạm vi 10 000 và 100 000
+          const a = this.rand(2000, 8000), b = this.rand(1000, 4000);
+          return this.makeFill(
+            `Tính: ${a} + ${b} = ?`,
+            `Calculate: ${a} + ${b} = ?`,
+            a + b,
+            `Cộng lần lượt từ hàng đơn vị sang hàng nghìn: ${a} + ${b} = ${a + b}.`,
+            `Add column by column: ${a} + ${b} = ${a + b}.`
+          );
+        } else if (topicId === 305) {
+          // Đơn vị đo mm, g, ml
+          const a = this.rand(100, 800), b = this.rand(100, 500);
+          return this.makeFill(
+            `Tính: ${a} g + ${b} g = ? g`,
+            `Calculate: ${a} g + ${b} g = ? g`,
+            a + b,
+            `${a} g + ${b} g = ${a + b} g.`,
+            `${a} g + ${b} g = ${a + b} g.`
+          );
+        } else {
+          // Tổng hợp hoặc tìm X
+          const x = this.rand(5, 25), c = this.rand(10, 50);
+          return this.makeFill(
+            `Tìm x, biết: x + ${c} = ${x + c}. x = ?`,
+            `Find x: x + ${c} = ${x + c}. x = ?`,
+            x,
+            `Muốn tìm số hạng chưa biết, ta lấy tổng trừ đi số hạng đã biết: ${x + c} - ${c} = ${x}.`,
+            `Subtract the known addend from the sum: ${x + c} - ${c} = ${x}.`
+          );
+        }
+      },
+
       generateSet(topicId, lessonId, count = 10) {
         const mapFn = {
           1: () => this.genTopic1(), 2: () => this.genTopic2(), 3: () => this.genTopic3(),
@@ -1939,7 +3082,9 @@
           14: () => this.pick([() => this.genTopic4(), () => this.genTopic8(), () => this.genTopic10(), () => this.genTopic11(), () => this.genTopic12(), () => this.genTopic13()])(),
           15: () => this.pick([() => this.genTopic2(), () => this.genTopic3(), () => this.genTopic4(), () => this.genTopic6(), () => this.genTopic8(), () => this.genTopic9(), () => this.genTopic10(), () => this.genTopic11(), () => this.genTopic12(), () => this.genTopic13()])()
         };
-        const gen = mapFn[topicId] || mapFn[15];
+        const gen = (topicId >= 101 && topicId <= 110) ? (() => this.genGrade1(topicId, lessonId)) :
+                    (topicId >= 301 && topicId <= 316) ? (() => this.genGrade3(topicId, lessonId)) :
+                    (mapFn[topicId] || mapFn[15]);
         const out = [], seen = new Set();
         let tries = 0;
         while (out.length < count && tries++ < count * 14) {
