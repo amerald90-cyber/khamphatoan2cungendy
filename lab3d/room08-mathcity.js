@@ -77,6 +77,15 @@ export const Room08MathCity = {
       roadV.position.y = 0.13;
       engine.roomGroup.add(roadH, roadV);
 
+      // Dashed yellow road stripes
+      const stripeMat = new THREE.MeshBasicMaterial({ color: 0xfacc15 });
+      for (let x = -8.5; x <= 8.5; x += 2.2) {
+        if (Math.abs(x) < 1.5) continue;
+        const st = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.04, 0.14), stripeMat);
+        st.position.set(x, 0.32, 0);
+        engine.roomGroup.add(st);
+      }
+
       const isEn = ctx.getLang() === 'en';
       ZONES.forEach(z => {
         const g = new THREE.Group();
@@ -93,7 +102,6 @@ export const Room08MathCity = {
         engine.registerInteractive(bldg);
 
         if (z.id === 'park') {
-          // Cute 3D Trees
           for (let i = -1; i <= 1; i++) {
             const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.15, 0.8), new THREE.MeshStandardMaterial({ color: 0x78350f }));
             trunk.position.set(i * 0.9, 0.9, 0);
@@ -102,16 +110,25 @@ export const Room08MathCity = {
             g.add(trunk, crown);
           }
         } else {
-          // Sloped Roof
           const roof = new THREE.Mesh(new THREE.ConeGeometry(2.3, 1.1, 4), new THREE.MeshStandardMaterial({ color: 0xfef08a, roughness: 0.4 }));
           roof.rotation.y = Math.PI / 4;
           roof.position.y = 2.85;
           roof.castShadow = true;
           g.add(roof);
+          // Glowing front windows + door
+          const winMat = new THREE.MeshStandardMaterial({ color: 0xfef08a, emissive: 0xf59e0b, emissiveIntensity: 0.35 });
+          [-0.85, 0.85].forEach(wx => {
+            const w = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.55, 0.08), winMat);
+            w.position.set(wx, 1.45, 1.42);
+            g.add(w);
+          });
+          const door = new THREE.Mesh(new THREE.BoxGeometry(0.65, 1.0, 0.08), new THREE.MeshStandardMaterial({ color: 0x1e293b }));
+          door.position.set(0, 0.5, 1.42);
+          g.add(door);
         }
 
-        const lbl = engine.createLabelSprite(`${z.icon} ${isEn ? z.en : z.vi}`, '#0F172A', '#FFFFFF', 0.88);
-        lbl.position.set(0, 4.1, 0);
+        const lbl = engine.createLabelSprite(`${z.icon} ${isEn ? z.en : z.vi}`, '#0F172A', '#FFFFFF', 0.92);
+        lbl.position.set(0, 4.15, 0);
         g.add(lbl);
         engine.roomGroup.add(g);
       });
