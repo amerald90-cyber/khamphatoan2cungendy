@@ -68,6 +68,13 @@ const ROOMS_META = [
     descVi: 'Bản đồ 3D 6 khu vực: Siêu thị, Công viên, Nhà ga, Công trường, Nhà hàng, Khu dân cư — bay tới giải nhiệm vụ!',
     descEn: 'Interactive 3D city with 6 landmarks: Market, Park, Station, Construction, Restaurant & Neighborhood!',
     tags: ['6 Khu vực 3D', 'Camera bay', 'Toán thực tế'], module: Room08MathCity
+  },
+  {
+    id: 'room09', num: '09', live: true, icon: '⏰', color: 'linear-gradient(135deg,#0EA5E9,#0369A1)',
+    titleVi: 'Phòng Đồng hồ 3D & Lịch', titleEn: '3D Clock & Calendar Room',
+    descVi: 'Đồng hồ kim 3D rõ số 1–12 & 60 vạch phút, đồng bộ giờ điện tử 24h, thực hành +1 giờ / +30 phút / +15 phút & Lịch tháng.',
+    descEn: 'Crisp 3D analog clock (1–12 + 60 ticks) synced with 24h digital display, time-step buttons & 12-month calendar.',
+    tags: ['Rõ số 1–12', 'Đồng hồ 24h', 'Xem lịch'], module: { mount: (eng, c) => Room07Measurement.mount(eng, c, 'clock') }
   }
 ];
 
