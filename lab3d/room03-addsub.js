@@ -144,13 +144,26 @@ export const Room03AddSub = {
       bench.receiveShadow = true;
       engine.roomGroup.add(bench);
 
-      // Subtle center divider line on workbench
-      const divLine = new THREE.Mesh(
-        new THREE.BoxGeometry(0.12, 0.04, 7.6),
-        new THREE.MeshBasicMaterial({ color: 0x94a3b8 })
-      );
-      divLine.position.set(0, 0.34, 0);
-      if (state.op === '+' && state.stage === 'split') engine.roomGroup.add(divLine);
+      // Subtle center divider line on workbench + interactive Zone A / Zone B click pads
+      if (state.op === '+' && state.stage === 'split') {
+        const divLine = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.04, 7.6), new THREE.MeshBasicMaterial({ color: 0x94a3b8 }));
+        divLine.position.set(0, 0.34, 0);
+        engine.roomGroup.add(divLine);
+
+        const padA = new THREE.Mesh(new THREE.BoxGeometry(8.6, 0.03, 7.6), new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.14 }));
+        padA.position.set(-4.6, 0.34, 0); padA.userData = { dropZone: 'A' };
+        const padB = new THREE.Mesh(new THREE.BoxGeometry(8.6, 0.03, 7.6), new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.14 }));
+        padB.position.set(4.6, 0.34, 0); padB.userData = { dropZone: 'B' };
+        engine.roomGroup.add(padA, padB);
+        engine.registerInteractive(padA);
+        engine.registerInteractive(padB);
+
+        engine.onClick((hit) => {
+          const z = hit.object?.userData?.dropZone;
+          if (z === 'A' && state.a < 89) { state.a++; ctx.playTone(760); rebuild3D(); }
+          else if (z === 'B' && state.b < 59) { state.b++; ctx.playTone(680); rebuild3D(); }
+        });
+      }
 
       const tA = Math.floor(state.a / 10), oA = state.a % 10;
       const tB = Math.floor(state.b / 10), oB = state.b % 10;
@@ -252,10 +265,26 @@ export const Room03AddSub = {
         </div>
 
         <div class="mdl-control-row" style="align-items:center;">
-          <input type="number" class="mdl-input" id="r3-a" value="${state.a}" min="1" max="89" style="width:66px;">
+          <input type="number" class="mdl-input" id="r3-a" value="${state.a}" min="0" max="89" style="width:66px;">
           <button class="mdl-btn ${state.op === '+' ? 'mdl-btn-success' : 'mdl-btn-warn'}" id="r3-toggle-op" style="padding:5px 12px;">${state.op}</button>
-          <input type="number" class="mdl-input" id="r3-b" value="${state.b}" min="1" max="59" style="width:66px;">
+          <input type="number" class="mdl-input" id="r3-b" value="${state.b}" min="0" max="59" style="width:66px;">
           <button class="mdl-btn mdl-btn-primary" id="r3-set">OK</button>
+        </div>
+
+        <div class="mdl-section-title">🖐️ ${isEn ? 'Teacher Quick Drop (Tap 3D Table!)' : 'Giáo viên thêm/bớt nhanh (hoặc chạm mặt bàn 3D)'}</div>
+        <div class="mdl-control-row" style="align-items:center;">
+          <span style="font-size:0.8rem;font-weight:800;color:#7DD3FC;">A:</span>
+          <button class="mdl-btn" id="r3-a-p10" style="padding:4px 8px;font-size:0.78rem;">+10</button>
+          <button class="mdl-btn" id="r3-a-p1" style="padding:4px 8px;font-size:0.78rem;">+1</button>
+          <button class="mdl-btn mdl-btn-danger" id="r3-a-m1" style="padding:4px 8px;font-size:0.78rem;">−1</button>
+          <button class="mdl-btn mdl-btn-danger" id="r3-a-clr" style="padding:4px 8px;font-size:0.78rem;">0</button>
+        </div>
+        <div class="mdl-control-row" style="align-items:center;">
+          <span style="font-size:0.8rem;font-weight:800;color:#C4B5FD;">B:</span>
+          <button class="mdl-btn" id="r3-b-p10" style="padding:4px 8px;font-size:0.78rem;">+10</button>
+          <button class="mdl-btn" id="r3-b-p1" style="padding:4px 8px;font-size:0.78rem;">+1</button>
+          <button class="mdl-btn mdl-btn-danger" id="r3-b-m1" style="padding:4px 8px;font-size:0.78rem;">−1</button>
+          <button class="mdl-btn mdl-btn-danger" id="r3-b-clr" style="padding:4px 8px;font-size:0.78rem;">0</button>
         </div>
 
         <div class="mdl-section-title">✨ ${isEn ? 'Run 3D Steps' : 'Thao tác 2 bước trên bàn 3D'}</div>
@@ -289,10 +318,18 @@ export const Room03AddSub = {
       bind('r3-p-sub1', () => { state.op = '-'; state.a = 54; state.b = 26; state.stage = 'split'; rebuild3D(); });
       bind('r3-toggle-op', () => { state.op = state.op === '+' ? '-' : '+'; state.stage = 'split'; rebuild3D(); });
       bind('r3-set', () => {
-        state.a = Math.max(1, Math.min(89, parseInt(document.getElementById('r3-a').value) || 25));
-        state.b = Math.max(1, Math.min(59, parseInt(document.getElementById('r3-b').value) || 17));
+        state.a = Math.max(0, Math.min(89, parseInt(document.getElementById('r3-a').value) || 0));
+        state.b = Math.max(0, Math.min(59, parseInt(document.getElementById('r3-b').value) || 0));
         state.stage = 'split'; rebuild3D();
       });
+      bind('r3-a-p10', () => { state.a = Math.min(89, state.a + 10); state.stage = 'split'; ctx.playTone(620); rebuild3D(); });
+      bind('r3-a-p1', () => { state.a = Math.min(89, state.a + 1); state.stage = 'split'; ctx.playTone(760); rebuild3D(); });
+      bind('r3-a-m1', () => { state.a = Math.max(0, state.a - 1); state.stage = 'split'; rebuild3D(); });
+      bind('r3-a-clr', () => { state.a = 0; state.stage = 'split'; rebuild3D(); });
+      bind('r3-b-p10', () => { state.b = Math.min(59, state.b + 10); state.stage = 'split'; ctx.playTone(620); rebuild3D(); });
+      bind('r3-b-p1', () => { state.b = Math.min(59, state.b + 1); state.stage = 'split'; ctx.playTone(700); rebuild3D(); });
+      bind('r3-b-m1', () => { state.b = Math.max(0, state.b - 1); state.stage = 'split'; rebuild3D(); });
+      bind('r3-b-clr', () => { state.b = 0; state.stage = 'split'; rebuild3D(); });
       bind('r3-step-merge', () => { state.stage = 'merged'; ctx.playTone(640); rebuild3D(); });
       bind('r3-step-regroup', () => { state.stage = 'regrouped'; ctx.playSuccess(); rebuild3D(); });
       bind('r3-step-borrow', () => { state.stage = 'borrowed'; ctx.playTone(620); rebuild3D(); });
