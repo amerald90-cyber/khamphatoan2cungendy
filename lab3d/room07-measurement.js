@@ -153,32 +153,79 @@ export const Room07Measurement = {
           engine.roomGroup.add(lbl);
         }
       } else {
-        // 3D Clock Station
-        engine.setCameraPreset([0, 4.8, 9.5], [0, 2.4, 0]);
-        const rim = new THREE.Mesh(new THREE.CylinderGeometry(2.3, 2.3, 0.36, 40), new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.3 }));
+        // 3D Clock Station with Ultra-Crisp 1-12 Numbers & 60 Minute Ticks
+        engine.setCameraPreset([0, 4.4, 8.2], [0, 2.5, 0]);
+        const rim = new THREE.Mesh(new THREE.CylinderGeometry(2.38, 2.38, 0.36, 48), new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.28, metalness: 0.15 }));
         rim.rotation.x = Math.PI / 2; rim.position.y = 2.7; rim.castShadow = true;
         engine.roomGroup.add(rim);
 
-        const face = new THREE.Mesh(new THREE.CylinderGeometry(2.05, 2.05, 0.4, 40), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 }));
-        face.rotation.x = Math.PI / 2; face.position.y = 2.7;
-        engine.roomGroup.add(face);
+        // Draw high-resolution 512x512 clock dial texture (1..12 + 5-min markers + 60 ticks)
+        const dialCvs = document.createElement('canvas');
+        dialCvs.width = 512; dialCvs.height = 512;
+        const dctx = dialCvs.getContext('2d');
+        const cx = 256, cy = 256, R = 246;
+        dctx.fillStyle = '#FFFFFF';
+        dctx.beginPath(); dctx.arc(cx, cy, R, 0, Math.PI * 2); dctx.fill();
+        dctx.lineWidth = 8; dctx.strokeStyle = '#BAE6FD'; dctx.stroke();
+
+        // 60 minute ticks
+        for (let i = 0; i < 60; i++) {
+          const a = (i / 60) * Math.PI * 2 - Math.PI / 2;
+          const is5 = i % 5 === 0;
+          const r1 = is5 ? R - 26 : R - 15;
+          const r2 = R - 6;
+          dctx.beginPath();
+          dctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+          dctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
+          dctx.strokeStyle = is5 ? '#0F172A' : '#94A3B8';
+          dctx.lineWidth = is5 ? 5 : 2.5;
+          dctx.stroke();
+        }
+
+        // Bold 1..12 hour numbers + subtle orange 5-min labels
+        dctx.textAlign = 'center'; dctx.textBaseline = 'middle';
+        for (let n = 1; n <= 12; n++) {
+          const a = (n / 12) * Math.PI * 2 - Math.PI / 2;
+          const nx = cx + Math.cos(a) * 168, ny = cy + Math.sin(a) * 168;
+          dctx.font = 'bold 46px "Baloo 2", Arial, sans-serif';
+          dctx.fillStyle = (n % 3 === 0) ? '#0284C7' : '#0F172A';
+          dctx.fillText(String(n), nx, ny);
+
+          const mx = cx + Math.cos(a) * 208, my = cy + Math.sin(a) * 208;
+          dctx.font = 'bold 17px "Nunito", Arial, sans-serif';
+          dctx.fillStyle = '#EA580C';
+          dctx.fillText(String((n * 5) % 60).padStart(2, '0'), mx, my);
+        }
+
+        const dialTex = new THREE.CanvasTexture(dialCvs);
+        dialTex.colorSpace = THREE.SRGBColorSpace;
+        const dialMesh = new THREE.Mesh(
+          new THREE.CircleGeometry(2.14, 48),
+          new THREE.MeshBasicMaterial({ map: dialTex })
+        );
+        dialMesh.position.set(0, 2.7, 0.2);
+        engine.roomGroup.add(dialMesh);
 
         const h = Math.floor(state.clockMin / 60), m = state.clockMin % 60;
         const mAng = -(m / 60) * Math.PI * 2;
         const hAng = -(((h % 12) + m / 60) / 12) * Math.PI * 2;
 
-        const mPivot = new THREE.Group(); mPivot.position.set(0, 2.7, 0.25); mPivot.rotation.z = mAng;
-        const mHand = new THREE.Mesh(new THREE.BoxGeometry(0.1, 1.55, 0.08), new THREE.MeshStandardMaterial({ color: 0xea580c }));
-        mHand.position.y = 0.72; mPivot.add(mHand);
+        const mPivot = new THREE.Group(); mPivot.position.set(0, 2.7, 0.26); mPivot.rotation.z = mAng;
+        const mHand = new THREE.Mesh(new THREE.BoxGeometry(0.1, 1.5, 0.06), new THREE.MeshStandardMaterial({ color: 0xea580c }));
+        mHand.position.y = 0.7; mPivot.add(mHand);
         engine.roomGroup.add(mPivot);
 
-        const hPivot = new THREE.Group(); hPivot.position.set(0, 2.7, 0.3); hPivot.rotation.z = hAng;
-        const hHand = new THREE.Mesh(new THREE.BoxGeometry(0.16, 1.05, 0.08), new THREE.MeshStandardMaterial({ color: 0x0f172a }));
-        hHand.position.y = 0.48; hPivot.add(hHand);
+        const hPivot = new THREE.Group(); hPivot.position.set(0, 2.7, 0.31); hPivot.rotation.z = hAng;
+        const hHand = new THREE.Mesh(new THREE.BoxGeometry(0.16, 1.0, 0.06), new THREE.MeshStandardMaterial({ color: 0x0f172a }));
+        hHand.position.y = 0.46; hPivot.add(hHand);
         engine.roomGroup.add(hPivot);
 
-        const dig = engine.createLabelSprite(`${String(h).padStart(2, '0')} : ${String(m).padStart(2, '0')}`, '#0F172A', '#38BDF8', 1.0);
-        dig.position.set(0, 0.75, 1.2);
+        const pin = new THREE.Mesh(new THREE.SphereGeometry(0.14, 16, 16), new THREE.MeshStandardMaterial({ color: 0xea580c }));
+        pin.position.set(0, 2.7, 0.34);
+        engine.roomGroup.add(pin);
+
+        const dig = engine.createLabelSprite(`${String(h).padStart(2, '0')} : ${String(m).padStart(2, '0')}`, '#0F172A', '#38BDF8', 0.95);
+        dig.position.set(0, 0.72, 1.2);
         engine.roomGroup.add(dig);
       }
 
