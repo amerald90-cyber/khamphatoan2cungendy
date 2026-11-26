@@ -135,24 +135,33 @@ export const Room03AddSub = {
 
     const rebuild3D = () => {
       engine.clearRoom();
+      // Bright, high-contrast studio workbench so dark bears, red apples & blocks pop crisply!
       const bench = new THREE.Mesh(
-        new THREE.BoxGeometry(16.5, 0.36, 7.6),
-        new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.6, metalness: 0.2 })
+        new THREE.BoxGeometry(18.5, 0.36, 8.2),
+        new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.65, metalness: 0.08 })
       );
       bench.position.set(0, 0.14, 0);
       bench.receiveShadow = true;
       engine.roomGroup.add(bench);
+
+      // Subtle center divider line on workbench
+      const divLine = new THREE.Mesh(
+        new THREE.BoxGeometry(0.12, 0.04, 7.6),
+        new THREE.MeshBasicMaterial({ color: 0x94a3b8 })
+      );
+      divLine.position.set(0, 0.34, 0);
+      if (state.op === '+' && state.stage === 'split') engine.roomGroup.add(divLine);
 
       const tA = Math.floor(state.a / 10), oA = state.a % 10;
       const tB = Math.floor(state.b / 10), oB = state.b % 10;
 
       if (state.op === '+') {
         if (state.stage === 'split') {
-          buildCluster(engine.roomGroup, tA, oA, -4.1, false);
-          buildCluster(engine.roomGroup, tB, oB, 4.1, true);
-          const lA = engine.createLabelSprite(`A = ${state.a}`, '#0284C7', '#FFFFFF', 0.95); lA.position.set(-4.1, 3.8, -2.0);
-          const lB = engine.createLabelSprite(`B = ${state.b}`, '#7C3AED', '#FFFFFF', 0.95); lB.position.set(4.1, 3.8, -2.0);
-          const lP = engine.createLabelSprite('+', '#22C55E', '#FFFFFF', 0.9); lP.position.set(0, 2.3, 0);
+          buildCluster(engine.roomGroup, tA, oA, -4.8, false);
+          buildCluster(engine.roomGroup, tB, oB, 4.8, true);
+          const lA = engine.createLabelSprite(`A = ${state.a}`, '#0284C7', '#FFFFFF', 1.0); lA.position.set(-4.8, 3.8, -2.6);
+          const lB = engine.createLabelSprite(`B = ${state.b}`, '#7C3AED', '#FFFFFF', 1.0); lB.position.set(4.8, 3.8, -2.6);
+          const lP = engine.createLabelSprite('+', '#16A34A', '#FFFFFF', 0.85); lP.position.set(0, 3.4, -2.6);
           engine.roomGroup.add(lA, lB, lP);
         } else if (state.stage === 'merged') {
           buildCluster(engine.roomGroup, tA + tB, oA + oB, 0, false, false, (oA + oB) >= 10);
