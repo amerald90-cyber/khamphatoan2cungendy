@@ -2923,26 +2923,56 @@
       genGrade1(topicId, lessonId) {
         const isEn = currentLang === 'en';
         if (topicId === 101 || topicId === 103 || topicId === 105) {
-          // Phép cộng trừ phạm vi 10
-          const a = this.rand(1, 9), b = this.rand(0, 10 - a);
-          const isAdd = Math.random() > 0.5;
-          if (isAdd) {
+          // Phép cộng trừ phạm vi 10 & Số 0-10
+          const type = this.rand(1, 4);
+          if (type === 1) {
+            // So sánh số
+            const a = this.rand(0, 10), b = this.rand(0, 10);
+            const ans = a > b ? ">" : a < b ? "<" : "=";
+            return this.makeMCQ(
+              `Điền dấu thích hợp vào ô trống: ${a} ... ${b}`,
+              `Choose the correct sign: ${a} ... ${b}`,
+              ans,
+              [">", "<", "="],
+              `${a} ${ans} ${b}.`,
+              `${a} ${ans} ${b}.`,
+              "So sánh số lớn hơn, bé hơn hoặc bằng nhau.",
+              "Compare which number is greater, smaller, or equal."
+            );
+          } else if (type === 2) {
+            // Số liền sau / liền trước
+            const n = this.rand(1, 9);
+            const isAfter = Math.random() > 0.5;
+            const ans = isAfter ? n + 1 : n - 1;
             return this.makeFill(
-              `Tính: ${a} + ${b} = ?`,
-              `Calculate: ${a} + ${b} = ?`,
-              a + b,
-              `${a} cộng ${b} bằng ${a + b}.`,
-              `${a} plus ${b} equals ${a + b}.`
+              isAfter ? `Số liền sau của số ${n} là: __` : `Số liền trước của số ${n} là: __`,
+              isAfter ? `The number right after ${n} is: __` : `The number right before ${n} is: __`,
+              ans,
+              isAfter ? `${n} + 1 = ${ans}.` : `${n} − 1 = ${ans}.`,
+              isAfter ? `${n} + 1 = ${ans}.` : `${n} − 1 = ${ans}.`
             );
           } else {
-            const sum = a + b;
-            return this.makeFill(
-              `Tính: ${sum} - ${a} = ?`,
-              `Calculate: ${sum} - ${a} = ?`,
-              b,
-              `${sum} trừ ${a} bằng ${b}.`,
-              `${sum} minus ${a} equals ${b}.`
-            );
+            // Phép tính cộng / trừ phạm vi 10
+            const a = this.rand(1, 9), b = this.rand(0, 10 - a);
+            const isAdd = Math.random() > 0.5;
+            if (isAdd) {
+              return this.makeFill(
+                `Tính: ${a} + ${b} = __`,
+                `Calculate: ${a} + ${b} = __`,
+                a + b,
+                `${a} cộng ${b} bằng ${a + b}.`,
+                `${a} plus ${b} equals ${a + b}.`
+              );
+            } else {
+              const sum = a + b;
+              return this.makeFill(
+                `Tính: ${sum} - ${a} = __`,
+                `Calculate: ${sum} - ${a} = __`,
+                b,
+                `${sum} trừ ${a} bằng ${b}.`,
+                `${sum} minus ${a} equals ${b}.`
+              );
+            }
           }
         } else if (topicId === 102 || topicId === 104) {
           // Hình phẳng & hình khối lớp 1
@@ -2950,31 +2980,54 @@
             { vi: "hình vuông", en: "square", q: "Hình có 4 cạnh bằng nhau và 4 góc vuông là hình gì?", qEn: "A shape with 4 equal sides is a:" },
             { vi: "hình tròn", en: "circle", q: "Hình tròn xoe, không có góc cạnh là hình gì?", qEn: "A round shape with no corners is a:" },
             { vi: "hình tam giác", en: "triangle", q: "Hình có 3 đỉnh và 3 cạnh là hình gì?", qEn: "A shape with 3 sides and 3 vertices is a:" },
-            { vi: "khối lập phương", en: "cube", q: "Khối xúc xắc có 6 mặt đều là hình vuông là khối gì?", qEn: "A 3D shape like a die with 6 square faces is a:" }
+            { vi: "hình chữ nhật", en: "rectangle", q: "Hình có 2 cạnh dài bằng nhau, 2 cạnh ngắn bằng nhau là hình gì?", qEn: "A shape with 2 long sides and 2 short sides is a:" },
+            { vi: "khối lập phương", en: "cube", q: "Khối xúc xắc có 6 mặt đều là hình vuông là khối gì?", qEn: "A 3D shape like a die with 6 square faces is a:" },
+            { vi: "khối hộp chữ nhật", en: "rectangular prism", q: "Bao diêm, viên gạch có dạng khối hình gì?", qEn: "A brick or matchbox has the shape of a:" }
           ];
           const sh = this.pick(shapes);
           return this.makeMCQ(
             sh.q, sh.qEn,
             isEn ? sh.en : sh.vi,
-            isEn ? ["square", "circle", "triangle", "cube"] : ["hình vuông", "hình tròn", "hình tam giác", "khối lập phương"],
+            isEn ? ["square", "circle", "triangle", "rectangle", "cube"] : ["hình vuông", "hình tròn", "hình tam giác", "hình chữ nhật", "khối lập phương"],
             `Đó chính là ${sh.vi}.`, `That is a ${sh.en}.`
           );
         } else if (topicId === 106 || topicId === 108 || topicId === 110) {
           // Số & phép tính không nhớ phạm vi 100
-          const a = this.rand(20, 60), b = this.rand(1, 9);
-          return this.makeFill(
-            `Tính: ${a} + ${b} = ?`,
-            `Calculate: ${a} + ${b} = ?`,
-            a + b,
-            `Lấy hàng chục giữ nguyên, lấy đơn vị cộng đơn vị: ${a % 10} + ${b} = ${(a % 10) + b}, được ${a + b}.`,
-            `Keep the tens, add the ones: ${a} + ${b} = ${a + b}.`
-          );
+          const type = this.rand(1, 3);
+          if (type === 1) {
+            const tens = this.rand(2, 9), ones = this.rand(1, 9);
+            return this.makeFill(
+              `Số gồm ${tens} chục và ${ones} đơn vị viết là: __`,
+              `The number with ${tens} tens and ${ones} ones is: __`,
+              tens * 10 + ones,
+              `${tens} chục và ${ones} đơn vị là ${tens * 10 + ones}.`,
+              `${tens} tens and ${ones} ones is ${tens * 10 + ones}.`
+            );
+          } else if (type === 2) {
+            const a = this.rand(20, 70), b = this.rand(1, 9);
+            return this.makeFill(
+              `Tính: ${a} + ${b} = __`,
+              `Calculate: ${a} + ${b} = __`,
+              a + b,
+              `${a} + ${b} = ${a + b}.`,
+              `${a} + ${b} = ${a + b}.`
+            );
+          } else {
+            const a = this.rand(30, 80), b = this.rand(10, 25);
+            return this.makeFill(
+              `Tính: ${a} - ${b} = __`,
+              `Calculate: ${a} - ${b} = __`,
+              a - b,
+              `${a} - ${b} = ${a - b}.`,
+              `${a} - ${b} = ${a - b}.`
+            );
+          }
         } else if (topicId === 107) {
           // Độ dài xăng-ti-mét (cm)
-          const a = this.rand(3, 12), b = this.rand(2, 6);
+          const a = this.rand(3, 15), b = this.rand(2, 8);
           return this.makeFill(
-            `Đoạn thẳng dài: ${a} cm + ${b} cm = ? cm`,
-            `Length: ${a} cm + ${b} cm = ? cm`,
+            `Đoạn thẳng dài: ${a} cm + ${b} cm = __ cm`,
+            `Length: ${a} cm + ${b} cm = __ cm`,
             a + b,
             `${a} cm + ${b} cm = ${a + b} cm.`,
             `${a} cm + ${b} cm = ${a + b} cm.`
@@ -2997,13 +3050,13 @@
       genGrade3(topicId, lessonId) {
         const isEn = currentLang === 'en';
         if (topicId === 302 || topicId === 304 || topicId === 306 || topicId === 314) {
-          // Bảng nhân 6, 7, 8, 9 và nhân số có 2, 3 chữ số
+          // Bảng nhân 6, 7, 8, 9 và nhân chia
           const a = this.rand(6, 9), b = this.rand(3, 9);
           const isMul = Math.random() > 0.4;
           if (isMul) {
             return this.makeFill(
-              `Tính nhẩm: ${a} × ${b} = ?`,
-              `Calculate: ${a} × ${b} = ?`,
+              `Tính nhẩm: ${a} × ${b} = __`,
+              `Calculate: ${a} × ${b} = __`,
               a * b,
               `Bảng nhân ${a}: ${a} × ${b} = ${a * b}.`,
               `Multiplication table of ${a}: ${a} × ${b} = ${a * b}.`
@@ -3011,8 +3064,8 @@
           } else {
             const prod = a * b;
             return this.makeFill(
-              `Tính nhẩm: ${prod} : ${a} = ?`,
-              `Calculate: ${prod} : ${a} = ?`,
+              `Tính nhẩm: ${prod} : ${a} = __`,
+              `Calculate: ${prod} : ${a} = __`,
               b,
               `${prod} : ${a} = ${b} (vì ${a} × ${b} = ${prod}).`,
               `${prod} divided by ${a} equals ${b}.`
@@ -3024,16 +3077,16 @@
           const isArea = Math.random() > 0.5;
           if (isArea) {
             return this.makeFill(
-              `Tính diện tích hình chữ nhật có chiều dài ${a} cm, chiều rộng ${b} cm: ? cm²`,
-              `Find area of a rectangle with length ${a} cm and width ${b} cm: ? cm²`,
+              `Tính diện tích hình chữ nhật có chiều dài ${a} cm, chiều rộng ${b} cm là: __ cm²`,
+              `Find area of a rectangle with length ${a} cm and width ${b} cm: __ cm²`,
               a * b,
               `Diện tích = chiều dài × chiều rộng = ${a} × ${b} = ${a * b} cm².`,
               `Area = length × width = ${a} × ${b} = ${a * b} cm².`
             );
           } else {
             return this.makeFill(
-              `Tính chu vi hình chữ nhật có chiều dài ${a} cm, chiều rộng ${b} cm: ? cm`,
-              `Find perimeter of a rectangle with length ${a} cm and width ${b} cm: ? cm`,
+              `Tính chu vi hình chữ nhật có chiều dài ${a} cm, chiều rộng ${b} cm là: __ cm`,
+              `Find perimeter of a rectangle with length ${a} cm and width ${b} cm: __ cm`,
               (a + b) * 2,
               `Chu vi = (chiều dài + chiều rộng) × 2 = (${a} + ${b}) × 2 = ${(a + b) * 2} cm.`,
               `Perimeter = (length + width) × 2 = (${a} + ${b}) × 2 = ${(a + b) * 2} cm.`
@@ -3043,8 +3096,8 @@
           // Số & phép tính phạm vi 10 000 và 100 000
           const a = this.rand(2000, 8000), b = this.rand(1000, 4000);
           return this.makeFill(
-            `Tính: ${a} + ${b} = ?`,
-            `Calculate: ${a} + ${b} = ?`,
+            `Tính: ${a} + ${b} = __`,
+            `Calculate: ${a} + ${b} = __`,
             a + b,
             `Cộng lần lượt từ hàng đơn vị sang hàng nghìn: ${a} + ${b} = ${a + b}.`,
             `Add column by column: ${a} + ${b} = ${a + b}.`
@@ -3053,8 +3106,8 @@
           // Đơn vị đo mm, g, ml
           const a = this.rand(100, 800), b = this.rand(100, 500);
           return this.makeFill(
-            `Tính: ${a} g + ${b} g = ? g`,
-            `Calculate: ${a} g + ${b} g = ? g`,
+            `Tính: ${a} g + ${b} g = __ g`,
+            `Calculate: ${a} g + ${b} g = __ g`,
             a + b,
             `${a} g + ${b} g = ${a + b} g.`,
             `${a} g + ${b} g = ${a + b} g.`
@@ -3063,15 +3116,14 @@
           // Tổng hợp hoặc tìm X
           const x = this.rand(5, 25), c = this.rand(10, 50);
           return this.makeFill(
-            `Tìm x, biết: x + ${c} = ${x + c}. x = ?`,
-            `Find x: x + ${c} = ${x + c}. x = ?`,
+            `Tìm x, biết: x + ${c} = ${x + c}. x = __`,
+            `Find x: x + ${c} = ${x + c}. x = __`,
             x,
             `Muốn tìm số hạng chưa biết, ta lấy tổng trừ đi số hạng đã biết: ${x + c} - ${c} = ${x}.`,
             `Subtract the known addend from the sum: ${x + c} - ${c} = ${x}.`
           );
         }
       },
-
       generateSet(topicId, lessonId, count = 10) {
         const mapFn = {
           1: () => this.genTopic1(), 2: () => this.genTopic2(), 3: () => this.genTopic3(),
@@ -3568,7 +3620,18 @@
       const hintLine = document.getElementById("bilingual-hint-line");
       const qImg = document.getElementById("question-img");
 
-      qa.innerHTML = q.DeBai.replace(/__/g, '<input type="text" class="fill-in-blank-input" id="fill-in-answer" autofocus autocomplete="off">');
+      // Xử lý thông minh ô nhập điền khuyết: hỗ trợ cả __, ? hoặc tự động thêm ô nhập nếu chưa có
+      if (q.LoaiCauHoi === "DIEN_KHUYET") {
+        if (q.DeBai.includes("__")) {
+          qa.innerHTML = q.DeBai.replace(/__/g, '<input type="text" class="fill-in-blank-input" id="fill-in-answer" autofocus autocomplete="off">');
+        } else if (q.DeBai.includes("?")) {
+          qa.innerHTML = q.DeBai.replace(/\?/g, '<input type="text" class="fill-in-blank-input" id="fill-in-answer" autofocus autocomplete="off">');
+        } else {
+          qa.innerHTML = q.DeBai + ' <input type="text" class="fill-in-blank-input" id="fill-in-answer" autofocus autocomplete="off">';
+        }
+      } else {
+        qa.innerHTML = q.DeBai;
+      }
       qa.classList.toggle("long-text", q.DeBai.length > 55);
       if (currentLang === 'en' && q.DeBaiEn) { hintLine.textContent = `🇬🇧 ${q.DeBaiEn}`; hintLine.classList.remove("hidden"); }
       else hintLine.classList.add("hidden");
@@ -3579,15 +3642,29 @@
       DOM.answerArea.innerHTML = "";
       if (q.LoaiCauHoi === "TRAC_NGHIEM" || q.LoaiCauHoi === "DUNG_SAI") {
         const opts = [q.LuaChonA, q.LuaChonB, q.LuaChonC, q.LuaChonD].filter(Boolean).sort(() => 0.5 - Math.random());
-        opts.forEach(opt => {
-          const b = document.createElement("button");
-          b.className = "btn answer-btn";
-          b.innerHTML = opt;
-          b.onclick = e => checkAnswer(opt, b, e);
-          DOM.answerArea.appendChild(b);
-        });
+        if (opts.length >= 2) {
+          opts.forEach(opt => {
+            const b = document.createElement("button");
+            b.className = "btn answer-btn";
+            b.innerHTML = opt;
+            b.onclick = e => checkAnswer(opt, b, e);
+            DOM.answerArea.appendChild(b);
+          });
+        } else {
+          // Nếu câu trắc nghiệm thiếu lựa chọn, tự động chuyển sang điền khuyết
+          renderFillInArea();
+        }
       } else {
-        DOM.answerArea.innerHTML = `<div id="fill-in-container"><div id="fill-in-feedback"></div><button class="btn btn-start submit-answer-btn">${I18N[currentLang].submitAnswer}</button></div>`;
+        renderFillInArea();
+      }
+
+      function renderFillInArea() {
+        const hasInputInQa = !!document.getElementById("fill-in-answer");
+        let standaloneInputHtml = '';
+        if (!hasInputInQa) {
+          standaloneInputHtml = `<div style="margin-bottom:14px;"><input type="text" class="fill-in-blank-input" id="fill-in-answer" placeholder="Nhập đáp án của con..." autofocus autocomplete="off" style="font-size:1.6rem;padding:8px 20px;text-align:center;width:220px;border:3px solid #0284C7;border-radius:12px;background:#F0F9FF;box-shadow:0 2px 8px rgba(2,132,199,0.2);"></div>`;
+        }
+        DOM.answerArea.innerHTML = `<div id="fill-in-container">${standaloneInputHtml}<div id="fill-in-feedback"></div><button class="btn btn-start submit-answer-btn">${I18N[currentLang].submitAnswer}</button></div>`;
         const sb = DOM.answerArea.querySelector(".submit-answer-btn");
         sb.onclick = e => {
           const inp = document.getElementById("fill-in-answer");
